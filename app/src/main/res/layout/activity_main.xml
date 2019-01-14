@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="io.kong.mypetdiary.MainActivity">
-
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,21 +18,48 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:id="@+id/linearLayout"
-        android:background="@drawable/back">
+        android:background="@drawable/back"
+        android:gravity="center">
 
-        <Button
+        <ImageButton
             android:layout_weight="1"
             android:id="@+id/btn_fragment_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"/>
+            android:src="@drawable/baseline_home_black_36dp"
+            android:background="@color/backgroundWhite"/>
 
-        <Button
+        <ImageButton
+            android:layout_weight="1"
+            android:id="@+id/btn_fragment_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_group_black_36dp"
+            android:background="@color/backgroundWhite"/>
+
+        <ImageButton
+            android:layout_weight="1"
+            android:id="@+id/btn_fragment_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_add_circle_outline_black_36dp"
+            android:background="@color/backgroundWhite"/>
+
+        <ImageButton
+            android:layout_weight="1"
+            android:id="@+id/btn_fragment_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_search_black_36dp"
+            android:background="@color/backgroundWhite"/>
+
+        <ImageButton
             android:layout_weight="1"
             android:id="@+id/btn_fragment_my_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Page"/>
+            android:src="@drawable/baseline_face_black_36dp"
+            android:background="@color/backgroundWhite"/>
 
     </LinearLayout>
 
