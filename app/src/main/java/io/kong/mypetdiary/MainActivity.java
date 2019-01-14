@@ -1,67 +1,59 @@
 package io.kong.mypetdiary;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.Session;
-import com.kakao.usermgmt.LoginButton;
-import com.kakao.util.exception.KakaoException;
-import com.kakao.util.helper.log.Logger;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
-import static com.kakao.auth.Session.getCurrentSession;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class MainActivity extends AppCompatActivity {
+    private final int FRAGMENT_HOME = 1;
+    private final int FRAGMENT_MY_PAGE = 2;
 
-    private SessionCallback callback;
-    private LoginButton btn_kakao_login;
+    private Button btn_home, btn_my_page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(Session.getCurrentSession().checkAndImplicitOpen()) {
-            redirectSignupActivity();
-        } else {
-            setContentView(R.layout.activity_main);
-            btn_kakao_login = findViewById(R.id.btn_kakao_login);
-            callback = new SessionCallback();
-            getCurrentSession().addCallback(callback);
-        }
+        setContentView(R.layout.activity_main);
 
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            return;
-        }
+        btn_home = findViewById(R.id.btn_fragment_home);
+        btn_my_page = findViewById(R.id.btn_fragment_my_page);
 
-        super.onActivityResult(requestCode, resultCode, data);
+        btn_home.setOnClickListener(this);
+        btn_my_page.setOnClickListener(this);
+
+        callFragment(FRAGMENT_HOME);
     }
+
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getCurrentSession().removeCallback(callback);
-    }
-
-    private class SessionCallback implements ISessionCallback {
-
-        @Override
-        public void onSessionOpened() {
-            redirectSignupActivity();
-        }
-
-        @Override
-        public void onSessionOpenFailed(KakaoException exception) {
-            if(exception != null) {
-                Logger.e(exception);
-            }
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_fragment_home:
+                callFragment(FRAGMENT_HOME);
+                break;
+            case R.id.btn_fragment_my_page:
+                callFragment(FRAGMENT_MY_PAGE);
+                break;
         }
     }
 
-    protected void redirectSignupActivity() {
-        final Intent intent = new Intent(this, TestActivity.class);
-        startActivity(intent);
-        finish();
+    private void callFragment(int fragment_no) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        switch (fragment_no) {
+            case 1:
+                HomeFragment homeFragment = new HomeFragment();
+                transaction.replace(R.id.fragment_container, homeFragment);
+                transaction.commit();
+                break;
+            case 2:
+                MyPageFragment myPageFragment = new MyPageFragment();
+                transaction.replace(R.id.fragment_container, myPageFragment);
+                transaction.commit();
+                break;
+        }
     }
 }
