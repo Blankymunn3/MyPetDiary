@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyPetDiary</string>
+
+    <string name="kakao_app_key">de5eba9c8af3f6ce607134a114f9f316</string>
 </resources>
