@@ -31,7 +31,9 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         kakaoUserItem = new KakaoUserItem();
         if(Session.getCurrentSession().checkAndImplicitOpen()) {
-            redirectSignupActivity();
+            final Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             setContentView(R.layout.activity_login);
             btn_kakao_login = findViewById(R.id.btn_kakao_login);
@@ -42,8 +44,16 @@ public class LoginActivity extends AppCompatActivity{
 
 
         Button btnLogin = findViewById(R.id.btn_login);
-        Button btnSignup = findViewById(R.id.btn_signup);
+        Button btnSignup = findViewById(R.id.btn_move_signup);
 
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                intent.putExtra("kakao", 0);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -102,7 +112,8 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
-        final Intent intent = new Intent(this, MainActivity.class);
+        final Intent intent = new Intent(this, SignUpActivity.class);
+        intent.putExtra("kakao",1);
         startActivity(intent);
         finish();
     }
