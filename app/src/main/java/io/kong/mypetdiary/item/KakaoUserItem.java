@@ -1,4 +1,4 @@
-package io.kong.mypetdiary;
+package io.kong.mypetdiary.item;
 
 public class KakaoUserItem {
 

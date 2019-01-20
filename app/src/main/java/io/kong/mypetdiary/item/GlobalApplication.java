@@ -1,4 +1,4 @@
-package io.kong.mypetdiary;
+package io.kong.mypetdiary.item;
 
 import android.app.Application;
 import android.content.Context;

@@ -1,6 +1,7 @@
-package io.kong.mypetdiary;
+package io.kong.mypetdiary.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,9 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
+
+import io.kong.mypetdiary.item.KakaoUserItem;
+import io.kong.mypetdiary.R;
 
 import static com.kakao.auth.Session.getCurrentSession;
 
@@ -36,6 +40,11 @@ public class LoginActivity extends AppCompatActivity{
             finish();
         } else {
             setContentView(R.layout.activity_login);
+
+            View view = getWindow().getDecorView();
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
+
             btn_kakao_login = findViewById(R.id.btn_kakao_login);
             callback = new SessionCallback();
             getCurrentSession().addCallback(callback);

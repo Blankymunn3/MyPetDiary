@@ -1,10 +1,8 @@
-package io.kong.mypetdiary;
+package io.kong.mypetdiary.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -25,6 +23,11 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import java.io.InputStream;
 import java.net.URL;
+
+import io.kong.mypetdiary.item.KakaoUserItem;
+import io.kong.mypetdiary.activity.LoginActivity;
+import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
+import io.kong.mypetdiary.R;
 
 
 public class MyPageFragment extends Fragment {

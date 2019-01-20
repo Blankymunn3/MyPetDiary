@@ -1,4 +1,4 @@
-package io.kong.mypetdiary;
+package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -11,12 +11,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class HomeListViewAdapter extends BaseAdapter {
+import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.item.HomeListViewItem;
+
+public class MyPageListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<HomeListViewItem> listViewItemList = new ArrayList<HomeListViewItem>();
 
     // ListViewAdapter의 생성자
-    public HomeListViewAdapter() {
+    public MyPageListViewAdapter() {
 
     }
 
@@ -51,7 +54,6 @@ public class HomeListViewAdapter extends BaseAdapter {
         iconImageView.setImageDrawable(listViewItem.getIcon());
         txtTitle.setText(listViewItem.getTitle());
         txtDate.setText(listViewItem.getDesc());
-
 
         return convertView;
     }

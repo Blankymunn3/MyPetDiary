@@ -1,4 +1,4 @@
-package io.kong.mypetdiary;
+package io.kong.mypetdiary.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import io.kong.mypetdiary.adapter.HomeListViewAdapter;
+import io.kong.mypetdiary.R;
 
 public class HomeFragment extends Fragment {
 
