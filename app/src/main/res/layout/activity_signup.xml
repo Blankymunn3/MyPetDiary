@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#fff">
 
     <LinearLayout
         android:layout_weight="1.5"
@@ -16,20 +17,21 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/LoginActivityLinear">
+        style="@style/SignUpActivityLinear">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="2.2"
             android:gravity="center"
             android:textSize="15sp"
             android:text="아이디"/>
 
         <EditText
             android:id="@+id/ed_id"
-            style="@style/LoginActivityEditText"/>
+            style="@style/SignUpActivityEditText"/>
 
         <Button
+            android:id="@+id/btn_doubleCheck"
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:background="@drawable/background_line"
@@ -41,96 +43,97 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/LoginActivityLinear">
+        style="@style/SignUpActivityLinear">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="5.4"
             android:gravity="center"
             android:textSize="15sp"
             android:text="비밀번호"/>
         <EditText
             android:id="@+id/ed_pw"
             android:layout_marginRight="5sp"
-            style="@style/LoginActivityEditText" />
+            style="@style/SignUpActivityEditText" />
     </LinearLayout>
 
     <LinearLayout
-        style="@style/LoginActivityLinear">
+        style="@style/SignUpActivityLinear">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="5.4"
             android:gravity="center"
             android:textSize="15sp"
             android:text="비밀번호\n확인"/>
         <EditText
             android:id="@+id/ed_Re_pw"
             android:layout_marginRight="5sp"
-            style="@style/LoginActivityEditText" />
+            style="@style/SignUpActivityEditText" />
     </LinearLayout>
 
     <LinearLayout
-        style="@style/LoginActivityLinear">
+        style="@style/SignUpActivityLinear">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="5.4"
             android:gravity="center"
             android:textSize="15sp"
             android:text="이름"/>
         <EditText
             android:id="@+id/ed_name"
             android:layout_marginRight="5sp"
-            style="@style/LoginActivityEditText" />
+            style="@style/SignUpActivityEditText" />
     </LinearLayout>
 
     <LinearLayout
-        style="@style/LoginActivityLinear">
+        style="@style/SignUpActivityLinear">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2.18"
+            android:layout_weight="2.93"
             android:gravity="center"
             android:textSize="15sp"
             android:text="생년월일"/>
-        <Spinner
-            android:id="@+id/sp_year"
-            android:layout_weight="2"
+
+        <TextView
+            android:id="@+id/txt_birth"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </Spinner>
-        <Spinner
-            android:id="@+id/sp_month"
-            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:text="2019-01-01"/>
+
+        <ImageButton
+            android:id="@+id/imgBtn_birth"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </Spinner>
-        <Spinner
-            android:id="@+id/sp_day"
-            android:layout_weight="2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </Spinner>
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:src="@drawable/calendar"
+            android:background="#fff"/>
+
     </LinearLayout>
 
     <LinearLayout
-        style="@style/LoginActivityLinear">
+        style="@style/SignUpActivityLinear">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="5.4"
             android:gravity="center"
             android:textSize="15sp"
             android:text="지역"/>
         <Spinner
             android:id="@+id/sp_area"
             android:layout_weight="1"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </Spinner>
@@ -138,10 +141,10 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/LoginActivityLinear"/>
+        style="@style/SignUpActivityLinear"/>
 
     <LinearLayout
-        style="@style/LoginActivityLinear"
+        style="@style/SignUpActivityLinear"
         android:layout_marginBottom="5sp">
         <Button
             android:id="@+id/btn_singup"
