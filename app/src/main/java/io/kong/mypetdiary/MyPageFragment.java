@@ -7,10 +7,16 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -20,8 +26,12 @@ import java.net.URL;
 public class MyPageFragment extends Fragment {
 
     private KakaoUserItem kakaoUserItem;
-    TextView txtMyPageName;
+
+    MyPageListViewAdapter adapter;
+    ListView myPageListView;
+
     String getImageUrl;
+    Bitmap bm;
 
     Handler handler = new Handler();
 
@@ -34,6 +44,36 @@ public class MyPageFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_my_page, container, false);
+
+        final DrawerLayout drawerLayout = rootView.findViewById(R.id.drawerLayout);
+
+        final View drawerView = rootView.findViewById(R.id.drawer);
+
+        ImageButton btnOpenDrawer = rootView.findViewById(R.id.btn_my_page_menu);
+        ImageButton btnCloseDrawer = rootView.findViewById(R.id.btn_my_page_menu_close);
+
+        btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(drawerView);
+            }
+        });
+
+        btnCloseDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.closeDrawer(drawerView);
+            }
+        });
+
+        myPageListView = rootView.findViewById(R.id.myPageListView);
+        adapter = new MyPageListViewAdapter();
+        myPageListView.setAdapter(adapter);
+
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "test1", "test123");
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "test2", "test123");
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "test3", "test123");
+
         kakaoUserItem = new KakaoUserItem();
         getImageUrl = kakaoUserItem.getProfileImagePath();
 
@@ -47,23 +87,28 @@ public class MyPageFragment extends Fragment {
                 try {
                     URL url = new URL(kakaoUserItem.getProfileImagePath());
                     InputStream is = url.openStream();
-                    final Bitmap bm = BitmapFactory.decodeStream(is);
+                    bm = BitmapFactory.decodeStream(is);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
                             imvMyPageUser.setImageBitmap(bm);
                         }
                     });
-                    txtMyPageName.setText(stNickName);
-                    imvMyPageUser.setImageBitmap(bm);
 
                 } catch (Exception e) {
-
+                    Log.e("Thread Error ::", e.getMessage());
                 }
             }
         });
 
         thread.start();
+        try {
+            thread.join();
+            txtMyPageName.setText(stNickName);
+            imvMyPageUser.setImageBitmap(bm);
+        } catch (InterruptedException e) {
+
+        }
 
         return rootView;
     }

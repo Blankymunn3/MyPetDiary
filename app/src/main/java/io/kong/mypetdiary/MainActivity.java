@@ -1,9 +1,11 @@
 package io.kong.mypetdiary;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -19,6 +21,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        View view = getWindow().getDecorView();
+        view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
 
         btn_home = findViewById(R.id.btn_fragment_home);
         btn_my_page = findViewById(R.id.btn_fragment_my_page);
