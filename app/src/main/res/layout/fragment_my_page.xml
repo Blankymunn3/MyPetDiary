@@ -188,6 +188,12 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_line"
+                android:text="로그아웃"/>
         </LinearLayout>
 
     </LinearLayout>

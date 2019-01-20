@@ -1,5 +1,6 @@
 package io.kong.mypetdiary;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ShapeDrawable;
@@ -18,6 +19,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -43,7 +47,7 @@ public class MyPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_my_page, container, false);
+        final ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_my_page, container, false);
 
         final DrawerLayout drawerLayout = rootView.findViewById(R.id.drawerLayout);
 
@@ -51,6 +55,8 @@ public class MyPageFragment extends Fragment {
 
         ImageButton btnOpenDrawer = rootView.findViewById(R.id.btn_my_page_menu);
         ImageButton btnCloseDrawer = rootView.findViewById(R.id.btn_my_page_menu_close);
+
+        Button btnLogOut = rootView.findViewById(R.id.btn_logout);
 
         btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +69,20 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 drawerLayout.closeDrawer(drawerView);
+            }
+        });
+
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+                        Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
             }
         });
 
