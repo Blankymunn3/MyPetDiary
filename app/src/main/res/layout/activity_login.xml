@@ -6,13 +6,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    android:background="#ffff"
+    tools:context=".activity.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1.5">
+        android:layout_weight="1.5"
+        android:gravity="center">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title_name"/>
     </LinearLayout>
 
     <LinearLayout
@@ -22,67 +28,87 @@
         android:orientation="vertical"
         android:gravity="center">
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="I     D"/>
+                android:text="아이디"/>
 
             <EditText
-                android:layout_width="100sp"
-                android:layout_height="wrap_content"
+                android:layout_width="200sp"
+                android:paddingLeft="10sp"
+                android:layout_height="50sp"
+                android:background="@drawable/background_line"
+                android:layout_marginLeft="26sp"
                 android:textSize="20sp"
                 android:inputType="text"/>
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="PASS"/>
+                android:text="비밀번호"/>
 
             <EditText
-                android:layout_width="100sp"
-                android:layout_height="wrap_content"
+                android:layout_width="200sp"
+                android:layout_height="50sp"
+                android:paddingLeft="10sp"
+                android:background="@drawable/background_line"
+                android:layout_marginLeft="10sp"
                 android:textSize="20sp"
                 android:inputType="textPassword" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign Up"
-                android:textSize="15sp"/>
+                android:id="@+id/btn_move_signup"
+                android:layout_marginRight="10sp"
+                android:text="회원가입"
+                style="@style/LoginActivityButton"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign In"
-                android:textSize="15sp"/>
+                android:id="@+id/btn_login"
+                android:layout_marginLeft="10sp"
+                android:text="로그인"
+                style="@style/LoginActivityButton"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
 
             <com.kakao.usermgmt.LoginButton
                 android:id="@+id/btn_kakao_login"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="카카오로그인" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
         
     </LinearLayout>

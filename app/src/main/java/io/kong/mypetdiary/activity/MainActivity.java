@@ -1,22 +1,31 @@
-package io.kong.mypetdiary;
+package io.kong.mypetdiary.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
+
+import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.fragment.HomeFragment;
+import io.kong.mypetdiary.fragment.MyPageFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final int FRAGMENT_HOME = 1;
     private final int FRAGMENT_MY_PAGE = 2;
 
-    private Button btn_home, btn_my_page;
+    private ImageButton btn_home, btn_my_page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        View view = getWindow().getDecorView();
+        view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
 
         btn_home = findViewById(R.id.btn_fragment_home);
         btn_my_page = findViewById(R.id.btn_fragment_my_page);

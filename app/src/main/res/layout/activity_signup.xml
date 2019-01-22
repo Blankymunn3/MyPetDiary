@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#fff">
+
+    <LinearLayout
+        android:layout_weight="1.5"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title_name"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2.2"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:text="아이디"/>
+
+        <EditText
+            android:id="@+id/ed_id"
+            android:inputType="text"
+            style="@style/SignUpActivityEditText"/>
+
+        <Button
+            android:id="@+id/btn_doubleCheck"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:background="@drawable/background_line"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:textSize="12sp"
+            android:layout_weight="2"
+            android:text="중복확인"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.4"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:text="비밀번호"/>
+        <EditText
+            android:id="@+id/ed_pw"
+            android:layout_marginRight="5sp"
+            android:inputType="textPassword"
+            style="@style/SignUpActivityEditText" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.4"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:text="비밀번호\n확인"/>
+        <EditText
+            android:id="@+id/ed_Re_pw"
+            android:layout_marginRight="5sp"
+            android:inputType="textPassword"
+            style="@style/SignUpActivityEditText" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.4"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:text="이름"/>
+        <EditText
+            android:id="@+id/ed_name"
+            android:inputType="text"
+            android:layout_marginRight="5sp"
+            style="@style/SignUpActivityEditText" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2.93"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:text="생년월일"/>
+
+        <TextView
+            android:id="@+id/txt_birth"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:text="2019-01-01"/>
+
+        <ImageButton
+            android:id="@+id/imgBtn_birth"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:src="@drawable/calendar"
+            android:background="#fff"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.4"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:text="지역"/>
+        <Spinner
+            android:id="@+id/sp_area"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </Spinner>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear"/>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear"
+        android:layout_marginBottom="5sp">
+        <Button
+            android:id="@+id/btn_signup_next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5sp"
+            android:background="@drawable/background_line"
+            android:text="다음"/>
+        <Button
+            android:id="@+id/btn_signup_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5sp"
+            android:background="@drawable/background_line"
+            android:text="취소"/>
+    </LinearLayout>
+
+</LinearLayout>
