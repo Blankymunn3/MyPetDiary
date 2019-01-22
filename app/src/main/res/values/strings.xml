@@ -22,4 +22,16 @@
         <item>전북</item>
         <item>제주</item>
     </string-array>
+
+    <string-array name="pet_kind">
+        <item>강아지</item>
+        <item>거북이</item>
+        <item>고양이</item>
+        <item>기니피그</item>
+        <item>물고기</item>
+        <item>새</item>
+        <item>토끼</item>
+        <item>햄스터</item>
+        <item>기타</item>
+    </string-array>
 </resources>
