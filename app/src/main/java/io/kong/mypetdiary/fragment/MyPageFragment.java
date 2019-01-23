@@ -1,6 +1,7 @@
 package io.kong.mypetdiary.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -24,16 +25,18 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import java.io.InputStream;
 import java.net.URL;
 
-import io.kong.mypetdiary.item.KakaoUserItem;
 import io.kong.mypetdiary.activity.LoginActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.UserItem;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class MyPageFragment extends Fragment {
 
     UserItem userItem;
+    public static SharedPreferences appData;
 
     MyPageListViewAdapter adapter;
     ListView myPageListView;
@@ -84,6 +87,22 @@ public class MyPageFragment extends Fragment {
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
+                        appData = getContext().getSharedPreferences("APPDATA", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = appData.edit();
+                        editor.remove("SAVE_LOGIN_DATA");
+                        editor.remove("user_id");
+                        editor.remove("user_pw");
+                        editor.remove("user_name");
+                        editor.remove("user_profile");
+                        editor.remove("user_area");
+                        editor.remove("user_birth");
+
+                        editor.remove("pet_name");
+                        editor.remove("pet_birth");
+                        editor.remove("pet_come");
+                        editor.remove("pet_kind");
+                        editor.apply();
+
                         Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
                         startActivity(intent);
                         getActivity().finish();
