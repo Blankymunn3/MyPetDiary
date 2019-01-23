@@ -1,7 +1,9 @@
 package io.kong.mypetdiary.activity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,13 +40,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    public static Activity signUpActivity;
+
     Retrofit retrofit;
     RetrofitService retrofitService;
+
+    public static SharedPreferences appData;
 
     KakaoUserItem kakaoUserItem;
     InputMethodManager inputMethodManager;
 
-    String stUserID, stUserPW, stUserRePW, stUserName, stUserBirth, stUserArea;
+    String stUserID, stUserPW, stUserRePW, stUserName, stUserBirth, stUserProfile, stUserArea;
     int kakao;
 
     Button btnDoubleCheck;
@@ -74,7 +83,7 @@ public class SignUpActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if(response.isSuccessful()) {
+                        if (response.isSuccessful()) {
                             try {
                                 String result = response.body().string();
                                 try {
@@ -134,9 +143,10 @@ public class SignUpActivity extends AppCompatActivity {
                 stUserRePW = edUserRePW.getText().toString();
                 stUserName = edUserName.getText().toString();
                 stUserBirth = txtUserBirth.getText().toString();
+                stUserProfile = null;
 
 
-                if(!stUserID.equals("") && !stUserPW.equals("") && !stUserRePW.equals("") && !stUserName.equals("")) {
+                if (!stUserID.equals("") && !stUserPW.equals("") && !stUserRePW.equals("") && !stUserName.equals("")) {
                     insertUser();
                 } else {
                     Toast.makeText(SignUpActivity.this, "정보를 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -148,9 +158,20 @@ public class SignUpActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                if (kakao == 1) {
+                    UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                        @Override
+                        public void onCompleteLogout() {
+                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                } else {
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
@@ -160,11 +181,11 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
             monthOfYear = monthOfYear + 1;
-            if(monthOfYear < 10 && dayOfMonth < 10) {
+            if (monthOfYear < 10 && dayOfMonth < 10) {
                 txtUserBirth.setText(year + "-" + 0 + monthOfYear + "-" + 0 + dayOfMonth);
-            } else if(monthOfYear < 10) {
+            } else if (monthOfYear < 10) {
                 txtUserBirth.setText(year + "-" + 0 + monthOfYear + "-" + dayOfMonth);
-            } else if(dayOfMonth < 10) {
+            } else if (dayOfMonth < 10) {
                 txtUserBirth.setText(year + "-" + monthOfYear + "-" + 0 + dayOfMonth);
             }
 
@@ -172,6 +193,10 @@ public class SignUpActivity extends AppCompatActivity {
     };
 
     protected void init() {
+        signUpActivity = SignUpActivity.this;
+
+        appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
+
         inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         View view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -205,24 +230,28 @@ public class SignUpActivity extends AppCompatActivity {
         spUserArea.setAdapter(areaArrayAdapter);
 
         if (kakao == 1) {
+            stUserID = kakaoUserItem.getEmail();
+            stUserPW = String.valueOf(kakaoUserItem.getUserId());
+            stUserRePW = String.valueOf(kakaoUserItem.getUserId());
+            stUserName = kakaoUserItem.getNickName();
+            stUserProfile = kakaoUserItem.getProfileImagePath();
+            stUserBirth = null;
+
             edUserID.setEnabled(false);
             edUserID.setBackgroundResource(R.drawable.background_line_disable);
-            edUserID.setText(kakaoUserItem.getEmail());
+            edUserID.setText(stUserID);
 
             edUserPW.setEnabled(false);
             edUserPW.setBackgroundResource(R.drawable.background_line_disable);
+            edUserPW.setText(stUserPW);
+
             edUserRePW.setEnabled(false);
             edUserRePW.setBackgroundResource(R.drawable.background_line_disable);
+            edUserRePW.setText(stUserRePW);
 
             edUserName.setEnabled(false);
             edUserName.setBackgroundResource(R.drawable.background_line_disable);
-            edUserName.setText(kakaoUserItem.getNickName());
-
-            stUserID = kakaoUserItem.getEmail();
-            stUserPW = kakaoUserItem.getUUID();
-            stUserRePW = kakaoUserItem.getUUID();
-            stUserName = kakaoUserItem.getNickName();
-            stUserBirth = null;
+            edUserName.setText(stUserName);
 
             insertUser();
         }
@@ -230,13 +259,14 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     protected void insertUser() {
-        if(!stUserPW.equals(stUserRePW)) {
+        if (!stUserPW.equals(stUserRePW)) {
             Toast.makeText(SignUpActivity.this, "비밀번호를 확인해주세요..", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(SignUpActivity.this, PetSignUpActivity.class);
             intent.putExtra("user_id", stUserID);
             intent.putExtra("user_pw", stUserPW);
             intent.putExtra("user_area", stUserArea);
+            intent.putExtra("user_profile", stUserProfile);
             intent.putExtra("user_birth", stUserBirth);
             intent.putExtra("user_name", stUserName);
             intent.putExtra("kakao", kakao);
