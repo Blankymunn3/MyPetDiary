@@ -10,11 +10,14 @@ import android.widget.ImageButton;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.fragment.HomeFragment;
 import io.kong.mypetdiary.fragment.MyPageFragment;
+import io.kong.mypetdiary.item.UserItem;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final int FRAGMENT_HOME = 1;
     private final int FRAGMENT_MY_PAGE = 2;
+
+    UserItem userItem;
 
     private ImageButton btn_home, btn_my_page;
 
@@ -22,6 +25,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userItem = new UserItem();
+
+        String TestID = userItem.getStUserID();
 
         View view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

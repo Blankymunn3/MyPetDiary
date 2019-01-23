@@ -28,11 +28,12 @@ import io.kong.mypetdiary.item.KakaoUserItem;
 import io.kong.mypetdiary.activity.LoginActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.item.UserItem;
 
 
 public class MyPageFragment extends Fragment {
 
-    private KakaoUserItem kakaoUserItem;
+    UserItem userItem;
 
     MyPageListViewAdapter adapter;
     ListView myPageListView;
@@ -49,6 +50,8 @@ public class MyPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        userItem = new UserItem();
 
         final ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_my_page, container, false);
 
@@ -97,18 +100,17 @@ public class MyPageFragment extends Fragment {
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "test2", "test123");
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "test3", "test123");
 
-        kakaoUserItem = new KakaoUserItem();
-        getImageUrl = kakaoUserItem.getProfileImagePath();
+        getImageUrl = userItem.getStUserProfile();
 
         final TextView txtMyPageName = rootView.findViewById(R.id.txt_my_page_name);
         final ImageView imvMyPageUser = rootView.findViewById(R.id.imv_my_page_user);
 
-        final String stNickName = kakaoUserItem.getNickName();
+        final String stNickName = userItem.getStUserName();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = new URL(kakaoUserItem.getProfileImagePath());
+                    URL url = new URL(getImageUrl);
                     InputStream is = url.openStream();
                     bm = BitmapFactory.decodeStream(is);
                     handler.post(new Runnable() {

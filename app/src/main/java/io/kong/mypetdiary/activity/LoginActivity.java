@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
         init();
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                     petItem.setStPetKind(stPetKind);
 
                                                                 }
-                                                                SaveUserInfo.saveUserInfo(appData, stUserID, stUserPW, stUserName, stUserBirth, stUserProfile,
+                                                                SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserName, stUserBirth, stUserProfile,
                                                                         stUserArea, stPetName, stPetBirth, stPetCome, stPetKind);
                                                             }
                                                         } catch (JSONException e) {
@@ -185,7 +186,6 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
         setContentView(R.layout.activity_login);
 
-        appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
 
         kakaoUserItem = new KakaoUserItem();
         userItem = new UserItem();

@@ -15,12 +15,18 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.kakao.auth.Session;
 
 import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.item.PetItem;
+import io.kong.mypetdiary.item.UserItem;
 
 public class SplashActivity extends Activity {
 
     public static SharedPreferences appData;
 
+    private UserItem userItem;
+    private PetItem petItem;
+
     String stUserID, stUserPW, stUserName, stUserBirth, stUserArea, stUserProfile, stPetName, stPetBirth, stPetCome, stPetKind;
+
 
     boolean saveLoginData;
 
@@ -29,9 +35,13 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
+
         ImageView gif = findViewById(R.id.img_splash);
         GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(gif);
         Glide.with(this).load(R.drawable.giphy).into(gifImage);
+        init();
+        load();
 
         Handler handler = new Handler();
         handler.postDelayed(new splashHandler(), 3000);
@@ -40,9 +50,6 @@ public class SplashActivity extends Activity {
 
     private class splashHandler implements Runnable {
         public void run() {
-            init();
-            load();
-
             if (Session.getCurrentSession().checkAndImplicitOpen() || saveLoginData){
                 final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -57,6 +64,7 @@ public class SplashActivity extends Activity {
 
     private void load() {
 
+        saveLoginData = appData.getBoolean("SAVE_LOGIN_DATA", false);
 
         stUserID = appData.getString("user_id", "");
         stUserPW = appData.getString("user_pw", "");
@@ -70,6 +78,14 @@ public class SplashActivity extends Activity {
         stPetCome = appData.getString("pet_come", "");
         stPetKind = appData.getString("pet_kind", "");
 
+
+        userItem.setStUserID(stUserID);
+        userItem.setStUserPW(stUserPW);
+        userItem.setStUserName(stUserName);
+        userItem.setStUserProfile(stUserProfile);
+        userItem.setStUserArea(stUserArea);
+        userItem.setStUserBirth(stUserBirth);
+
     }
 
     private void init() {
@@ -77,7 +93,8 @@ public class SplashActivity extends Activity {
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
 
-        appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
-        saveLoginData = appData.getBoolean("SAVE_LOGIN_DATA", false);
+        userItem = new UserItem();
+        petItem = new PetItem();
+
     }
 }

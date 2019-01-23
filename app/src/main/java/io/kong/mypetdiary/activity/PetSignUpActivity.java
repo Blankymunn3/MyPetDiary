@@ -103,7 +103,7 @@ public class PetSignUpActivity extends AppCompatActivity {
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     if (response.isSuccessful()) {
 
-                                        SaveUserInfo.saveUserInfo(appData, stUserID, stUserPW, stUserName, stUserBirth, stUserProfile,
+                                        SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserName, stUserBirth, stUserProfile,
                                                 stUserArea, stPetName, stPetBirth, stPetCome, stPetKind);
                                         Toast.makeText(PetSignUpActivity.this, stUserName + "님 회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(PetSignUpActivity.this, MainActivity.class);
