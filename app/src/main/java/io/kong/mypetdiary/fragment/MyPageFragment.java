@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import io.kong.mypetdiary.activity.LoginActivity;
+import io.kong.mypetdiary.activity.MainActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.UserItem;
@@ -34,6 +35,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class MyPageFragment extends Fragment {
+
+    MainActivity mainActivity;
 
     UserItem userItem;
     public static SharedPreferences appData;
@@ -53,13 +56,12 @@ public class MyPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mainActivity = (MainActivity) MainActivity.mainActivity;
 
         userItem = new UserItem();
 
         final ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_my_page, container, false);
-
         final DrawerLayout drawerLayout = rootView.findViewById(R.id.drawerLayout);
-
         final View drawerView = rootView.findViewById(R.id.drawer);
 
         ImageButton btnOpenDrawer = rootView.findViewById(R.id.btn_my_page_menu);
@@ -105,7 +107,7 @@ public class MyPageFragment extends Fragment {
 
                         Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
                         startActivity(intent);
-                        getActivity().finish();
+                        mainActivity.finish();
                     }
                 });
             }

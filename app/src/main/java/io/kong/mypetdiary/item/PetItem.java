@@ -7,19 +7,19 @@ public class PetItem {
     static String stPetKind;
     static String stPetCome;
 
-    public static void setStPetName(String stPetName) {
+    public void setStPetName(String stPetName) {
         PetItem.stPetName = stPetName;
     }
 
-    public static void setStPetBirth(String stPetBirth) {
+    public void setStPetBirth(String stPetBirth) {
         PetItem.stPetBirth = stPetBirth;
     }
 
-    public static void setStPetCome(String stPetCome) {
+    public void setStPetCome(String stPetCome) {
         PetItem.stPetCome = stPetCome;
     }
 
-    public static void setStPetKind(String stPetKind) {
+    public void setStPetKind(String stPetKind) {
         PetItem.stPetKind = stPetKind;
     }
 

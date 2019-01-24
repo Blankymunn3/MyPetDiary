@@ -1,5 +1,6 @@
 package io.kong.mypetdiary.activity;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,8 @@ import io.kong.mypetdiary.item.UserItem;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static Activity mainActivity;
+
     private final int FRAGMENT_HOME = 1;
     private final int FRAGMENT_MY_PAGE = 2;
 
@@ -26,9 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userItem = new UserItem();
+        mainActivity = this;
 
-        String TestID = userItem.getStUserID();
+        userItem = new UserItem();
 
         View view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -43,6 +46,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         callFragment(FRAGMENT_HOME);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
 
     @Override
     public void onClick(View view) {

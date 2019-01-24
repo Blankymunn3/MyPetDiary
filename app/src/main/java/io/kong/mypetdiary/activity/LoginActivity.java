@@ -52,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
     RetrofitService retrofitService;
 
     private SessionCallback callback;
-    private LoginButton btn_kakao_login;
 
     Button btnSignup;
     Button btnLogin;
@@ -90,82 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             try {
                                 String result = response.body().string();
-
-                                try {
-                                    JSONObject jsonObject = new JSONObject(result);
-                                    JSONArray jsonArray = jsonObject.getJSONArray("user_table");
-
-                                    if (jsonArray.length() != 0) {
-                                        for (int i = 0; i< jsonArray.length(); i++) {
-                                            JSONObject item = jsonArray.getJSONObject(i);
-                                            stUserID = item.getString("user_id");
-                                            stUserPW = item.getString("user_pw");
-                                            stUserName = item.getString("user_name");
-                                            stUserBirth = item.getString("user_birth");
-                                            stUserProfile = item.getString("user_profile");
-                                            stUserArea = item.getString("user_area");
-
-                                            userItem.setStUserID(stUserID);
-                                            userItem.setStUserPW(stUserPW);
-                                            userItem.setStUserName(stUserName);
-                                            userItem.setStUserBirth(stUserBirth);
-                                            userItem.setStUserProfile(stUserProfile);
-                                            userItem.setStUserArea(stUserArea);
-                                        }
-                                        Call<ResponseBody> callPet = retrofitService.pet_login(stUserID);
-                                        callPet.enqueue(new Callback<ResponseBody>() {
-                                            @Override
-                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                                if (response.isSuccessful()) {
-                                                    try {
-                                                        String result = response.body().string();
-
-                                                        try {
-                                                            JSONObject jsonObject = new JSONObject(result);
-                                                            JSONArray jsonArray =  jsonObject.getJSONArray("pet_table");
-
-                                                            if (jsonArray.length() != 0 ) {
-                                                                for (int i = 0; i < jsonArray.length(); i ++) {
-                                                                    JSONObject item = jsonArray.getJSONObject(i);
-
-
-                                                                    stPetName = item.getString("pet_name");
-                                                                    stPetBirth = item.getString("pet_birth");
-                                                                    stPetCome = item.getString("pet_come");
-                                                                    stPetKind = item.getString("pet_kind");
-
-                                                                    petItem.setStPetName(stPetName);
-                                                                    petItem.setStPetBirth(stPetBirth);
-                                                                    petItem.setStPetCome(stPetCome);
-                                                                    petItem.setStPetKind(stPetKind);
-
-                                                                }
-                                                                SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserName, stUserBirth, stUserProfile,
-                                                                        stUserArea, stPetName, stPetBirth, stPetCome, stPetKind);
-                                                            }
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    } catch (IOException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                                            }
-                                        });
-
-                                    }
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                saveUserInfo(result);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -186,7 +110,6 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
         setContentView(R.layout.activity_login);
 
-
         kakaoUserItem = new KakaoUserItem();
         userItem = new UserItem();
         petItem = new PetItem();
@@ -204,7 +127,6 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btn_login);
         btnSignup = findViewById(R.id.btn_move_signup);
-        btn_kakao_login = findViewById(R.id.btn_kakao_login);
         edLoginID = findViewById(R.id.ed_loginID);
         edLoginPW = findViewById(R.id.ed_loginPW);
 
@@ -212,6 +134,11 @@ public class LoginActivity extends AppCompatActivity {
         getCurrentSession().addCallback(callback);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -258,18 +185,117 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(UserProfile result) {
+
                 kakaoUserItem.setNickName(result.getNickname());
                 kakaoUserItem.setEmail(result.getEmail());
                 kakaoUserItem.setProfileImagePath(result.getProfileImagePath());
                 kakaoUserItem.setThumnailPath(result.getThumbnailImagePath());
                 kakaoUserItem.setUserId(result.getId());
+                Call<ResponseBody> call = retrofitService.login(kakaoUserItem.getEmail(), String.valueOf(kakaoUserItem.getUserId()));
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                String result = response.body().string();
+                                saveUserInfo(result);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            final Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                            intent.putExtra("kakao", 1);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
 
-                final Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                intent.putExtra("kakao", 1);
-                startActivity(intent);
-                finish();
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
             }
         });
+
+    }
+
+    protected void saveUserInfo(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("user_table");
+
+            if (jsonArray.length() != 0) {
+                for (int i = 0; i< jsonArray.length(); i++) {
+                    JSONObject item = jsonArray.getJSONObject(i);
+                    stUserID = item.getString("user_id");
+                    stUserPW = item.getString("user_pw");
+                    stUserName = item.getString("user_name");
+                    stUserBirth = item.getString("user_birth");
+                    stUserProfile = item.getString("user_profile");
+                    stUserArea = item.getString("user_area");
+
+                    userItem.setStUserID(stUserID);
+                    userItem.setStUserPW(stUserPW);
+                    userItem.setStUserName(stUserName);
+                    userItem.setStUserBirth(stUserBirth);
+                    userItem.setStUserProfile(stUserProfile);
+                    userItem.setStUserArea(stUserArea);
+                }
+                Call<ResponseBody> callPet = retrofitService.pet_login(stUserID);
+                callPet.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                String result = response.body().string();
+
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    JSONArray jsonArray =  jsonObject.getJSONArray("pet_table");
+
+                                    if (jsonArray.length() != 0 ) {
+                                        for (int i = 0; i < jsonArray.length(); i ++) {
+                                            JSONObject item = jsonArray.getJSONObject(i);
+
+
+                                            stPetName = item.getString("pet_name");
+                                            stPetBirth = item.getString("pet_birth");
+                                            stPetCome = item.getString("pet_come");
+                                            stPetKind = item.getString("pet_kind");
+
+                                            petItem.setStPetName(stPetName);
+                                            petItem.setStPetBirth(stPetBirth);
+                                            petItem.setStPetCome(stPetCome);
+                                            petItem.setStPetKind(stPetKind);
+
+                                        }
+                                        SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserName, stUserBirth, stUserProfile,
+                                                stUserArea, stPetName, stPetBirth, stPetCome, stPetKind);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 }

@@ -10,33 +10,33 @@ public class UserItem {
     static String stUserProfile;
 
 
-    public static void setStUserID(String stUserID) {
+    public void setStUserID(String stUserID) {
         UserItem.stUserID = stUserID;
     }
 
 
-    public static void setStUserPW(String stUserPW) {
+    public void setStUserPW(String stUserPW) {
         UserItem.stUserPW = stUserPW;
     }
 
 
-    public static void setStUserName(String stUserName) {
+    public void setStUserName(String stUserName) {
         UserItem.stUserName = stUserName;
     }
 
 
 
-    public static void setStUserArea(String stUserArea) {
+    public void setStUserArea(String stUserArea) {
         UserItem.stUserArea = stUserArea;
     }
 
 
-    public static void setStUserBirth(String stUserBirth) {
+    public void setStUserBirth(String stUserBirth) {
         UserItem.stUserBirth = stUserBirth;
     }
 
 
-    public static void setStUserProfile(String stUserProfile) {
+    public void setStUserProfile(String stUserProfile) {
         UserItem.stUserProfile = stUserProfile;
     }
 
