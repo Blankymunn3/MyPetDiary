@@ -33,27 +33,27 @@ public class KakaoUserItem {
         this.userId = userId;
     }
 
-    public String getNickName() {
+    public static String getNickName() {
         return nickName;
     }
 
-    public String getEmail() {
+    public static String getEmail() {
         return email;
     }
 
-    public String getProfileImagePath() {
+    public static String getProfileImagePath() {
         return profileImagePath;
     }
 
-    public String getThumnailPath() {
+    public static String getThumnailPath() {
         return thumnailPath;
     }
 
-    public String getUUID() {
+    public static String getUUID() {
         return UUID;
     }
 
-    public long getUserId() {
+    public static long getUserId() {
         return userId;
     }
 

@@ -43,16 +43,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:text="아이디"/>
 
             <EditText
+                android:id="@+id/ed_loginID"
                 android:layout_width="200sp"
                 android:paddingLeft="10sp"
                 android:layout_height="50sp"
                 android:background="@drawable/background_line"
                 android:layout_marginLeft="26sp"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:inputType="text"/>
         </LinearLayout>
 
@@ -66,16 +67,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:text="비밀번호"/>
 
             <EditText
+                android:id="@+id/ed_loginPW"
                 android:layout_width="200sp"
                 android:layout_height="50sp"
                 android:paddingLeft="10sp"
                 android:background="@drawable/background_line"
                 android:layout_marginLeft="10sp"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:inputType="textPassword" />
 
         </LinearLayout>
@@ -108,7 +110,7 @@
             <com.kakao.usermgmt.LoginButton
                 android:id="@+id/btn_kakao_login"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
         
     </LinearLayout>

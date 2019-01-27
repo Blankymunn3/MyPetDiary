@@ -1,6 +1,7 @@
 package io.kong.mypetdiary.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
@@ -24,15 +26,23 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import java.io.InputStream;
 import java.net.URL;
 
-import io.kong.mypetdiary.item.KakaoUserItem;
 import io.kong.mypetdiary.activity.LoginActivity;
+import io.kong.mypetdiary.activity.MainActivity;
+import io.kong.mypetdiary.activity.SetImageActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.item.UserItem;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class MyPageFragment extends Fragment {
+    static final int TAG_GETIMAGESETTING = 1001;
 
-    private KakaoUserItem kakaoUserItem;
+    MainActivity mainActivity;
+
+    UserItem userItem;
+    public static SharedPreferences appData;
 
     MyPageListViewAdapter adapter;
     ListView myPageListView;
@@ -49,11 +59,12 @@ public class MyPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mainActivity = (MainActivity) MainActivity.mainActivity;
+
+        userItem = new UserItem();
 
         final ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_my_page, container, false);
-
         final DrawerLayout drawerLayout = rootView.findViewById(R.id.drawerLayout);
-
         final View drawerView = rootView.findViewById(R.id.drawer);
 
         ImageButton btnOpenDrawer = rootView.findViewById(R.id.btn_my_page_menu);
@@ -81,9 +92,25 @@ public class MyPageFragment extends Fragment {
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
+                        appData = getContext().getSharedPreferences("APPDATA", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = appData.edit();
+                        editor.remove("SAVE_LOGIN_DATA");
+                        editor.remove("user_id");
+                        editor.remove("user_pw");
+                        editor.remove("user_name");
+                        editor.remove("user_profile");
+                        editor.remove("user_area");
+                        editor.remove("user_birth");
+
+                        editor.remove("pet_name");
+                        editor.remove("pet_birth");
+                        editor.remove("pet_come");
+                        editor.remove("pet_kind");
+                        editor.apply();
+
                         Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
                         startActivity(intent);
-                        getActivity().finish();
+                        mainActivity.finish();
                     }
                 });
             }
@@ -97,18 +124,25 @@ public class MyPageFragment extends Fragment {
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "test2", "test123");
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "test3", "test123");
 
-        kakaoUserItem = new KakaoUserItem();
-        getImageUrl = kakaoUserItem.getProfileImagePath();
+        getImageUrl = userItem.getStUserProfile();
 
         final TextView txtMyPageName = rootView.findViewById(R.id.txt_my_page_name);
         final ImageView imvMyPageUser = rootView.findViewById(R.id.imv_my_page_user);
 
-        final String stNickName = kakaoUserItem.getNickName();
+        imvMyPageUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(rootView.getContext(), SetImageActivity.class);
+                startActivityForResult(intent,TAG_GETIMAGESETTING);
+            }
+        });
+
+        final String stNickName = userItem.getStUserName();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = new URL(kakaoUserItem.getProfileImagePath());
+                    URL url = new URL(getImageUrl);
                     InputStream is = url.openStream();
                     bm = BitmapFactory.decodeStream(is);
                     handler.post(new Runnable() {
