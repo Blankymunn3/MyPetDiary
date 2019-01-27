@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
@@ -27,6 +28,7 @@ import java.net.URL;
 
 import io.kong.mypetdiary.activity.LoginActivity;
 import io.kong.mypetdiary.activity.MainActivity;
+import io.kong.mypetdiary.activity.SetImageActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.UserItem;
@@ -35,6 +37,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class MyPageFragment extends Fragment {
+    static final int TAG_GETIMAGESETTING = 1001;
 
     MainActivity mainActivity;
 
@@ -125,6 +128,14 @@ public class MyPageFragment extends Fragment {
 
         final TextView txtMyPageName = rootView.findViewById(R.id.txt_my_page_name);
         final ImageView imvMyPageUser = rootView.findViewById(R.id.imv_my_page_user);
+
+        imvMyPageUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(rootView.getContext(), SetImageActivity.class);
+                startActivityForResult(intent,TAG_GETIMAGESETTING);
+            }
+        });
 
         final String stNickName = userItem.getStUserName();
         Thread thread = new Thread(new Runnable() {

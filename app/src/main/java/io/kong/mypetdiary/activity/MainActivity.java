@@ -1,9 +1,14 @@
 package io.kong.mypetdiary.activity;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,15 +25,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final int FRAGMENT_HOME = 1;
     private final int FRAGMENT_MY_PAGE = 2;
 
+    private static final int REQUEST_CAMERA = 1;
+
     UserItem userItem;
 
-    private ImageButton btn_home, btn_my_page;
+    private ImageButton btn_home, btn_addPost, btn_my_page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        init();
+        permission_init();
+    }
+
+    private void init() {
+        setContentView(R.layout.activity_main);
         mainActivity = this;
 
         userItem = new UserItem();
@@ -38,14 +50,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
 
         btn_home = findViewById(R.id.btn_fragment_home);
+        btn_addPost = findViewById(R.id.btn_fragment_add);
         btn_my_page = findViewById(R.id.btn_fragment_my_page);
 
         btn_home.setOnClickListener(this);
+        btn_addPost.setOnClickListener(this);
         btn_my_page.setOnClickListener(this);
 
         callFragment(FRAGMENT_HOME);
     }
 
+    private void permission_init() {
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.CAMERA)) {
+
+            } else {
+                ActivityCompat.requestPermissions(
+                        this, new String[]{android.Manifest.permission.CAMERA},
+                        REQUEST_CAMERA);
+            }
+
+        } else {
+
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+            }
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -58,6 +97,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btn_fragment_home:
                 callFragment(FRAGMENT_HOME);
+                break;
+            case R.id.btn_fragment_add:
+                Intent intent = new Intent(MainActivity.this, AddPostActivity.class);
+                startActivity(intent);
                 break;
             case R.id.btn_fragment_my_page:
                 callFragment(FRAGMENT_MY_PAGE);
