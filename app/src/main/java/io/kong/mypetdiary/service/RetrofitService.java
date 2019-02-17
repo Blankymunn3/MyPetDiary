@@ -1,9 +1,19 @@
 package io.kong.mypetdiary.service;
 
+import java.io.File;
+import java.sql.Blob;
+
+import javax.xml.transform.Result;
+
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface RetrofitService {
@@ -26,4 +36,11 @@ public interface RetrofitService {
     @POST("/pet_join")
     Call<ResponseBody> pet_join(@Query("user_id") String user_id, @Query("pet_name") String pet_name, @Query("pet_birth") String pet_birth,
                                 @Query("pet_come") String pet_come, @Query("pet_kind") String pet_kind);
+
+    @Multipart
+    @POST("upload")
+    Call<ResponseBody> uploadPhoto(@Part("description") String description, @Part MultipartBody.Part photo);
+
+    @PUT("/user_profile")
+    Call<ResponseBody> user_profile(@Query("user_profile2") PartMap user_profile2, @Query("user_id") String user_id);
 }

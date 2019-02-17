@@ -52,13 +52,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#ededed">
 
             <ListView
                 android:id="@+id/main_listview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:divider="#ffffff"
+                android:dividerHeight="0px"/>
+
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -42,6 +43,8 @@ public class SetImageActivity extends Activity implements View.OnClickListener {
         btnClosePop.setOnClickListener(this);
     }
 
+    final int REQ_SELECT = 0;
+
     @Override
     public void onClick(View view) {
         Intent intent = new Intent();
@@ -52,10 +55,16 @@ public class SetImageActivity extends Activity implements View.OnClickListener {
                 startActivityForResult(intent, TAG_CAMERA);
                 break;
             case R.id.btn_gallery_pop:
+                Uri uri = Uri.parse("content://media/external/images/media");
+                intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.setAction(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, REQ_SELECT);
+
+                /*intent.setAction(Intent.ACTION_PICK);
                 intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
-                startActivityForResult(intent, TAG_GALLERY);
+                startActivityForResult(intent, TAG_GALLERY);*/
                 break;
             case R.id.btn_close_pop:
                 setResult(RESULT_CANCELED, intent);
@@ -93,6 +102,7 @@ public class SetImageActivity extends Activity implements View.OnClickListener {
                 case TAG_CAMERA:
                     bm = (Bitmap) data.getExtras().get("data");
                     bm = resize(bm);
+
                     intent.putExtra("bitmap", bm);
                     setResult(RESULT_OK, intent);
                     finish();
