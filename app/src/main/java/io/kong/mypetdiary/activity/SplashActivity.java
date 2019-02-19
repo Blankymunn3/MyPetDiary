@@ -50,7 +50,7 @@ public class SplashActivity extends Activity {
 
     private class splashHandler implements Runnable {
         public void run() {
-            if (Session.getCurrentSession().checkAndImplicitOpen() || saveLoginData){
+            if (saveLoginData){
                 final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -85,6 +85,11 @@ public class SplashActivity extends Activity {
         userItem.setStUserProfile(stUserProfile);
         userItem.setStUserArea(stUserArea);
         userItem.setStUserBirth(stUserBirth);
+
+        petItem.setStPetName(stPetName);
+        petItem.setStPetBirth(stPetBirth);
+        petItem.setStPetCome(stPetCome);
+        petItem.setStPetKind(stPetKind);
 
     }
 

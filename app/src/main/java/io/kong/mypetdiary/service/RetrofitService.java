@@ -1,9 +1,5 @@
 package io.kong.mypetdiary.service;
 
-import java.io.File;
-import java.sql.Blob;
-
-import javax.xml.transform.Result;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -17,7 +13,7 @@ import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface RetrofitService {
-    String URL = "http://13.209.207.99:3000";
+    String URL = "http://13.209.93.19:3000";
 
     @GET("/user_table")
     Call<ResponseBody> doubleCheck(@Query("user_id") String user_id);

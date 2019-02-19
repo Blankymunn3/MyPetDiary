@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -17,6 +18,8 @@ public class HomeFragment extends Fragment {
 
     HomeListViewAdapter adapter;
     ListView mainListView;
+
+    TextView txtTitle;
 
     String stWeek;
 
@@ -30,6 +33,8 @@ public class HomeFragment extends Fragment {
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
         mainListView = rootView.findViewById(R.id.main_listview);
+        txtTitle = rootView.findViewById(R.id.txt_home_title);
+
         adapter = new HomeListViewAdapter();
         mainListView.setAdapter(adapter);
 
@@ -37,6 +42,7 @@ public class HomeFragment extends Fragment {
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
 
+        txtTitle.setText(Integer.toString(year) + "년 " + Integer.toString(month + 1) + "월");
 
 
         for(int i = 1; i <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
@@ -51,7 +57,7 @@ public class HomeFragment extends Fragment {
                 case 6: stWeek = "금요일"; break;
                 case 7: stWeek = "토요일"; break;
             }
-            adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title1", "content1", stWeek, Integer.toString(i));
+            adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title" + Integer.toString(i), "content" + Integer.toString(i), stWeek, Integer.toString(i));
 
         }
 

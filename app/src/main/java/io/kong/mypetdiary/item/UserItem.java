@@ -40,22 +40,22 @@ public class UserItem {
         UserItem.stUserProfile = stUserProfile;
     }
 
-    public static String getStUserID() {
+    public String getStUserID() {
         return stUserID;
     }
-    public static String getStUserPW() {
+    public String getStUserPW() {
         return stUserPW;
     }
-    public static String getStUserName() {
+    public String getStUserName() {
         return stUserName;
     }
-    public static String getStUserArea() {
+    public String getStUserArea() {
         return stUserArea;
     }
-    public static String getStUserBirth() {
+    public String getStUserBirth() {
         return stUserBirth;
     }
-    public static String getStUserProfile() {
+    public String getStUserProfile() {
         return stUserProfile;
     }
 

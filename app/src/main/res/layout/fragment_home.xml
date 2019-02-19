@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fontFamily="@font/sangsangfont"
     tools:context="io.kong.mypetdiary.fragment.HomeFragment">
 
     <LinearLayout
@@ -12,28 +13,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50sp"
-            android:background="@drawable/titlebarback"
             android:gravity="center"
+            android:background="#ededed"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:gravity="left">
+                android:layout_weight="1">
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <ImageView
+                <TextView
+                    android:id="@+id/txt_home_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="35sp"
-                    android:src="@drawable/title_name"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15sp"
+                    android:textSize="20sp"
+                    android:textColor="#000"/>
 
             </LinearLayout>
 

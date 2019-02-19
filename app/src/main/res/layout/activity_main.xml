@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.kong.mypetdiary.activity.MainActivity">
+    tools:context="io.kong.mypetdiary.activity.MainActivity"
+    android:background="#ededed"
+    android:fontFamily="@font/sangsangfont">
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"
@@ -24,28 +26,20 @@
         <ImageButton
             style="@style/CustomImageButton"
             android:id="@+id/btn_fragment_home"
-            android:src="@drawable/baseline_home_black_36dp"/>
-
-        <!--<ImageButton-->
-            <!--style="@style/CustomImageButton"-->
-            <!--android:id="@+id/btn_fragment_group"-->
-            <!--android:src="@drawable/baseline_group_black_36dp"-->
+            android:src="@drawable/baseline_home_black_36dp"
+            android:background="#ededed"/>
 
         <ImageButton
             style="@style/CustomImageButton"
             android:id="@+id/btn_fragment_add"
-            android:src="@drawable/baseline_add_circle_outline_black_36dp" />
-
-        <!--<ImageButton-->
-            <!--style="@style/CustomImageButton"-->
-            <!--android:id="@+id/btn_fragment_search"-->
-            <!--android:src="@drawable/baseline_search_black_36dp"-->
-            />-->
+            android:src="@drawable/baseline_add_circle_outline_black_36dp"
+            android:background="#ededed"/>
 
         <ImageButton
             style="@style/CustomImageButton"
             android:id="@+id/btn_fragment_my_page"
-            android:src="@drawable/baseline_face_black_36dp" />
+            android:src="@drawable/baseline_face_black_36dp"
+            android:background="#ededed"/>
 
     </LinearLayout>
 

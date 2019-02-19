@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.kakao.auth.ISessionCallback;
 import com.kakao.network.ErrorResult;
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText edLoginPW;
 
     String stUserID, stUserPW, stUserName, stUserArea, stUserBirth, stUserProfile, stPetName, stPetBirth, stPetCome, stPetKind;
+    int kakao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,8 @@ public class LoginActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
+                        } else {
+                            Toast.makeText(LoginActivity.this, "아이디 및 패스워드를 확인해주세요.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -198,15 +202,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             try {
                                 String result = response.body().string();
+                                kakao = 1;
                                 saveUserInfo(result);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        } else {
-                            final Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                            intent.putExtra("kakao", 1);
-                            startActivity(intent);
-                            finish();
                         }
                     }
 
@@ -291,6 +291,11 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+            } else if(jsonArray.length() == 0 && kakao == 1){
+                    final Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                    intent.putExtra("kakao", 1);
+                    startActivity(intent);
+                    finish();
             }
 
         } catch (JSONException e) {

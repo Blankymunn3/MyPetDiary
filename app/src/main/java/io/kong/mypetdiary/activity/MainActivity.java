@@ -12,10 +12,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.fragment.HomeFragment;
 import io.kong.mypetdiary.fragment.MyPageFragment;
+import io.kong.mypetdiary.item.PetItem;
 import io.kong.mypetdiary.item.UserItem;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -26,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final int FRAGMENT_MY_PAGE = 2;
 
     private static final int REQUEST_CAMERA = 1;
-
-    UserItem userItem;
 
     private ImageButton btn_home, btn_addPost, btn_my_page;
 
@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void init() {
         setContentView(R.layout.activity_main);
         mainActivity = this;
-
-        userItem = new UserItem();
 
         View view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
