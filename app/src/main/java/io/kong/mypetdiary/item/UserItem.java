@@ -8,6 +8,8 @@ public class UserItem {
     static String stUserArea;
     static String stUserBirth;
     static String stUserProfile;
+    static String stUserProfile2;
+
 
 
     public void setStUserID(String stUserID) {
@@ -40,6 +42,10 @@ public class UserItem {
         UserItem.stUserProfile = stUserProfile;
     }
 
+    public void setStUserProfile2(String stUserProfile2) {
+        UserItem.stUserProfile2 = stUserProfile2;
+    }
+
     public String getStUserID() {
         return stUserID;
     }
@@ -58,5 +64,9 @@ public class UserItem {
     public String getStUserProfile() {
         return stUserProfile;
     }
+    public String getStUserProfile2() {
+        return stUserProfile2;
+    }
+
 
 }

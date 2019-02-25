@@ -44,6 +44,10 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         HomeListViewItem listViewItem = listViewItemList.get(position);
 
+        if(String.valueOf(listViewItem.getDay()).equals("1")) {
+            iconImageView.getLayoutParams().width = 0;
+            iconImageView.getLayoutParams().height = 0;
+        }
         iconImageView.setImageDrawable(listViewItem.getIcon());
         txtTitle.setText(listViewItem.getTitle());
         txtContent.setText(listViewItem.getContent());

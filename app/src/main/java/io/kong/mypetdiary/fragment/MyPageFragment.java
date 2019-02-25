@@ -1,9 +1,12 @@
 package io.kong.mypetdiary.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -23,9 +26,11 @@ import android.widget.Toast;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.kong.mypetdiary.activity.LoginActivity;
 import io.kong.mypetdiary.activity.MainActivity;
 import io.kong.mypetdiary.activity.SetImageActivity;
@@ -37,6 +42,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class MyPageFragment extends Fragment {
+
     static final int TAG_GETIMAGESETTING = 1001;
 
     MainActivity mainActivity;
@@ -49,6 +55,9 @@ public class MyPageFragment extends Fragment {
 
     String getImageUrl;
     Bitmap bm;
+    Bitmap bmUserImage;
+
+    Button btnProfileChange;
 
     Handler handler = new Handler();
 
@@ -120,7 +129,6 @@ public class MyPageFragment extends Fragment {
         adapter = new MyPageListViewAdapter();
         myPageListView.setAdapter(adapter);
 
-
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title1", "content1", "월", "1");
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title2", "content2", "화", "2");
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title3", "content3", "수", "3");
@@ -128,9 +136,10 @@ public class MyPageFragment extends Fragment {
         getImageUrl = userItem.getStUserProfile();
 
         final TextView txtMyPageName = rootView.findViewById(R.id.txt_my_page_name);
-        final ImageView imvMyPageUser = rootView.findViewById(R.id.imv_my_page_user);
+        final CircleImageView imvMyPageUser = rootView.findViewById(R.id.imv_my_page_user);
+        btnProfileChange = rootView.findViewById(R.id.btn_profile_change);
 
-        imvMyPageUser.setOnClickListener(new View.OnClickListener() {
+        btnProfileChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(rootView.getContext(), SetImageActivity.class);
@@ -155,6 +164,8 @@ public class MyPageFragment extends Fragment {
 
                 } catch (Exception e) {
                     Log.e("Thread Error ::", e.getMessage());
+                    Bitmap bmUserImage = BitmapFactory.decodeFile(getImageUrl);
+                    imvMyPageUser.setImageBitmap(bmUserImage);
                 }
             }
         });
@@ -163,7 +174,6 @@ public class MyPageFragment extends Fragment {
         try {
             thread.join();
             txtMyPageName.setText(stNickName);
-            imvMyPageUser.setImageBitmap(bm);
         } catch (InterruptedException e) {
 
         }

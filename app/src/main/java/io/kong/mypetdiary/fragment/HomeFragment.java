@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ public class HomeFragment extends Fragment {
 
     HomeListViewAdapter adapter;
     ListView mainListView;
+    ImageView imgPost;
 
     TextView txtTitle;
 
@@ -34,6 +36,7 @@ public class HomeFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
         mainListView = rootView.findViewById(R.id.main_listview);
         txtTitle = rootView.findViewById(R.id.txt_home_title);
+        imgPost = rootView.findViewById(R.id.img_list_post);
 
         adapter = new HomeListViewAdapter();
         mainListView.setAdapter(adapter);
@@ -58,12 +61,7 @@ public class HomeFragment extends Fragment {
                 case 7: stWeek = "토요일"; break;
             }
             adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title" + Integer.toString(i), "content" + Integer.toString(i), stWeek, Integer.toString(i));
-
         }
-
-
-
-
 
         return rootView;
     }
