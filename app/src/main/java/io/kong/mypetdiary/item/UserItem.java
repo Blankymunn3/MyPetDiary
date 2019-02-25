@@ -8,6 +8,8 @@ public class UserItem {
     static String stUserArea;
     static String stUserBirth;
     static String stUserProfile;
+    static String stUserProfile2;
+
 
 
     public void setStUserID(String stUserID) {
@@ -40,23 +42,31 @@ public class UserItem {
         UserItem.stUserProfile = stUserProfile;
     }
 
-    public static String getStUserID() {
+    public void setStUserProfile2(String stUserProfile2) {
+        UserItem.stUserProfile2 = stUserProfile2;
+    }
+
+    public String getStUserID() {
         return stUserID;
     }
-    public static String getStUserPW() {
+    public String getStUserPW() {
         return stUserPW;
     }
-    public static String getStUserName() {
+    public String getStUserName() {
         return stUserName;
     }
-    public static String getStUserArea() {
+    public String getStUserArea() {
         return stUserArea;
     }
-    public static String getStUserBirth() {
+    public String getStUserBirth() {
         return stUserBirth;
     }
-    public static String getStUserProfile() {
+    public String getStUserProfile() {
         return stUserProfile;
     }
+    public String getStUserProfile2() {
+        return stUserProfile2;
+    }
+
 
 }

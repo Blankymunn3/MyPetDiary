@@ -5,6 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fontFamily="@font/sangsangfont"
     tools:context="io.kong.mypetdiary.fragment.MyPageFragment">
 
 
@@ -94,7 +95,7 @@
                         android:id="@+id/imv_my_page_user"
                         android:layout_width="96dp"
                         android:layout_height="96dp"
-                        android:src="@drawable/baseline_face_black_36dp"
+                        android:background="@drawable/baseline_face_black_36dp"
                         app:civ_border_color="#FFFFFF"
                         app:civ_border_width="0.5sp" />
                 </LinearLayout>
@@ -186,7 +187,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_profile_change"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_line"
+                android:text="프로필사진변경"/>
 
             <Button
                 android:id="@+id/btn_logout"
@@ -194,6 +202,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_line"
                 android:text="로그아웃"/>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -24,19 +24,19 @@ public class PetItem {
     }
 
 
-    public static String getStPetName() {
+    public String getStPetName() {
         return stPetName;
     }
 
-    public static String getStPetBirth() {
+    public String getStPetBirth() {
         return stPetBirth;
     }
 
-    public static String getStPetCome() {
+    public String getStPetCome() {
         return stPetCome;
     }
 
-    public static String getStPetKind() {
+    public String getStPetKind() {
         return stPetKind;
     }
 
