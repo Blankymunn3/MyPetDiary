@@ -1,41 +1,73 @@
 package io.kong.mypetdiary.activity;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.PetItem;
+import io.kong.mypetdiary.item.UserItem;
 
-public class AddPostActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddPostActivity extends Activity implements View.OnClickListener {
 
+    Bitmap mBitmap;
+    UserItem userItem;
     PetItem petItem;
 
-    ImageButton btnSun, btnBlur, btnRain, btnSnow;
-    Button btnUpImage;
+    ImageButton btnSun, btnBlur, btnRain, btnSnow, btnUpImage;
+    Button btnSave;
+    EditText edTodayComment, edContent;
     TextView txtYear, txtMonth, txtDay, txtWeek, txtTodayComment;
 
-    String stWeek;
+    String stUserID, stYear, stMonth, stDay, stWeek, stWeather, stTodayComment, stContent, absolutePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        petItem = new PetItem();
-
         init();
+
+        btnUpImage.setOnClickListener(this);
+        btnSave.setOnClickListener(this);
+    }
+
+    private void saveDiary() {
+        stUserID = userItem.getStUserID();
+        stYear = txtYear.getText().toString();
+        stMonth = txtMonth.getText().toString();
+        stDay = txtDay.getText().toString();
+        stTodayComment = edTodayComment.getText().toString();
+        stContent = edContent.getText().toString();
     }
 
     private void init() {
         setContentView(R.layout.activity_addpost);
+        userItem = new UserItem();
+        petItem = new PetItem();
 
         View view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -47,6 +79,12 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
         txtMonth = findViewById(R.id.txt_home_month);
         txtDay = findViewById(R.id.txt_home_day);
         txtWeek = findViewById(R.id.txt_home_week);
+
+        edContent = findViewById(R.id.ed_content);
+        edTodayComment = findViewById(R.id.ed_today_comment);
+
+        btnSave = findViewById(R.id.btn_save);
+        btnUpImage = findViewById(R.id.btn_img_upload);
 
         btnSun = findViewById(R.id.imgBtn_home_sun);
         btnBlur = findViewById(R.id.imgBtn_home_blur);
@@ -102,31 +140,137 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.imgBtn_home_sun:
-                btnSun.setImageResource(R.drawable.baseline_check_black_18dp);
+                stWeather = "sun";
+                btnSun.setImageResource(R.drawable.checked);
                 btnBlur.setImageResource(0);
                 btnRain.setImageResource(0);
                 btnSnow.setImageResource(0);
                 break;
             case R.id.imgBtn_home_blur:
+                stWeather = "blur";
                 btnSun.setImageResource(0);
-                btnBlur.setImageResource(R.drawable.baseline_check_black_18dp);
+                btnBlur.setImageResource(R.drawable.checked);
                 btnRain.setImageResource(0);
                 btnSnow.setImageResource(0);
                 break;
             case R.id.imgBtn_home_rain:
+                stWeather = "rain";
                 btnSun.setImageResource(0);
                 btnBlur.setImageResource(0);
-                btnRain.setImageResource(R.drawable.baseline_check_black_18dp);
+                btnRain.setImageResource(R.drawable.checked);
                 btnSnow.setImageResource(0);
                 break;
             case R.id.imgBtn_home_snow:
+                stWeather = "snow";
                 btnSun.setImageResource(0);
                 btnBlur.setImageResource(0);
                 btnRain.setImageResource(0);
-                btnSnow.setImageResource(R.drawable.baseline_check_black_18dp);
+                btnSnow.setImageResource(R.drawable.checked);
+                break;
+            case R.id.btn_save:
+                saveDiary();
+                break;
+            case R.id.btn_img_upload:
+                Uri uri = Uri.parse("content://media/external/images/media");
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setAction(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 0);
                 break;
         }
     }
+
+    public int exifOrientationToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
+
+    public Bitmap rotate(Bitmap bitmap, int degrees) {
+        if (degrees != 0 && bitmap != null) {
+            Matrix m = new Matrix();
+            m.setRotate(degrees, (float) bitmap.getWidth() / 2,
+                    (float) bitmap.getHeight() / 2);
+
+            try {
+                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), m, true);
+                if (bitmap != converted) {
+                    bitmap.recycle();
+                    bitmap = converted;
+                }
+            } catch (OutOfMemoryError ex) {
+            }
+        }
+        return bitmap;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (intent == null) return;
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        Uri selPhotoUri = intent.getData();
+        String filepath = getImageFilePath(intent);
+
+        try {
+            Bitmap image = BitmapFactory.decodeFile(filepath);
+
+            ExifInterface exif = new ExifInterface(filepath);
+            int exifOrientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int exifDegree = exifOrientationToDegrees(exifOrientation);
+            image = rotate(image, exifDegree);
+
+            btnUpImage.setImageBitmap(image);
+        } catch (Exception e) {
+            Toast.makeText(AddPostActivity.this, "오류발생: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        }
+
+
+        Cursor c = getContentResolver().query(Uri.parse(selPhotoUri.toString()), null, null, null, null);
+        c.moveToNext();
+        absolutePath = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+
+    }
+
+    public String getImageFilePath(Intent data) {
+        return getImageFromFilePath(data);
+    }
+
+    private String getImageFromFilePath(Intent data) {
+        boolean isCamera = data == null || data.getData() == null;
+
+        if (isCamera) return getCaptureImageOutputUri().getPath();
+        else return getPathFromURI(data.getData());
+
+    }
+
+    private String getPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Audio.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = getExternalFilesDir("");
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "profile.png"));
+        }
+        return outputFileUri;
+    }
+
 }

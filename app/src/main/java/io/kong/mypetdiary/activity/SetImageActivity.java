@@ -18,14 +18,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.FileChannel;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.UserItem;
@@ -119,12 +115,9 @@ public class SetImageActivity extends Activity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, intent);
 
         Uri selPhotoUri = intent.getData();
-
         String filepath = getImageFilePath(intent);
 
-
         mBitmap = BitmapFactory.decodeFile(filepath);
-
         mBitmap = resize(mBitmap);
 
         Cursor c = getContentResolver().query(Uri.parse(selPhotoUri.toString()), null, null, null, null);
