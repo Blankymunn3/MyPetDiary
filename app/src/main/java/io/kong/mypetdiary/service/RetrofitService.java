@@ -1,7 +1,5 @@
 package io.kong.mypetdiary.service;
 
-
-
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -34,8 +32,14 @@ public interface RetrofitService {
                                 @Query("pet_come") String pet_come, @Query("pet_kind") String pet_kind);
 
     @Multipart
-    @POST("upload")
+    @POST("uploadProfile")
     Call<ResponseBody> uploadPhoto(@Part MultipartBody.Part image, @Part("upload") RequestBody name, @Query("user_id") String user_id);
 
-
+    @Multipart
+    @POST("uploadDiary")
+    Call<ResponseBody> uploadDiary(@Part MultipartBody.Part image, @Part("upload") RequestBody name, @Query("user_id") String user_id,
+                                   @Query("diary_today_comment") String diary_today_comment, @Query("diary_content") String diary_content,
+                                   @Query("diary_date") String diary_date, @Query("diary_weather") String diary_weather, @Query("diary_week") String diary_week);
+    @GET("/diary")
+    Call<ResponseBody> selectDiary(@Query("user_id") String user_id, @Query("diary_date") String diary_date);
 }

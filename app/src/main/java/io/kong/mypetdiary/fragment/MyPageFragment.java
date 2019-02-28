@@ -112,10 +112,6 @@ public class MyPageFragment extends Fragment {
         adapter = new MyPageListViewAdapter();
         myPageListView.setAdapter(adapter);
 
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title1", "content1", "월", "1");
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title2", "content2", "화", "2");
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_launcher_background) , "title3", "content3", "수", "3");
-
         getImageUrl = userItem.getStUserProfile();
 
         TextView txtMyPageName = rootView.findViewById(R.id.txt_my_page_name);

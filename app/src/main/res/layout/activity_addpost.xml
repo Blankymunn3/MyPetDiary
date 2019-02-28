@@ -29,7 +29,7 @@
                 android:gravity="center">
 
                 <ImageButton
-                    android:id="@+id/btn_my_page_calender"
+                    android:id="@+id/btn_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -211,6 +211,7 @@
                         android:fontFamily="@font/sangsangfont"
                         android:background="@android:color/transparent"
                         android:inputType="text"
+                        android:textColor="#000"
                         android:maxLength="21"
                         />
                 </LinearLayout>
@@ -254,7 +255,8 @@
                     android:maxLines="5"
                     android:padding="10sp"
                     android:fontFamily="@font/sangsangfont"
-                    android:inputType="textMultiLine"/>
+                    android:inputType="textMultiLine"
+                    android:textColor="#000"/>
 
             </LinearLayout>
 

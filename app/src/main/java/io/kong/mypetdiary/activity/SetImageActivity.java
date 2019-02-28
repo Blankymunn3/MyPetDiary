@@ -5,24 +5,16 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.UserItem;
@@ -58,8 +50,6 @@ public class SetImageActivity extends Activity implements View.OnClickListener {
     }
 
     private void init() {
-
-
         appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
         OkHttpClient client = new OkHttpClient.Builder().build();
         retrofitService = new Retrofit.Builder()

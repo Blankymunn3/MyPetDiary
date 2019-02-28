@@ -1,32 +1,42 @@
 package io.kong.mypetdiary.item;
 
-import android.graphics.drawable.Drawable;
 
 public class HomeListViewItem {
-    private Drawable iconDrawable;
+    private String imgUrl;
+    private String stUserID;
     private String stTitle;
     private String stContent;
     private String stWeek;
-    private String stDay;
+    private int stDay;
+    private String stDate;
 
-    public void setIcon(Drawable icon) {
-        iconDrawable = icon;
+    public void setStUserID(String userID) {
+        this.stUserID = userID;
+    }
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
     public void setTitle(String title) {
-        stTitle = title ;
+        this.stTitle = title ;
     }
     public void setContent(String content) {
-        stContent = content;
+        this.stContent = content;
     }
     public void setWeek(String week) {
-        stWeek = week;
+        this.stWeek = week;
     }
-    public void setDay(String day) {
-        stDay = day;
+    public void setDay(int day) {
+        this.stDay = day;
+    }
+    public void setDate(String date) {
+        this.stDate = date;
     }
 
-    public Drawable getIcon() {
-        return this.iconDrawable ;
+    public String getStUserID() {
+        return this.stUserID;
+    }
+    public String getImgUrl() {
+        return this.imgUrl ;
     }
     public String getTitle() {
         return this.stTitle ;
@@ -37,7 +47,10 @@ public class HomeListViewItem {
     public String getWeek() {
         return this.stWeek;
     }
-    public String getDay() {
+    public int getDay() {
         return this.stDay ;
+    }
+    public String getDate() {
+        return this.stDate;
     }
 }

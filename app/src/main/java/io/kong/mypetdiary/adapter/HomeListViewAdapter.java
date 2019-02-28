@@ -1,7 +1,6 @@
 package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +8,22 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.HomeListViewItem;
 
 public class HomeListViewAdapter extends BaseAdapter {
-    private ArrayList<HomeListViewItem> listViewItemList = new ArrayList<HomeListViewItem>();
+    private ArrayList<HomeListViewItem> listViewItemList;
 
-    public HomeListViewAdapter() {
-
+    public HomeListViewAdapter(ArrayList<HomeListViewItem> listViewItemList) {
+        if (listViewItemList == null) {
+            this.listViewItemList = new ArrayList<HomeListViewItem>() ;
+        } else {
+            this.listViewItemList = listViewItemList ;
+        }
     }
 
     @Override
@@ -44,16 +49,18 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         HomeListViewItem listViewItem = listViewItemList.get(position);
 
-        if(String.valueOf(listViewItem.getDay()).equals("1")) {
+        if (listViewItem.getImgUrl() == null) {
             iconImageView.getLayoutParams().width = 0;
             iconImageView.getLayoutParams().height = 0;
+        } else {
+            String imgUrl = "http://13.209.93.19:3000/downloadDiary?user_id=" + listViewItem.getStUserID() + "&diary_date=" + listViewItem.getDate();
+            Glide.with(convertView).load(imgUrl).into(iconImageView);
         }
-        iconImageView.setImageDrawable(listViewItem.getIcon());
+
         txtTitle.setText(listViewItem.getTitle());
         txtContent.setText(listViewItem.getContent());
-        txtWeek.setText(listViewItem.getWeek());
-        txtDay.setText(listViewItem.getDay());
-
+        txtWeek.setText(listViewItem.getWeek() + "요일");
+        txtDay.setText(Integer.toString(listViewItem.getDay()));
 
         return convertView;
     }
@@ -68,14 +75,16 @@ public class HomeListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(Drawable icon, String title, String content, String week, String day) {
+    public void addItem(String userID, String imgUrl, String title, String content, String week, int day, String date) {
         HomeListViewItem item = new HomeListViewItem();
 
-        item.setIcon(icon);
+        item.setStUserID(userID);
+        item.setImgUrl(imgUrl);
         item.setTitle(title);
         item.setContent(content);
         item.setWeek(week);
         item.setDay(day);
+        item.setDate(date);
 
         listViewItemList.add(item);
     }
