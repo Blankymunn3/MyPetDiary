@@ -1,31 +1,29 @@
 package io.kong.mypetdiary.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Calendar;
 
 import io.kong.mypetdiary.R;
@@ -34,16 +32,16 @@ import io.kong.mypetdiary.item.UserItem;
 
 public class AddPostActivity extends Activity implements View.OnClickListener {
 
-    Bitmap mBitmap;
     UserItem userItem;
     PetItem petItem;
 
-    ImageButton btnSun, btnBlur, btnRain, btnSnow, btnUpImage;
+    ImageButton btnSun, btnBlur, btnRain, btnSnow;
+    ImageView btnUpImage;
     Button btnSave;
     EditText edTodayComment, edContent;
     TextView txtYear, txtMonth, txtDay, txtWeek, txtTodayComment;
 
-    String stUserID, stYear, stMonth, stDay, stWeek, stWeather, stTodayComment, stContent, absolutePath;
+    String stUserID, stYear, stMonth, stDay, stWeek, stWeather, stTodayComment, stContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +82,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         edTodayComment = findViewById(R.id.ed_today_comment);
 
         btnSave = findViewById(R.id.btn_save);
-        btnUpImage = findViewById(R.id.btn_img_upload);
+        btnUpImage = findViewById(R.id.img_upload);
 
         btnSun = findViewById(R.id.imgBtn_home_sun);
         btnBlur = findViewById(R.id.imgBtn_home_blur);
@@ -173,7 +171,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
             case R.id.btn_save:
                 saveDiary();
                 break;
-            case R.id.btn_img_upload:
+            case R.id.img_upload:
                 Uri uri = Uri.parse("content://media/external/images/media");
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.setAction(Intent.ACTION_PICK);
@@ -183,94 +181,31 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    public int exifOrientationToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        }
-        return 0;
-    }
-
-    public Bitmap rotate(Bitmap bitmap, int degrees) {
-        if (degrees != 0 && bitmap != null) {
-            Matrix m = new Matrix();
-            m.setRotate(degrees, (float) bitmap.getWidth() / 2,
-                    (float) bitmap.getHeight() / 2);
-
-            try {
-                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
-                        bitmap.getWidth(), bitmap.getHeight(), m, true);
-                if (bitmap != converted) {
-                    bitmap.recycle();
-                    bitmap = converted;
-                }
-            } catch (OutOfMemoryError ex) {
-            }
-        }
-        return bitmap;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (intent == null) return;
         super.onActivityResult(requestCode, resultCode, intent);
-
-        Uri selPhotoUri = intent.getData();
-        String filepath = getImageFilePath(intent);
-
-        try {
-            Bitmap image = BitmapFactory.decodeFile(filepath);
-
-            ExifInterface exif = new ExifInterface(filepath);
-            int exifOrientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            int exifDegree = exifOrientationToDegrees(exifOrientation);
-            image = rotate(image, exifDegree);
-
-            btnUpImage.setImageBitmap(image);
-        } catch (Exception e) {
-            Toast.makeText(AddPostActivity.this, "오류발생: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        if(requestCode == 0) {
+            Uri selPhotoUri = intent.getData();
+            CropImage.activity(selPhotoUri)
+                    .start(this);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(intent);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+                    btnUpImage.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
         }
 
-
-        Cursor c = getContentResolver().query(Uri.parse(selPhotoUri.toString()), null, null, null, null);
-        c.moveToNext();
-        absolutePath = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
-
-    }
-
-    public String getImageFilePath(Intent data) {
-        return getImageFromFilePath(data);
-    }
-
-    private String getImageFromFilePath(Intent data) {
-        boolean isCamera = data == null || data.getData() == null;
-
-        if (isCamera) return getCaptureImageOutputUri().getPath();
-        else return getPathFromURI(data.getData());
-
-    }
-
-    private String getPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Audio.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
-    private Uri getCaptureImageOutputUri() {
-        Uri outputFileUri = null;
-        File getImage = getExternalFilesDir("");
-        if (getImage != null) {
-            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "profile.png"));
-        }
-        return outputFileUri;
     }
 
 }

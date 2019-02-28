@@ -98,6 +98,10 @@
                         android:background="@drawable/baseline_face_black_36dp"
                         app:civ_border_color="#FFFFFF"
                         app:civ_border_width="0.5sp" />
+                    <ImageView
+                        android:id="@+id/test_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -188,13 +192,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btn_profile_change"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_line"
-                android:text="프로필사진변경"/>
 
             <Button
                 android:id="@+id/btn_logout"

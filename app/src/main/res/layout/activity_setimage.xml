@@ -24,11 +24,6 @@
         android:orientation="vertical"
         android:layout_gravity="center" >
 
-
-        <Button
-            android:id="@+id/btn_camera_pop"
-            android:text="사진 촬영하기"
-            style="@style/CustomPopUpButton"/>
         <Button
             android:id="@+id/btn_gallery_pop"
             android:text="갤러리에서 가져오기"

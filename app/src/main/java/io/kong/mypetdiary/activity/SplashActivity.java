@@ -4,15 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.kakao.auth.Session;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.PetItem;
@@ -37,9 +39,13 @@ public class SplashActivity extends Activity {
 
         appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
 
-        ImageView gif = findViewById(R.id.img_splash);
-        GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(gif);
-        Glide.with(this).load(R.drawable.giphy).into(gifImage);
+        final ImageView gif = findViewById(R.id.img_splash);
+        Glide.with(this).load(R.drawable.giphy).into(new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                gif.setImageDrawable(resource);
+            }
+        });
         init();
         load();
 
