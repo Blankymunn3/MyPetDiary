@@ -3,18 +3,12 @@ package io.kong.mypetdiary.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -113,12 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txt_my_page = findViewById(R.id.txt_my_page);
 
         txt_home.setText(Integer.toString(month + 1) + "월");
-
-        /*
-        btn_home = findViewById(R.id.btn_fragment_home);
-        btn_addPost = findViewById(R.id.btn_fragment_add);
-        btn_my_page = findViewById(R.id.btn_fragment_my_page);
-*/
 
         txt_home.setOnClickListener(this);
         txt_addPost.setOnClickListener(this);

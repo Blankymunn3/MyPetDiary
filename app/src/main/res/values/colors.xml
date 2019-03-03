@@ -6,4 +6,6 @@
     <color name="colorDarkBlue">#393F9F</color>
 
     <color name="backgroundWhite">#FFFFFF</color>
+
+    <color name="txt_block_color">#ededed</color>
 </resources>

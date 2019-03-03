@@ -53,26 +53,6 @@
             android:textSize="18sp"
             android:text="내정보" />
 
-        <!--
-        <ImageButton
-            style="@style/CustomImageButton"
-            android:id="@+id/btn_fragment_home"
-            android:src="@drawable/baseline_home_black_36dp"
-            android:background="#ededed"/>
-
-        <ImageButton
-            style="@style/CustomImageButton"
-            android:id="@+id/btn_fragment_add"
-            android:src="@drawable/baseline_add_circle_outline_black_36dp"
-            android:background="#ededed"/>
-
-        <ImageButton
-            style="@style/CustomImageButton"
-            android:id="@+id/btn_fragment_my_page"
-            android:src="@drawable/baseline_face_black_36dp"
-            android:background="#ededed"/>
--->
-
     </LinearLayout>
 
 </RelativeLayout>

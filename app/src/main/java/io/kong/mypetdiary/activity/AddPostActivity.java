@@ -1,17 +1,16 @@
 package io.kong.mypetdiary.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,8 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +64,11 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
     EditText edTodayComment, edContent;
     TextView txtYear, txtMonth, txtDay, txtWeek, txtTodayComment;
 
-    String stUserID, stYear, stMonth, stDay, stDate, stWeek, stWeather, stTodayComment, stContent;
+    String stUserID, stYear, stMonth, stDay, stDate, stWeek, stWeather = "sun", stTodayComment, stContent, stPhoto;
+
+    Calendar cal;
+    int month ,day;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +82,14 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
     }
 
     private void saveDiary() {
-        stUserID = userItem.getStUserID();
         stYear = txtYear.getText().toString();
-        stMonth = txtMonth.getText().toString();
-        stDay = txtDay.getText().toString();
         stTodayComment = edTodayComment.getText().toString();
         stContent = edContent.getText().toString();
+
+        if (month + 1 < 10) stMonth = "0" + Integer.toString(month + 1);
+        else stMonth = Integer.toString(month + 1);
+        if (day < 10) stDay = "0" + Integer.toString(day);
+        else stDay = Integer.toString(day);
 
         stDate = stYear + stMonth + stDay;
 
@@ -131,6 +140,8 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         userItem = new UserItem();
         petItem = new PetItem();
 
+        stUserID = userItem.getStUserID();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -163,10 +174,10 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
         txtTodayComment = findViewById(R.id.txt_today_comment);
 
-        Calendar cal = Calendar.getInstance();
+        cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DATE);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DATE);
         int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
 
         switch (day_of_week) {
@@ -205,6 +216,87 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         btnBlur.setOnClickListener(this);
         btnRain.setOnClickListener(this);
         btnSnow.setOnClickListener(this);
+
+        if (month + 1 < 10) stMonth = "0" + Integer.toString(month + 1);
+        else stMonth = Integer.toString(month + 1);
+        if (day < 10) stDay = "0" + Integer.toString(day);
+        else stDay = Integer.toString(day);
+
+        stDate = Integer.toString(year) + stMonth + stDay;
+
+        Call<ResponseBody> call = retrofitService.selectDiary(stUserID, stDate);
+        call.enqueue(new Callback<ResponseBody>() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String result = response.body().string();
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            JSONArray jsonArray = jsonObject.getJSONArray("diary_table");
+                            if (jsonArray.length() != 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject item = jsonArray.getJSONObject(i);
+                                    stTodayComment = item.getString("diary_today_comment");
+                                    stContent = item.getString("diary_content");
+                                    stWeather = item.getString("diary_weather");
+                                    stPhoto = item.getString("diary_photo");
+
+                                    edTodayComment.setText(stTodayComment);
+                                    edTodayComment.setInputType(InputType.TYPE_NULL);
+
+                                    edContent.setText(stContent);
+                                    edContent.setInputType(InputType.TYPE_NULL);
+                                    Glide.with(AddPostActivity.this).load(stPhoto).into(btnUpImage);
+
+                                    btnUpImage.setClickable(false);
+                                    btnSave.setClickable(false);
+                                    btnSave.setTextColor(R.color.txt_block_color);
+
+                                    btnSun.setClickable(false);
+                                    btnBlur.setClickable(false);
+                                    btnRain.setClickable(false);
+                                    btnSnow.setClickable(false);
+
+                                    if (stWeather.equals("sun")) {
+                                        btnSun.setImageResource(R.drawable.checked);
+                                        btnBlur.setImageResource(0);
+                                        btnRain.setImageResource(0);
+                                        btnSnow.setImageResource(0);
+                                    } else if (stWeather.equals("blur")) {
+                                        btnSun.setImageResource(0);
+                                        btnBlur.setImageResource(R.drawable.checked);
+                                        btnRain.setImageResource(0);
+                                        btnSnow.setImageResource(0);
+                                    } else if (stWeather.equals("rain")) {
+                                        btnSun.setImageResource(0);
+                                        btnBlur.setImageResource(0);
+                                        btnRain.setImageResource(R.drawable.checked);
+                                        btnSnow.setImageResource(0);
+
+                                    } else if (stWeather.equals("snow")) {
+                                        btnSun.setImageResource(0);
+                                        btnBlur.setImageResource(0);
+                                        btnRain.setImageResource(0);
+                                        btnSnow.setImageResource(R.drawable.checked);
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
 
     }
 
