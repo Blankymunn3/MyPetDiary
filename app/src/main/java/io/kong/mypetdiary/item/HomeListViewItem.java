@@ -1,18 +1,14 @@
 package io.kong.mypetdiary.item;
 
-
 public class HomeListViewItem {
     private String imgUrl;
-    private String stUserID;
     private String stTitle;
     private String stContent;
     private String stWeek;
     private int stDay;
-    private String stDate;
+    private int width;
+    private int height;
 
-    public void setStUserID(String userID) {
-        this.stUserID = userID;
-    }
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
@@ -28,13 +24,13 @@ public class HomeListViewItem {
     public void setDay(int day) {
         this.stDay = day;
     }
-    public void setDate(String date) {
-        this.stDate = date;
+    public void setWidth(int width) {
+        this.width = width;
+    }
+    public void setHeight(int height) {
+        this.height = height;
     }
 
-    public String getStUserID() {
-        return this.stUserID;
-    }
     public String getImgUrl() {
         return this.imgUrl ;
     }
@@ -50,7 +46,10 @@ public class HomeListViewItem {
     public int getDay() {
         return this.stDay ;
     }
-    public String getDate() {
-        return this.stDate;
+    public int getWidth() {
+        return this.width;
+    }
+    public int getHeight() {
+        return this.height;
     }
 }

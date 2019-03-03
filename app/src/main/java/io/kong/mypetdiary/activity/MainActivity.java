@@ -15,8 +15,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.fragment.HomeFragment;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissions = new ArrayList<>();
 
-    private ImageButton btn_home, btn_addPost, btn_my_page;
+    private TextView txt_home, txt_addPost, txt_my_page;
 
     int TAG_FRAG = 0;
 
@@ -97,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(TAG_FRAG == 1) callFragment(FRAGMENT_HOME);
         else if(TAG_FRAG == 2) callFragment(FRAGMENT_MY_PAGE);
 
+        final Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH);
 
         mainActivity = this;
 
@@ -104,13 +108,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
 
+        txt_addPost = findViewById(R.id.txt_today_diary);
+        txt_home = findViewById(R.id.txt_main_month);
+        txt_my_page = findViewById(R.id.txt_my_page);
+
+        txt_home.setText(Integer.toString(month + 1) + "월");
+
+        /*
         btn_home = findViewById(R.id.btn_fragment_home);
         btn_addPost = findViewById(R.id.btn_fragment_add);
         btn_my_page = findViewById(R.id.btn_fragment_my_page);
+*/
 
-        btn_home.setOnClickListener(this);
-        btn_addPost.setOnClickListener(this);
-        btn_my_page.setOnClickListener(this);
+        txt_home.setOnClickListener(this);
+        txt_addPost.setOnClickListener(this);
+        txt_my_page.setOnClickListener(this);
     }
 
     @Override
@@ -122,15 +134,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_fragment_home:
+            case R.id.txt_main_month:
                 callFragment(FRAGMENT_HOME);
                 break;
-            case R.id.btn_fragment_add:
+            case R.id.txt_today_diary:
                 Intent intent = new Intent(MainActivity.this, AddPostActivity.class);
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.btn_fragment_my_page:
+            case R.id.txt_my_page:
                 callFragment(FRAGMENT_MY_PAGE);
                 break;
         }

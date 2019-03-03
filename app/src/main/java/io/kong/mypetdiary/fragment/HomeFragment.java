@@ -14,14 +14,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import io.kong.mypetdiary.adapter.HomeListViewAdapter;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.HomeListViewItem;
+import io.kong.mypetdiary.item.PetItem;
 import io.kong.mypetdiary.item.UserItem;
 import io.kong.mypetdiary.service.RetrofitService;
 import okhttp3.ResponseBody;
@@ -43,9 +46,9 @@ public class HomeFragment extends Fragment {
     ListView mainListView;
     ImageView imgPost;
 
-    TextView txtTitle;
+    TextView txtTitle, txtSubTitle;
 
-    String stWeek, stDate, stUserID, dbDay, dbWeek, dbImgUrl, dbTitle, dbContent;
+    String stWeek, stDate, stUserID, dbDay, dbWeek, dbImgUrl, dbTitle, dbContent, stMonth, stDay;
 
     ArrayList<HomeListViewItem> itemList = new ArrayList<HomeListViewItem>();
 
@@ -56,6 +59,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
         mainListView = rootView.findViewById(R.id.main_listview);
@@ -69,12 +73,13 @@ public class HomeFragment extends Fragment {
         userItem = new UserItem();
 
         txtTitle = rootView.findViewById(R.id.txt_home_title);
+        txtSubTitle = rootView.findViewById(R.id.txt_home_subTitle);
         imgPost = rootView.findViewById(R.id.img_list_post);
 
         adapter = new HomeListViewAdapter(itemList);
         mainListView.setAdapter(adapter);
 
-        Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
 
@@ -109,7 +114,14 @@ public class HomeFragment extends Fragment {
                     break;
             }
 
-            stDate = Integer.toString(year) + Integer.toString(month + 1) + Integer.toString(i);
+            if(month+1 < 10) stMonth = "0" + Integer.toString(month+1);
+            else stMonth = Integer.toString(month+1);
+            if(i < 10) stDay = "0" + Integer.toString(i);
+            else stDay = Integer.toString(i);
+
+            stDate = Integer.toString(year) + stMonth + stDay;
+
+            final String subTitle = Integer.toString(cal.getActualMaximum(Calendar.DAY_OF_MONTH)) + "일 중에 우리의 추억 ";
 
             Call<ResponseBody> call = retrofitService.selectDiary(stUserID, stDate);
             final int finalI = i;
@@ -131,7 +143,8 @@ public class HomeFragment extends Fragment {
                                         dbImgUrl = item.getString("diary_photo");
                                         dbWeek = item.getString("diary_week");
 
-                                        adapter.addItem(stUserID, dbImgUrl, dbTitle, dbContent, dbWeek, finalI, dbDay);
+                                        adapter.addItem(dbImgUrl, dbTitle, dbContent, dbWeek, finalI,
+                                                (int) getResources().getDimension(R.dimen.home_list_width), (int) getResources().getDimension(R.dimen.home_list_height));
 
                                         Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
                                             @Override
@@ -143,8 +156,9 @@ public class HomeFragment extends Fragment {
                                         Collections.sort(itemList, textAsc);
                                         adapter.notifyDataSetChanged();
                                     }
+                                    txtSubTitle.setText(subTitle + Integer.toString(jsonArray.length()) + "개");
                                 } else {
-                                    adapter.addItem(stUserID, null, null, null, stWeek, finalI, stDate);
+                                    adapter.addItem(null, null, null, stWeek, finalI, 0, 0);
                                     Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
                                         @Override
                                         public int compare(HomeListViewItem item1, HomeListViewItem item2) {
@@ -173,7 +187,7 @@ public class HomeFragment extends Fragment {
         Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
             @Override
             public int compare(HomeListViewItem item1, HomeListViewItem item2) {
-                return (item1.getDay() - item2.getDay()) ;
+                return (item1.getDay() - item2.getDay());
             }
         };
 
