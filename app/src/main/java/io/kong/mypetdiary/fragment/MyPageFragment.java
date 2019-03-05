@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.kong.mypetdiary.activity.LoginActivity;
-import io.kong.mypetdiary.activity.MainActivity;
 import io.kong.mypetdiary.activity.SetImageActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
@@ -33,8 +31,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class MyPageFragment extends Fragment {
 
     static final int TAG_GETIMAGESETTING = 1001;
-
-    MainActivity mainActivity;
 
     UserItem userItem;
     public static SharedPreferences appData;
@@ -51,7 +47,6 @@ public class MyPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainActivity = (MainActivity) MainActivity.mainActivity;
 
         userItem = new UserItem();
 
@@ -102,7 +97,7 @@ public class MyPageFragment extends Fragment {
 
                         Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
                         startActivity(intent);
-                        mainActivity.finish();
+                        getActivity().finish();
                     }
                 });
             }
@@ -118,7 +113,7 @@ public class MyPageFragment extends Fragment {
         CircleImageView imvMyPageUser = rootView.findViewById(R.id.imv_my_page_user);
         String userID = userItem.getStUserID();
 
-        Glide.with(mainActivity).load("http://13.209.93.19:3000/download?user_id=" + userID).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imvMyPageUser);
+        Glide.with(getActivity()).load("http://13.209.93.19:3000/download?user_id=" + userID).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imvMyPageUser);
 
 
         imvMyPageUser.setOnClickListener(new View.OnClickListener() {

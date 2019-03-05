@@ -5,6 +5,7 @@ public class HomeListViewItem {
     private String stTitle;
     private String stContent;
     private String stWeek;
+    private String stDate;
     private int stDay;
     private int width;
     private int height;
@@ -20,6 +21,9 @@ public class HomeListViewItem {
     }
     public void setWeek(String week) {
         this.stWeek = week;
+    }
+    public void setDate(String date) {
+        this.stDate = date;
     }
     public void setDay(int day) {
         this.stDay = day;
@@ -42,6 +46,9 @@ public class HomeListViewItem {
     }
     public String getWeek() {
         return this.stWeek;
+    }
+    public String getDate() {
+        return this.stDate;
     }
     public int getDay() {
         return this.stDay ;

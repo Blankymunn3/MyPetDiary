@@ -1,6 +1,7 @@
 package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +17,32 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.activity.AddPostActivity;
 import io.kong.mypetdiary.item.HomeListViewItem;
+import io.kong.mypetdiary.item.UserItem;
+import io.kong.mypetdiary.service.RetrofitService;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeListViewAdapter extends BaseAdapter {
     private ArrayList<HomeListViewItem> listViewItemList;
 
-    String stDay;
+    Retrofit retrofit;
+    RetrofitService retrofitService;
 
-    public HomeListViewAdapter(ArrayList<HomeListViewItem> listViewItemList) {
+    Context context;
+
+    UserItem userItem;
+
+    String stDay, stUserID, stDate;
+
+    public HomeListViewAdapter(ArrayList<HomeListViewItem> listViewItemList, Context getContext) {
         if (listViewItemList == null) {
             this.listViewItemList = new ArrayList<HomeListViewItem>();
         } else {
             this.listViewItemList = listViewItemList;
         }
+        context = getContext;
     }
 
     @Override
@@ -38,8 +52,16 @@ public class HomeListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(RetrofitService.URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofitService = retrofit.create(RetrofitService.class);
+
+        userItem = new UserItem();
+
         final int pos = position;
-        final Context context = parent.getContext();
 
 
         Date date = new Date(System.currentTimeMillis());
@@ -61,6 +83,8 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         HomeListViewItem listViewItem = listViewItemList.get(pos);
 
+        stUserID = userItem.getStUserID();
+        stDate =listViewItem.getDate();
 
         if (listViewItem.getDay() < 10) {
             stDay = "0" + Integer.toString(listViewItem.getDay());
@@ -80,6 +104,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         txtWeek.setText(listViewItem.getWeek() + "요일");
         txtDay.setText(Integer.toString(listViewItem.getDay()));
 
+
         return convertView;
     }
 
@@ -93,13 +118,14 @@ public class HomeListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(String imgUrl, String title, String content, String week, int day, int width, int height) {
+    public void addItem(String imgUrl, String title, String content, String week, String date, int day, int width, int height) {
         HomeListViewItem item = new HomeListViewItem();
 
         item.setImgUrl(imgUrl);
         item.setTitle(title);
         item.setContent(content);
         item.setWeek(week);
+        item.setDate(date);
         item.setDay(day);
         item.setWidth(width);
         item.setHeight(height);

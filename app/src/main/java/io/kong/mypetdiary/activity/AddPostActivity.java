@@ -75,10 +75,6 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         init();
-
-        btnUpImage.setOnClickListener(this);
-        btnSave.setOnClickListener(this);
-        btnBack.setOnClickListener(this);
     }
 
     private void saveDiary() {
@@ -135,10 +131,14 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         return result;
     }
 
+    @SuppressLint("ResourceAsColor")
     private void init() {
         setContentView(R.layout.activity_addpost);
         userItem = new UserItem();
         petItem = new PetItem();
+
+        Intent intent = getIntent();
+        String getStDate = intent.getStringExtra("diary_date");
 
         stUserID = userItem.getStUserID();
 
@@ -204,27 +204,64 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
                 break;
         }
 
-        txtYear.setText(Integer.toString(year));
-        txtMonth.setText(Integer.toString(month + 1));
-        txtDay.setText(Integer.toString(day));
-        txtWeek.setText(stWeek);
-
-        txtTodayComment.setText("오늘의 " + stPetName + "에게 하고싶은 한마디는?");
-
-
-        btnSun.setOnClickListener(this);
-        btnBlur.setOnClickListener(this);
-        btnRain.setOnClickListener(this);
-        btnSnow.setOnClickListener(this);
-
         if (month + 1 < 10) stMonth = "0" + Integer.toString(month + 1);
         else stMonth = Integer.toString(month + 1);
         if (day < 10) stDay = "0" + Integer.toString(day);
         else stDay = Integer.toString(day);
 
-        stDate = Integer.toString(year) + stMonth + stDay;
 
-        Call<ResponseBody> call = retrofitService.selectDiary(stUserID, stDate);
+        stDate = Integer.toString(year) + stMonth + stDay;
+        Call<ResponseBody> call = null;
+
+        txtWeek.setText(stWeek);
+
+        txtTodayComment.setText("오늘의 " + stPetName + "에게 하고싶은 한마디는?");
+
+        btnSun.setOnClickListener(this);
+        btnBlur.setOnClickListener(this);
+        btnRain.setOnClickListener(this);
+        btnSnow.setOnClickListener(this);
+        btnUpImage.setOnClickListener(this);
+        btnSave.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+
+        if (getStDate == null) {
+            call = retrofitService.selectDiary(stUserID, stDate);
+            txtYear.setText(Integer.toString(year));
+            txtMonth.setText(Integer.toString(month + 1));
+            txtDay.setText(Integer.toString(day));
+        } else if (getStDate.equals(stDate)) {
+            call = retrofitService.selectDiary(stUserID, stDate);
+            txtYear.setText(Integer.toString(year));
+            txtMonth.setText(Integer.toString(month + 1));
+            txtDay.setText(Integer.toString(day));
+        } else {
+            String stYear = getStDate.substring(0, 4);
+            String stMonth = getStDate.substring(4, 6);
+            if (stMonth.substring(0, 1).equals("0")) stMonth = stMonth.substring(1, 2);
+            String stDay = getStDate.substring(6, 8);
+            if (stDay.substring(0, 1).equals("0")) stDay = stDay.substring(1, 2);
+            call = retrofitService.selectDiary(stUserID, getStDate);
+
+            txtYear.setText(stYear);
+            txtMonth.setText(stMonth);
+            txtDay.setText(stDay);
+
+            btnSave.setTextColor(R.color.txt_block_color);
+
+            edTodayComment.setFocusable(false);
+            edTodayComment.setClickable(false);
+            edContent.setFocusable(false);
+            edContent.setClickable(false);
+
+            btnUpImage.setClickable(false);
+            btnSave.setClickable(false);
+            btnSun.setClickable(false);
+            btnBlur.setClickable(false);
+            btnRain.setClickable(false);
+            btnSnow.setClickable(false);
+        }
+
         call.enqueue(new Callback<ResponseBody>() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -244,12 +281,13 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
                                     stPhoto = item.getString("diary_photo");
 
                                     edTodayComment.setText(stTodayComment);
-                                    edTodayComment.setInputType(InputType.TYPE_NULL);
-
                                     edContent.setText(stContent);
-                                    edContent.setInputType(InputType.TYPE_NULL);
                                     Glide.with(AddPostActivity.this).load(stPhoto).into(btnUpImage);
 
+                                    edTodayComment.setFocusable(false);
+                                    edTodayComment.setClickable(false);
+                                    edContent.setFocusable(false);
+                                    edContent.setClickable(false);
                                     btnUpImage.setClickable(false);
                                     btnSave.setClickable(false);
                                     btnSave.setTextColor(R.color.txt_block_color);
