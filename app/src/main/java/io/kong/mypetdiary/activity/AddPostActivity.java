@@ -66,7 +66,6 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
     String stUserID, stYear, stMonth, stDay, stDate, stWeek, stWeather = "sun", stTodayComment, stContent, stPhoto;
 
-    Calendar cal;
     int month ,day;
 
 
@@ -139,6 +138,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
         Intent intent = getIntent();
         String getStDate = intent.getStringExtra("diary_date");
+        int getDay = intent.getIntExtra("diary_day", 0);
 
         stUserID = userItem.getStUserID();
 
@@ -174,10 +174,11 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
         txtTodayComment = findViewById(R.id.txt_today_comment);
 
-        cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
+        final Calendar cal = Calendar.getInstance();
+        final int year = cal.get(Calendar.YEAR);
         month = cal.get(Calendar.MONTH);
         day = cal.get(Calendar.DATE);
+        cal.set(year, month, getDay);
         int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
 
         switch (day_of_week) {

@@ -1,7 +1,6 @@
 package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import io.kong.mypetdiary.R;
-import io.kong.mypetdiary.activity.AddPostActivity;
 import io.kong.mypetdiary.item.HomeListViewItem;
 import io.kong.mypetdiary.item.UserItem;
 import io.kong.mypetdiary.service.RetrofitService;

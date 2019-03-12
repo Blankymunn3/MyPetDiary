@@ -125,6 +125,7 @@ public class HomeFragment extends Fragment {
 
             Call<ResponseBody> call = retrofitService.selectDiary(stUserID, stDate);
             final int finalI = i;
+            final String finalWeek = stWeek;
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -143,7 +144,7 @@ public class HomeFragment extends Fragment {
                                         dbImgUrl = item.getString("diary_photo");
                                         dbWeek = item.getString("diary_week");
 
-                                        adapter.addItem(dbImgUrl, dbTitle, dbContent, dbWeek, stDate, finalI,
+                                        adapter.addItem(dbImgUrl, dbTitle, dbContent, finalWeek, stDate, finalI,
                                                 (int) getResources().getDimension(R.dimen.home_list_width), (int) getResources().getDimension(R.dimen.home_list_height));
 
                                         Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
@@ -159,7 +160,7 @@ public class HomeFragment extends Fragment {
                                     }
                                     txtSubTitle.setText(subTitle + Integer.toString(diaryCnt) + "개");
                                 } else {
-                                    adapter.addItem(null, null, null, stWeek, stDate, finalI, 0, 0);
+                                    adapter.addItem(null, null, null, finalWeek, stDate, finalI, 0, 0);
                                     Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
                                         @Override
                                         public int compare(HomeListViewItem item1, HomeListViewItem item2) {
@@ -208,6 +209,7 @@ public class HomeFragment extends Fragment {
                 String stDate =  Integer.toString(year) + stMonth + stDay;
 
                 intent.putExtra("diary_date", stDate);
+                intent.putExtra("diary_day", i);
                 startActivity(intent);
                 getActivity().finish();
             }
