@@ -33,7 +33,7 @@ public class MyPageFragment extends Fragment {
     static final int TAG_GETIMAGESETTING = 1001;
 
     UserItem userItem;
-    public static SharedPreferences appData;
+    public SharedPreferences appData;
 
     MyPageListViewAdapter adapter;
     ListView myPageListView;
@@ -81,18 +81,7 @@ public class MyPageFragment extends Fragment {
                     public void onCompleteLogout() {
                         appData = getContext().getSharedPreferences("APPDATA", MODE_PRIVATE);
                         SharedPreferences.Editor editor = appData.edit();
-                        editor.remove("SAVE_LOGIN_DATA");
-                        editor.remove("user_id");
-                        editor.remove("user_pw");
-                        editor.remove("user_name");
-                        editor.remove("user_profile");
-                        editor.remove("user_area");
-                        editor.remove("user_birth");
-
-                        editor.remove("pet_name");
-                        editor.remove("pet_birth");
-                        editor.remove("pet_come");
-                        editor.remove("pet_kind");
+                        editor.clear();
                         editor.apply();
 
                         Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
@@ -112,8 +101,10 @@ public class MyPageFragment extends Fragment {
         TextView txtMyPageName = rootView.findViewById(R.id.txt_my_page_name);
         CircleImageView imvMyPageUser = rootView.findViewById(R.id.imv_my_page_user);
         String userID = userItem.getStUserID();
+        String userProfile = userItem.getStUserProfile();
 
-        Glide.with(getActivity()).load("http://13.209.93.19:3000/download?user_id=" + userID).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imvMyPageUser);
+        if(userProfile.equals("null")) imvMyPageUser.setImageResource(R.drawable.face);
+        else Glide.with(getActivity()).load("http://13.209.93.19:3000/download?user_id=" + userID).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imvMyPageUser);
 
 
         imvMyPageUser.setOnClickListener(new View.OnClickListener() {

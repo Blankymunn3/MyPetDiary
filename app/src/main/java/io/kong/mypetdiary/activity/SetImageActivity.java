@@ -119,7 +119,7 @@ public class SetImageActivity extends Activity implements View.OnClickListener {
 
     @SuppressLint("LongLogTag")
     private void uploadFile(String sourceFileUri) {
-        File file = new File(sourceFileUri);
+        final File file = new File(sourceFileUri);
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
@@ -131,6 +131,11 @@ public class SetImageActivity extends Activity implements View.OnClickListener {
             @Override
             public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if(response.code() == 200) {
+                    userItem.setStUserProfile(file.getName());
+                    SharedPreferences.Editor editor = appData.edit();
+                    editor.putString("user_profile", file.getName());
+                    editor.apply();
+
                     MainActivity mainActivity = (MainActivity) MainActivity.mainActivity;
                     dialog.dismiss();
                     mainActivity.finish();

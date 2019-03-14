@@ -7,7 +7,7 @@ public class KakaoUserItem {
     static String profileImagePath;
     static String thumnailPath;
     static String UUID;
-    static long userId;
+    static String userId;
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
@@ -29,7 +29,7 @@ public class KakaoUserItem {
         this.UUID = UUID;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -53,7 +53,7 @@ public class KakaoUserItem {
         return UUID;
     }
 
-    public static long getUserId() {
+    public static String getUserId() {
         return userId;
     }
 
