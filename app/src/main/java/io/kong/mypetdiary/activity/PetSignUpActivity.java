@@ -46,7 +46,7 @@ public class PetSignUpActivity extends AppCompatActivity {
     Button btnJoin, btnCancel;
     ImageButton imgBtnPetBirth, imgBtnPetCome;
 
-    String stUserID, stUserPW, stUserName, stUserBirth, stUserProfile, stUserArea, stPetName, stPetBirth, stPetCome, stPetKind;
+    String stUserID, stUserPW, stUserSalt, stUserName, stUserBirth, stUserProfile, stUserArea, stPetName, stPetBirth, stPetCome, stPetKind;
     int kakao;
 
     @Override
@@ -92,7 +92,7 @@ public class PetSignUpActivity extends AppCompatActivity {
                 stPetName = edPetName.getText().toString();
                 stPetBirth = txtPetBirth.getText().toString();
                 stPetCome = txtPetCome.getText().toString();
-                Call<ResponseBody> call_user = retrofitService.join(stUserID, stUserPW, stUserName, stUserBirth, stUserProfile, stUserArea, kakao);
+                Call<ResponseBody> call_user = retrofitService.join(stUserID, stUserPW, stUserSalt, stUserName, stUserBirth, stUserProfile, stUserArea, kakao);
                 call_user.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -103,7 +103,7 @@ public class PetSignUpActivity extends AppCompatActivity {
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     if (response.isSuccessful()) {
 
-                                        SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserName, stUserBirth, stUserProfile,
+                                        SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserSalt, stUserName, stUserBirth, stUserProfile,
                                                 stUserArea, stPetName, stPetBirth, stPetCome, stPetKind);
                                         Toast.makeText(PetSignUpActivity.this, stUserName + "님 회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(PetSignUpActivity.this, MainActivity.class);
@@ -207,6 +207,7 @@ public class PetSignUpActivity extends AppCompatActivity {
         Intent intent = getIntent();
         stUserID = intent.getExtras().getString("user_id");
         stUserPW = intent.getExtras().getString("user_pw");
+        stUserSalt = intent.getExtras().getString("user_salt");
         stUserName = intent.getExtras().getString("user_name");
         stUserBirth = intent.getExtras().getString("user_birth");
         stUserArea = intent.getExtras().getString("user_area");
@@ -218,6 +219,7 @@ public class PetSignUpActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
+
     }
 
 }

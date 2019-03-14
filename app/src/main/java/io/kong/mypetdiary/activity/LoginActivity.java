@@ -31,6 +31,7 @@ import io.kong.mypetdiary.item.PetItem;
 import io.kong.mypetdiary.item.SaveUserInfo;
 import io.kong.mypetdiary.item.UserItem;
 import io.kong.mypetdiary.service.RetrofitService;
+import io.kong.mypetdiary.service.SHA256Util;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText edLoginID;
     EditText edLoginPW;
 
-    String stUserID, stUserPW, stUserName, stUserArea, stUserBirth, stUserProfile, stPetName, stPetBirth, stPetCome, stPetKind;
+    String stUserID, stUserPW, newPassword, stUserSalt, stUserName, stUserArea, stUserBirth, stUserProfile, stPetName, stPetBirth, stPetCome, stPetKind;
     int kakao;
 
     @Override
@@ -74,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 intent.putExtra("kakao", 0);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -83,20 +85,52 @@ public class LoginActivity extends AppCompatActivity {
                 stUserID = edLoginID.getText().toString();
                 stUserPW = edLoginPW.getText().toString();
 
-                Call<ResponseBody> call = retrofitService.login(stUserID, stUserPW);
-                call.enqueue(new Callback<ResponseBody>() {
+                Call<ResponseBody> saltCall = retrofitService.saltLogin(stUserID);
+                saltCall.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
                             try {
                                 String result = response.body().string();
-                                saveUserInfo(result);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    JSONArray jsonArray = jsonObject.getJSONArray("salt_table");
+                                    if (jsonArray.length() != 0) {
+                                        for (int i = 0; i< jsonArray.length(); i++) {
+                                            JSONObject item = jsonArray.getJSONObject(i);
+                                            stUserSalt = item.getString("user_salt");
+                                            newPassword = SHA256Util.getEncrypt(stUserPW, stUserSalt);
+                                        }
+                                        Call<ResponseBody> lgoinCall = retrofitService.login(stUserID, newPassword);
+                                        lgoinCall.enqueue(new Callback<ResponseBody>() {
+                                            @Override
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                if (response.isSuccessful()) {
+                                                    try {
+                                                        String result = response.body().string();
+                                                        saveUserInfo(result);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                } else {
+                                                    Toast.makeText(LoginActivity.this, "아이디 및 패스워드를 확인해주세요.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                            }
+                                        });
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
-                        } else {
-                            Toast.makeText(LoginActivity.this, "아이디 및 패스워드를 확인해주세요.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -187,22 +221,62 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSuccess(UserProfile result) {
+            public void onSuccess(final UserProfile result) {
 
                 kakaoUserItem.setNickName(result.getNickname());
                 kakaoUserItem.setEmail(result.getEmail());
                 kakaoUserItem.setProfileImagePath(result.getProfileImagePath());
                 kakaoUserItem.setThumnailPath(result.getThumbnailImagePath());
-                kakaoUserItem.setUserId(result.getId());
-                Call<ResponseBody> call = retrofitService.login(kakaoUserItem.getEmail(), String.valueOf(kakaoUserItem.getUserId()));
-                call.enqueue(new Callback<ResponseBody>() {
+                kakaoUserItem.setUserId(String.valueOf(result.getId()));
+
+                Call<ResponseBody> saltCall = retrofitService.saltLogin(kakaoUserItem.getEmail());
+                saltCall.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()) {
+                        if (response.isSuccessful()){
                             try {
-                                String result = response.body().string();
-                                kakao = 1;
-                                saveUserInfo(result);
+                                String resultBody = response.body().string();
+                                try {
+
+                                    JSONObject jsonObject = new JSONObject(resultBody);
+                                    JSONArray jsonArray = jsonObject.getJSONArray("salt_table");
+
+                                    if (jsonArray.length() == 0) {
+                                        final Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                                        intent.putExtra("kakao", 1);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        for (int i = 0; i< jsonArray.length(); i++) {
+                                            JSONObject item = jsonArray.getJSONObject(i);
+                                            stUserSalt = item.getString("user_salt");
+                                            newPassword = SHA256Util.getEncrypt(String.valueOf(result.getId()), stUserSalt);
+                                        }
+
+                                        Call<ResponseBody> loginCall = retrofitService.login(kakaoUserItem.getEmail(), newPassword);
+                                        loginCall.enqueue(new Callback<ResponseBody>() {
+                                            @Override
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                if (response.isSuccessful()) {
+                                                    try {
+                                                        String result = response.body().string();
+                                                        kakao = 1;
+                                                        saveUserInfo(result);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                            }
+                                        });
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -229,6 +303,7 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject item = jsonArray.getJSONObject(i);
                     stUserID = item.getString("user_id");
                     stUserPW = item.getString("user_pw");
+                    stUserSalt = item.getString("user_salt");
                     stUserName = item.getString("user_name");
                     stUserBirth = item.getString("user_birth");
                     stUserProfile = item.getString("user_profile");
@@ -236,6 +311,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     userItem.setStUserID(stUserID);
                     userItem.setStUserPW(stUserPW);
+                    userItem.setStUserSalt(stUserSalt);
                     userItem.setStUserName(stUserName);
                     userItem.setStUserBirth(stUserBirth);
                     userItem.setStUserProfile(stUserProfile);
@@ -269,7 +345,7 @@ public class LoginActivity extends AppCompatActivity {
                                             petItem.setStPetKind(stPetKind);
 
                                         }
-                                        SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserName, stUserBirth, stUserProfile,
+                                        SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserSalt, stUserName, stUserBirth, stUserProfile,
                                                 stUserArea, stPetName, stPetBirth, stPetCome, stPetKind);
                                     }
                                 } catch (JSONException e) {

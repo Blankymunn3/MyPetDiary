@@ -16,6 +16,9 @@ public interface RetrofitService {
     @GET("/user_table")
     Call<ResponseBody> doubleCheck(@Query("user_id") String user_id);
 
+    @GET("/saltLogin")
+    Call<ResponseBody> saltLogin(@Query("user_id") String user_id);
+
     @GET("/login")
     Call<ResponseBody> login(@Query("user_id") String user_id, @Query("user_pw") String user_pw);
 
@@ -23,8 +26,8 @@ public interface RetrofitService {
     Call<ResponseBody> pet_login(@Query("user_id") String user_id);
 
     @POST("/join")
-    Call<ResponseBody> join(@Query("user_id") String user_id, @Query("user_pw") String user_pw, @Query("user_name") String user_name,
-                            @Query("user_birth") String user_birth, @Query("user_profile") String user_profile,
+    Call<ResponseBody> join(@Query("user_id") String user_id, @Query("user_pw") String user_pw, @Query("user_salt") String user_salt,
+                            @Query("user_name") String user_name, @Query("user_birth") String user_birth, @Query("user_profile") String user_profile,
                             @Query("user_area") String user_area, @Query("user_kakao") int user_kakao);
 
     @POST("/pet_join")

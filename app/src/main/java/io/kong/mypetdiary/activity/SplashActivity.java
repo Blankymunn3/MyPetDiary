@@ -22,7 +22,7 @@ import io.kong.mypetdiary.item.UserItem;
 
 public class SplashActivity extends Activity {
 
-    public static SharedPreferences appData;
+    public SharedPreferences appData;
 
     private UserItem userItem;
     private PetItem petItem;
