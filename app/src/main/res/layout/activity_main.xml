@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="io.kong.mypetdiary.activity.MainActivity"
     android:background="#ededed"
-    android:fontFamily="@font/sangsangfont">
+    android:fontFamily="@font/bonggil">
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"

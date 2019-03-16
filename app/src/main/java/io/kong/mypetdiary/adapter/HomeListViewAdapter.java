@@ -84,9 +84,8 @@ public class HomeListViewAdapter extends BaseAdapter {
         stUserID = userItem.getStUserID();
         stDate =listViewItem.getDate();
 
-        if (listViewItem.getDay() < 10) {
-            stDay = "0" + Integer.toString(listViewItem.getDay());
-        }
+        if (listViewItem.getDay() < 10) stDay = "0" + Integer.toString(listViewItem.getDay());
+        else stDay = Integer.toString(listViewItem.getDay());
 
 
         Glide.with(convertView.getContext()).load(listViewItem.getImgUrl()).into(iconImageView);

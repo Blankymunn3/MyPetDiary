@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fontFamily="@font/sangsangfont"
+    android:fontFamily="@font/bonggil"
     tools:context="io.kong.mypetdiary.fragment.HomeFragment">
 
     <LinearLayout
