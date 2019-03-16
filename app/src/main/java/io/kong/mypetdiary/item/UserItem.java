@@ -4,11 +4,11 @@ public class UserItem {
 
     static String stUserID;
     static String stUserPW;
+    static String stUserSalt;
     static String stUserName;
     static String stUserArea;
     static String stUserBirth;
     static String stUserProfile;
-    static String stUserProfile2;
 
 
 
@@ -42,8 +42,8 @@ public class UserItem {
         UserItem.stUserProfile = stUserProfile;
     }
 
-    public void setStUserProfile2(String stUserProfile2) {
-        UserItem.stUserProfile2 = stUserProfile2;
+    public void setStUserSalt(String stUserSalt) {
+        UserItem.stUserSalt = stUserSalt;
     }
 
     public String getStUserID() {
@@ -64,9 +64,8 @@ public class UserItem {
     public String getStUserProfile() {
         return stUserProfile;
     }
-    public String getStUserProfile2() {
-        return stUserProfile2;
+    public String getStUserSalt() {
+        return stUserSalt;
     }
-
 
 }

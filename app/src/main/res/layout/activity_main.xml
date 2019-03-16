@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="io.kong.mypetdiary.activity.MainActivity"
     android:background="#ededed"
-    android:fontFamily="@font/sangsangfont">
+    android:fontFamily="@font/bonggil">
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"
@@ -23,23 +23,35 @@
         android:background="@drawable/fragment_bottom_back"
         android:gravity="center">
 
-        <ImageButton
-            style="@style/CustomImageButton"
-            android:id="@+id/btn_fragment_home"
-            android:src="@drawable/baseline_home_black_36dp"
-            android:background="#ededed"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_main_month"
+            android:background="#ededed"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="1월" />
 
-        <ImageButton
-            style="@style/CustomImageButton"
-            android:id="@+id/btn_fragment_add"
-            android:src="@drawable/baseline_add_circle_outline_black_36dp"
-            android:background="#ededed"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_today_diary"
+            android:background="#ededed"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="오늘의 일기" />
 
-        <ImageButton
-            style="@style/CustomImageButton"
-            android:id="@+id/btn_fragment_my_page"
-            android:src="@drawable/baseline_face_black_36dp"
-            android:background="#ededed"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_my_page"
+            android:background="#ededed"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="내정보" />
 
     </LinearLayout>
 

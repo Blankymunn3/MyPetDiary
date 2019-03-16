@@ -31,6 +31,7 @@ import java.io.IOException;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.KakaoUserItem;
 import io.kong.mypetdiary.service.RetrofitService;
+import io.kong.mypetdiary.service.SHA256Util;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,8 +45,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     Retrofit retrofit;
     RetrofitService retrofitService;
-
-    public static SharedPreferences appData;
 
     KakaoUserItem kakaoUserItem;
     InputMethodManager inputMethodManager;
@@ -177,6 +176,15 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private DatePickerDialog.OnDateSetListener litener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
@@ -194,8 +202,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     protected void init() {
         signUpActivity = SignUpActivity.this;
-
-        appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
 
         inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         View view = getWindow().getDecorView();
@@ -262,9 +268,13 @@ public class SignUpActivity extends AppCompatActivity {
         if (!stUserPW.equals(stUserRePW)) {
             Toast.makeText(SignUpActivity.this, "비밀번호를 확인해주세요..", Toast.LENGTH_SHORT).show();
         } else {
+            String salt = SHA256Util.generateSalt();
+            String newPassword = SHA256Util.getEncrypt(stUserPW, salt);
+
             Intent intent = new Intent(SignUpActivity.this, PetSignUpActivity.class);
             intent.putExtra("user_id", stUserID);
-            intent.putExtra("user_pw", stUserPW);
+            intent.putExtra("user_pw", newPassword);
+            intent.putExtra("user_salt", salt);
             intent.putExtra("user_area", stUserArea);
             intent.putExtra("user_profile", stUserProfile);
             intent.putExtra("user_birth", stUserBirth);

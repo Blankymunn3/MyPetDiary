@@ -1,12 +1,11 @@
-package io.kong.mypetdiary.item;
+package io.kong.mypetdiary.service;
 
 
 import android.content.SharedPreferences;
 
 public class SaveUserInfo {
-    public static void saveUserInfo(SharedPreferences appData, Boolean save, String stUserID, String stUserPW, String stUserSalt, String stUserName,
-                                    String stUserBirth, String stUserProfile, String stUserArea, String stPetName, String stPetBirth, String stPetCome,
-                                    String stPetKind) {
+    public void saveUserInfo(SharedPreferences appData, Boolean save, String stUserID, String stUserPW, String stUserSalt, String stUserName, String stUserBirth, String stUserProfile,
+                                    String stUserArea, String stPetName, String stPetBirth, String stPetCome, String stPetKind) {
 
         SharedPreferences.Editor editor = appData.edit();
 

@@ -44,11 +44,9 @@ public class MyPageListViewAdapter extends BaseAdapter {
 
         HomeListViewItem listViewItem = listViewItemList.get(position);
 
-        iconImageView.setImageDrawable(listViewItem.getIcon());
         txtTitle.setText(listViewItem.getTitle());
         txtContent.setText(listViewItem.getContent());
         txtWeek.setText(listViewItem.getWeek());
-        txtDay.setText(listViewItem.getDay());
 
 
         return convertView;
@@ -64,10 +62,9 @@ public class MyPageListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(Drawable icon, String title, String content, String week, String day) {
+    public void addItem(Drawable icon, String title, String content, String week, int day) {
         HomeListViewItem item = new HomeListViewItem();
 
-        item.setIcon(icon);
         item.setTitle(title);
         item.setContent(content);
         item.setWeek(week);

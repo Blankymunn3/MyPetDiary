@@ -1,4 +1,4 @@
-package io.kong.mypetdiary.item;
+package io.kong.mypetdiary.service;
 
 public class HomeListViewItem {
     private String imgUrl;

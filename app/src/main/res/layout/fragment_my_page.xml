@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fontFamily="@font/sangsangfont"
+    android:fontFamily="@font/bonggil"
     tools:context="io.kong.mypetdiary.fragment.MyPageFragment">
 
 
@@ -25,43 +25,33 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="3sp"
-                    android:layout_marginBottom="3sp"
-                    android:layout_weight="3"
-                    android:gravity="center">
-
-                    <ImageButton
-                        android:id="@+id/btn_my_page_calender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@color/backgroundWhite"
-                        android:src="@drawable/calendar"/>
-                </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:layout_gravity="center">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="35sp"
-                        android:src="@drawable/title_name"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="내정보"
+                        android:textSize="30sp"
+                        android:layout_marginLeft="10sp"
+                        android:gravity="center"
+                        android:layout_gravity="center"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="3sp"
                     android:layout_marginBottom="3sp"
-                    android:layout_weight="3"
-                    android:gravity="center">
+                    android:layout_marginRight="10sp"
+                    android:layout_weight="8"
+                    android:gravity="right">
 
                     <ImageButton
                         android:id="@+id/btn_my_page_menu"
@@ -95,9 +85,13 @@
                         android:id="@+id/imv_my_page_user"
                         android:layout_width="96dp"
                         android:layout_height="96dp"
-                        android:background="@drawable/baseline_face_black_36dp"
+                        android:background="@drawable/face"
                         app:civ_border_color="#FFFFFF"
                         app:civ_border_width="0.5sp" />
+                    <ImageView
+                        android:id="@+id/test_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -123,19 +117,47 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="test" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/txt_my_pet_cnt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="1" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="나의 펫" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="test" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="test" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="test" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -190,18 +212,12 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btn_profile_change"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_line"
-                android:text="프로필사진변경"/>
-
-            <Button
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_line"
                 android:text="로그아웃"/>
+
 
         </LinearLayout>
 

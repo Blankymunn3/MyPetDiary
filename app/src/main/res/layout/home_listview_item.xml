@@ -17,7 +17,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="3"
             android:gravity="center"
             android:layout_marginLeft="10sp"
             android:layout_marginRight="10sp"
@@ -29,27 +28,28 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="1"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txt_list_week"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="월요일"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="3"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/img_list_post"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
+                android:layout_marginRight="3sp"
+                android:scaleType="fitCenter"
                 />
         </LinearLayout>
 
@@ -57,8 +57,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="3sp"
-            android:layout_marginRight="10sp"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -68,15 +66,20 @@
                 android:layout_marginLeft="5sp"
                 android:text="title"
                 android:textColor="#000"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:ellipsize="end"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/txt_list_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
+                android:layout_marginTop="2sp"
                 android:text="content"
-                android:textSize="10sp" />
+                android:textSize="12sp"
+                android:ellipsize="end"
+                android:singleLine="true"/>
 
 
         </LinearLayout>
