@@ -156,11 +156,11 @@ public class PetSignUpActivity extends AppCompatActivity {
         public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
             monthOfYear = monthOfYear + 1;
             if (monthOfYear < 10 && dayOfMonth < 10) {
-                txtPetBirth.setText(year + "-" + 0 + monthOfYear + "-" + 0 + dayOfMonth);
+                txtPetBirth.setText(year + "년" + 0 + monthOfYear + "월" + 0 + dayOfMonth + "일");
             } else if (monthOfYear < 10) {
-                txtPetBirth.setText(year + "-" + 0 + monthOfYear + "-" + dayOfMonth);
+                txtPetBirth.setText(year + "년" + 0 + monthOfYear + "월" + dayOfMonth + "일");
             } else if (dayOfMonth < 10) {
-                txtPetBirth.setText(year + "-" + monthOfYear + "-" + 0 + dayOfMonth);
+                txtPetBirth.setText(year + "년" + monthOfYear + "월" + 0 + dayOfMonth + "일");
             }
 
         }
@@ -171,11 +171,11 @@ public class PetSignUpActivity extends AppCompatActivity {
         public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
             monthOfYear = monthOfYear + 1;
             if (monthOfYear < 10 && dayOfMonth < 10) {
-                txtPetCome.setText(year + "-" + 0 + monthOfYear + "-" + 0 + dayOfMonth);
+                txtPetCome.setText(year + "년" + 0 + monthOfYear + "월" + 0 + dayOfMonth + "일");
             } else if (monthOfYear < 10) {
-                txtPetCome.setText(year + "-" + 0 + monthOfYear + "-" + dayOfMonth);
+                txtPetCome.setText(year + "년" + 0 + monthOfYear + "월" + dayOfMonth + "일");
             } else if (dayOfMonth < 10) {
-                txtPetCome.setText(year + "-" + monthOfYear + "-" + 0 + dayOfMonth);
+                txtPetCome.setText(year + "년" + monthOfYear + "월" + 0 + dayOfMonth + "일");
             }
 
         }

@@ -128,7 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="1" />
+                        android:text="0" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -145,16 +145,17 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txt_month_diary_cnt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="test" />
+                        android:text="0" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="test" />
+                        android:text="이번달 일기" />
 
                 </LinearLayout>
 

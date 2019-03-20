@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import io.kong.mypetdiary.activity.AddPostActivity;
-import io.kong.mypetdiary.activity.MainActivity;
 import io.kong.mypetdiary.adapter.HomeListViewAdapter;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.HomeListViewItem;
@@ -121,7 +120,7 @@ public class HomeFragment extends Fragment {
 
             stDate = Integer.toString(year) + stMonth + stDay;
 
-            final String subTitle = Integer.toString(cal.getActualMaximum(Calendar.DAY_OF_MONTH)) + "일 중에 우리의 추억 ";
+            final String subTitle = Integer.toString(cal.getActualMaximum(Calendar.DAY_OF_MONTH)) + "일 중 우리의 추억 ";
 
             Call<ResponseBody> call = retrofitService.selectDiary(stUserID, stDate);
             final int finalI = i;

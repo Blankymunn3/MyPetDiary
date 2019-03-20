@@ -1,6 +1,7 @@
 package io.kong.mypetdiary.service;
 
 public class HomeListViewItem {
+
     private String imgUrl;
     private String stTitle;
     private String stContent;
@@ -13,49 +14,63 @@ public class HomeListViewItem {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
     public void setTitle(String title) {
-        this.stTitle = title ;
+        this.stTitle = title;
     }
+
     public void setContent(String content) {
         this.stContent = content;
     }
+
     public void setWeek(String week) {
         this.stWeek = week;
     }
+
     public void setDate(String date) {
         this.stDate = date;
     }
+
     public void setDay(int day) {
         this.stDay = day;
     }
+
     public void setWidth(int width) {
         this.width = width;
     }
+
     public void setHeight(int height) {
         this.height = height;
     }
 
     public String getImgUrl() {
-        return this.imgUrl ;
+        return this.imgUrl;
     }
+
     public String getTitle() {
-        return this.stTitle ;
+        return this.stTitle;
     }
+
     public String getContent() {
         return this.stContent;
     }
+
     public String getWeek() {
         return this.stWeek;
     }
+
     public String getDate() {
         return this.stDate;
     }
+
     public int getDay() {
-        return this.stDay ;
+        return this.stDay;
     }
+
     public int getWidth() {
         return this.width;
     }
+
     public int getHeight() {
         return this.height;
     }

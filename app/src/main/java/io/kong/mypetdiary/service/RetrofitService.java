@@ -45,4 +45,10 @@ public interface RetrofitService {
                                    @Query("diary_date") String diary_date, @Query("diary_weather") String diary_weather, @Query("diary_week") String diary_week);
     @GET("/diary")
     Call<ResponseBody> selectDiary(@Query("user_id") String user_id, @Query("diary_date") String diary_date);
+
+    @GET("/diaryCnt")
+    Call<ResponseBody> diaryCnt(@Query("user_id") String user_id);
+
+    @GET("/pet_list")
+    Call<ResponseBody> selectPet(@Query("user_id") String user_id);
 }

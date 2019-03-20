@@ -23,16 +23,24 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeListViewAdapter extends BaseAdapter {
+
     private ArrayList<HomeListViewItem> listViewItemList;
+    Context context;
+    private LayoutInflater mInflater;
 
     Retrofit retrofit;
     RetrofitService retrofitService;
 
-    Context context;
-
     UserItem userItem;
-
     String stDay, stUserID, stDate;
+
+    private class ViewHolder{
+        ImageView iconImageView;
+        TextView txtTitle;
+        TextView txtContent;
+        TextView txtWeek;
+        TextView txtDay;
+    }
 
     public HomeListViewAdapter(ArrayList<HomeListViewItem> listViewItemList, Context getContext) {
         if (listViewItemList == null) {
@@ -40,7 +48,8 @@ public class HomeListViewAdapter extends BaseAdapter {
         } else {
             this.listViewItemList = listViewItemList;
         }
-        context = getContext;
+        this.context = getContext;
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -50,34 +59,31 @@ public class HomeListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        ViewHolder viewHolder;
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
-
         userItem = new UserItem();
-
         final int pos = position;
-
 
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
-
         String stToday = sdf.format(date);
 
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.home_listview_item, parent, false);
+            convertView = mInflater.inflate(R.layout.home_listview_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.iconImageView = convertView.findViewById(R.id.img_list_post);
+            viewHolder.txtTitle = convertView.findViewById(R.id.txt_list_title);
+            viewHolder.txtContent = convertView.findViewById(R.id.txt_list_content);
+            viewHolder.txtWeek = convertView.findViewById(R.id.txt_list_week);
+            viewHolder.txtDay = convertView.findViewById(R.id.txt_list_day);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-
-
-        ImageView iconImageView = convertView.findViewById(R.id.img_list_post);
-        TextView txtTitle = convertView.findViewById(R.id.txt_list_title);
-        TextView txtContent = convertView.findViewById(R.id.txt_list_content);
-        TextView txtWeek = convertView.findViewById(R.id.txt_list_week);
-        TextView txtDay = convertView.findViewById(R.id.txt_list_day);
 
         HomeListViewItem listViewItem = listViewItemList.get(pos);
 
@@ -88,18 +94,18 @@ public class HomeListViewAdapter extends BaseAdapter {
         else stDay = Integer.toString(listViewItem.getDay());
 
 
-        Glide.with(convertView.getContext()).load(listViewItem.getImgUrl()).into(iconImageView);
+        Glide.with(convertView.getContext()).load(listViewItem.getImgUrl()).into(viewHolder.iconImageView);
 
         if (stToday.equals(stDay)) convertView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.back_today_listview));
         else convertView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.back_listview));
 
-        iconImageView.getLayoutParams().width = listViewItem.getWidth();
-        iconImageView.getLayoutParams().height = listViewItem.getHeight();
+        viewHolder.iconImageView.getLayoutParams().width = listViewItem.getWidth();
+        viewHolder.iconImageView.getLayoutParams().height = listViewItem.getHeight();
 
-        txtTitle.setText(listViewItem.getTitle());
-        txtContent.setText(listViewItem.getContent());
-        txtWeek.setText(listViewItem.getWeek() + "요일");
-        txtDay.setText(Integer.toString(listViewItem.getDay()));
+        viewHolder.txtTitle.setText(listViewItem.getTitle());
+        viewHolder.txtContent.setText(listViewItem.getContent());
+        viewHolder.txtWeek.setText(listViewItem.getWeek() + "요일");
+        viewHolder.txtDay.setText(Integer.toString(listViewItem.getDay()));
 
 
         return convertView;

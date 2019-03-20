@@ -1,7 +1,6 @@
 package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,34 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import io.kong.mypetdiary.R;
-import io.kong.mypetdiary.item.HomeListViewItem;
+import io.kong.mypetdiary.service.MyPageListViewItem;
 
 public class MyPageListViewAdapter extends BaseAdapter {
-    private ArrayList<HomeListViewItem> listViewItemList = new ArrayList<HomeListViewItem>();
+    private ArrayList<MyPageListViewItem> listViewItemList = new ArrayList<MyPageListViewItem>();
 
-    public MyPageListViewAdapter() {
+    private static final int ITEM_TYPE_INFO = 0;
+    private static final int ITEM_TYPE_ADD = 1;
+    private static final int ITEM_TYPE_MAX = 2;
 
+    Context context;
+
+    public MyPageListViewAdapter(ArrayList<MyPageListViewItem> listViewItemList, Context getContext) {
+        if (listViewItemList == null) {
+            this.listViewItemList = new ArrayList<MyPageListViewItem>();
+        } else {
+            this.listViewItemList = listViewItemList;
+        }
+        context = getContext;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return ITEM_TYPE_MAX;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return listViewItemList.get(position).getType();
     }
 
     @Override
@@ -28,26 +48,32 @@ public class MyPageListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
         final Context context = parent.getContext();
+        int viewType = getItemViewType(position);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.home_listview_item, parent, false);
+
+            MyPageListViewItem listViewItem = listViewItemList.get(position);
+
+            switch (viewType) {
+                case ITEM_TYPE_INFO:
+                    convertView = inflater.inflate(R.layout.mypage_listview_item, parent, false);
+
+                    ImageView imvPet = convertView.findViewById(R.id.imv_page_pet);
+                    TextView txtPetName = convertView.findViewById(R.id.txt_page_name);
+                    TextView txtBirth = convertView.findViewById(R.id.txt_page_birth);
+
+
+                    txtPetName.setText(listViewItem.getStPetName());
+                    txtBirth.setText(listViewItem.getStPetBirth());
+                    break;
+                case ITEM_TYPE_ADD:
+                    convertView = inflater.inflate(R.layout.mypage_listview_last, parent, false);
+
+                    break;
+            }
         }
-
-        ImageView iconImageView = convertView.findViewById(R.id.img_list_post);
-        TextView txtTitle = convertView.findViewById(R.id.txt_list_title);
-        TextView txtContent = convertView.findViewById(R.id.txt_list_content);
-        TextView txtWeek = convertView.findViewById(R.id.txt_list_week);
-        TextView txtDay = convertView.findViewById(R.id.txt_list_day);
-
-        HomeListViewItem listViewItem = listViewItemList.get(position);
-
-        txtTitle.setText(listViewItem.getTitle());
-        txtContent.setText(listViewItem.getContent());
-        txtWeek.setText(listViewItem.getWeek());
-
 
         return convertView;
     }
@@ -62,13 +88,20 @@ public class MyPageListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(Drawable icon, String title, String content, String week, int day) {
-        HomeListViewItem item = new HomeListViewItem();
+    public void addItem(int type, String imgPetUri, String petName, String petBirth) {
+        MyPageListViewItem item = new MyPageListViewItem();
 
-        item.setTitle(title);
-        item.setContent(content);
-        item.setWeek(week);
-        item.setDay(day);
+        item.setType(ITEM_TYPE_INFO);
+        item.setImgPetUri(imgPetUri);
+        item.setStPetName(petName);
+        item.setStPetBirth(petBirth);
+
+        listViewItemList.add(item);
+    }
+
+    public void addItem(int type) {
+        MyPageListViewItem item = new MyPageListViewItem();
+        item.setType(ITEM_TYPE_ADD);
 
         listViewItemList.add(item);
     }
