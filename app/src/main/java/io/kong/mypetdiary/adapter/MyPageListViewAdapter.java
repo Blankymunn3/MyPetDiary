@@ -21,6 +21,13 @@ public class MyPageListViewAdapter extends BaseAdapter {
     private static final int ITEM_TYPE_MAX = 2;
 
     Context context;
+    private LayoutInflater mInflater;
+
+    private class ViewHolder {
+        ImageView imvPet;
+        TextView txtPetName;
+        TextView txtBirth;
+    }
 
     public MyPageListViewAdapter(ArrayList<MyPageListViewItem> listViewItemList, Context getContext) {
         if (listViewItemList == null) {
@@ -28,7 +35,8 @@ public class MyPageListViewAdapter extends BaseAdapter {
         } else {
             this.listViewItemList = listViewItemList;
         }
-        context = getContext;
+        this.context = getContext;
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -48,31 +56,36 @@ public class MyPageListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final Context context = parent.getContext();
+        ViewHolder viewHolder;
         int viewType = getItemViewType(position);
 
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            MyPageListViewItem listViewItem = listViewItemList.get(position);
+            viewHolder = new ViewHolder();
 
             switch (viewType) {
                 case ITEM_TYPE_INFO:
-                    convertView = inflater.inflate(R.layout.mypage_listview_item, parent, false);
+                    convertView = mInflater.inflate(R.layout.mypage_listview_item, parent, false);
 
-                    ImageView imvPet = convertView.findViewById(R.id.imv_page_pet);
-                    TextView txtPetName = convertView.findViewById(R.id.txt_page_name);
-                    TextView txtBirth = convertView.findViewById(R.id.txt_page_birth);
+                    viewHolder.imvPet = convertView.findViewById(R.id.imv_page_pet);
+                    viewHolder.txtPetName = convertView.findViewById(R.id.txt_page_name);
+                    viewHolder.txtBirth = convertView.findViewById(R.id.txt_page_birth);
+                    convertView.setTag(viewHolder);
 
+                    MyPageListViewItem listViewItem = listViewItemList.get(position);
 
-                    txtPetName.setText(listViewItem.getStPetName());
-                    txtBirth.setText(listViewItem.getStPetBirth());
+                    viewHolder.txtPetName.setText(listViewItem.getStPetName());
+                    viewHolder.txtBirth.setText(listViewItem.getStPetBirth());
+
                     break;
                 case ITEM_TYPE_ADD:
-                    convertView = inflater.inflate(R.layout.mypage_listview_last, parent, false);
+                    convertView = mInflater.inflate(R.layout.mypage_listview_last, parent, false);
+                    convertView.setTag(viewHolder);
 
                     break;
             }
+
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
         return convertView;

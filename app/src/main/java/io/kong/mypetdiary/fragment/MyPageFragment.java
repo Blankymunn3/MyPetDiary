@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -30,6 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.kong.mypetdiary.activity.AddPetActivity;
 import io.kong.mypetdiary.activity.LoginActivity;
 import io.kong.mypetdiary.activity.SetImageActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
@@ -245,7 +245,20 @@ public class MyPageFragment extends Fragment {
 
         Collections.sort(itemList, textAsc);
         adapter.notifyDataSetChanged();
-        
+
+
+        myPageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (petCnt == i) {
+                    Intent intent = new Intent(getContext(), AddPetActivity.class);
+                    startActivity(intent);
+                } else {
+
+                }
+            }
+        });
+
         return rootView;
     }
 
