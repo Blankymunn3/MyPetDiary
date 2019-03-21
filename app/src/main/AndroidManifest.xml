@@ -41,6 +41,9 @@
         <activity android:name=".activity.SetImageActivity"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"/>
+        <activity android:name=".activity.AddPetActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"/>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
     </application>

@@ -3,7 +3,6 @@ package io.kong.mypetdiary.service;
 public class MyPageListViewItem {
     private int type;
 
-    private String stBrothers;
     private String imgPetUri;
     private String stPetName;
     private String stPetBirth;
@@ -11,10 +10,6 @@ public class MyPageListViewItem {
 
     public int getType() {
         return type;
-    }
-
-    public String getStBrothers() {
-        return stBrothers;
     }
 
     public String getImgPetUri() {
@@ -32,11 +27,6 @@ public class MyPageListViewItem {
     public void setType(int type) {
         this.type = type;
     }
-
-    public void setStBrothers(String stBrothers) {
-        this.stBrothers = stBrothers;
-    }
-
 
     public void setImgPetUri(String imgPetUri) {
         this.imgPetUri = imgPetUri;
