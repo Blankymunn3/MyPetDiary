@@ -90,7 +90,7 @@
             android:layout_weight="5.4"
             android:gravity="center"
             android:textSize="15sp"
-            android:text="이름"/>
+            android:text="@string/name"/>
         <EditText
             android:id="@+id/ed_name"
             android:inputType="text"
@@ -107,7 +107,7 @@
             android:layout_weight="2.93"
             android:gravity="center"
             android:textSize="15sp"
-            android:text="생년월일"/>
+            android:text="@string/birth"/>
 
         <TextView
             android:id="@+id/txt_birth"
@@ -167,7 +167,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5sp"
             android:background="@drawable/background_line"
-            android:text="취소"/>
+            android:text="@string/cancel"/>
     </LinearLayout>
 
 </LinearLayout>

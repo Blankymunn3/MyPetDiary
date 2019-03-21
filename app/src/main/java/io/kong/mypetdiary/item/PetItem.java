@@ -2,6 +2,7 @@ package io.kong.mypetdiary.item;
 
 public class PetItem {
 
+    static String stPetUrl;
     static String stPetName;
     static String stPetBirth;
     static String stPetKind;

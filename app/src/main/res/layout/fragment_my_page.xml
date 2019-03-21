@@ -165,6 +165,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="나의 펫 목록"
+                    android:layout_margin="10sp"
+                    android:layout_marginLeft="20sp"
+                    android:textSize="20sp"
+                    android:textColor="#000"/>
 
                 <ListView
                     android:id="@+id/myPageListView"

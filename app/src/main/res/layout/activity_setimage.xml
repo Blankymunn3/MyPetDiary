@@ -29,7 +29,7 @@
             style="@style/CustomPopUpButton"/>
         <Button
             android:id="@+id/btn_close_pop"
-            android:text="돌아가기"
+            android:text="@string/cancel"
             style="@style/CustomPopUpButton"/>
 
     </LinearLayout>

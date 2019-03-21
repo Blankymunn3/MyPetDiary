@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#fff">
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imv_new_pet"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:background="@drawable/face"
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="0.5sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/addPetCustomTextView"
+                android:text="@string/name"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"/>
+
+            <TextView
+                style="@style/addPetCustomTextView"
+                android:text="@string/birth"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"/>
+
+            <TextView
+                style="@style/addPetCustomTextView"
+                android:text="@string/pet_come"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"/>
+
+            <TextView
+                style="@style/addPetCustomTextView"
+                android:text="@string/pet_kind"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+
+            <TextView
+                android:id="@+id/txt_select_pet_name"
+                style="@style/addPetCustomTextView"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"/>
+
+
+            <TextView
+                android:id="@+id/txt_select_pet_birth"
+                style="@style/addPetCustomTextView"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"/>
+
+            <TextView
+                android:id="@+id/txt_select_pet_come"
+                style="@style/addPetCustomTextView"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"/>
+
+            <TextView
+                android:id="@+id/txt_select_pet_kind"
+                style="@style/addPetCustomTextView"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear"
+        android:layout_marginBottom="5sp">
+        <Button
+            android:id="@+id/btn_select_pet_modify"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5sp"
+            android:background="@drawable/background_line"
+            android:text="수정하"
+            android:fontFamily="@font/bonggil"/>
+        <Button
+            android:id="@+id/btn_select_pet_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5sp"
+            android:background="@drawable/background_line"
+            android:text="@string/cancel"
+            android:fontFamily="@font/bonggil"/>
+    </LinearLayout>
+
+</LinearLayout>

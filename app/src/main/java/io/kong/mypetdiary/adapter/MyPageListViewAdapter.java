@@ -101,13 +101,15 @@ public class MyPageListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(int type, String imgPetUri, String petName, String petBirth) {
+    public void addItem(int type, String imgPetUri, String petName, String petBirth, String petCome, String petKind) {
         MyPageListViewItem item = new MyPageListViewItem();
 
         item.setType(ITEM_TYPE_INFO);
         item.setImgPetUri(imgPetUri);
         item.setStPetName(petName);
         item.setStPetBirth(petBirth);
+        item.setStPetCome(petCome);
+        item.setStPetKind(petKind);
 
         listViewItemList.add(item);
     }

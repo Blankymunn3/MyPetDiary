@@ -199,7 +199,7 @@ public class PetSignUpActivity extends AppCompatActivity {
         imgBtnPetBirth = findViewById(R.id.imgBtn_petBirth);
         imgBtnPetCome = findViewById(R.id.imgBtn_petCome);
 
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.pet_kind, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.arr_pet_kind, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spPetKind.setAdapter(adapter);
 

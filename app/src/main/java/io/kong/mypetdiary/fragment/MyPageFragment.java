@@ -31,6 +31,7 @@ import java.util.Comparator;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.kong.mypetdiary.activity.AddPetActivity;
 import io.kong.mypetdiary.activity.LoginActivity;
+import io.kong.mypetdiary.activity.SelectMyPetActivity;
 import io.kong.mypetdiary.activity.SetImageActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
@@ -45,6 +46,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
+import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_BIRTH;
+import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_COME;
+import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_KIND;
+import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_NAME;
+import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_URL;
 
 
 public class MyPageFragment extends Fragment {
@@ -65,7 +71,7 @@ public class MyPageFragment extends Fragment {
 
     TextView txtPetCnt, txtDiaryCnt;
 
-    String getImageUrl, stPetName, stPetBirth, stPetUrl;
+    String getImageUrl, stPetName, stPetBirth, stPetUrl, stPetCome, stPetKind;
     int petCnt = 0, diaryCnt = 0;
 
     ArrayList<MyPageListViewItem> itemList = new ArrayList<MyPageListViewItem>();
@@ -206,8 +212,11 @@ public class MyPageFragment extends Fragment {
                                     stPetUrl = item.getString("pet_image");
                                     stPetName = item.getString("pet_name");
                                     stPetBirth = item.getString("pet_birth");
+                                    stPetCome = item.getString("pet_come");
+                                    stPetKind = item.getString("pet_kind");
 
-                                    adapter.addItem(1, stPetUrl, stPetName, stPetBirth);
+
+                                    adapter.addItem(1, stPetUrl, stPetName, stPetBirth, stPetCome, stPetKind);
                                     Comparator<MyPageListViewItem> textAsc = new Comparator<MyPageListViewItem>() {
                                         @Override
                                         public int compare(MyPageListViewItem item1, MyPageListViewItem item2) {
@@ -254,6 +263,20 @@ public class MyPageFragment extends Fragment {
                     Intent intent = new Intent(getContext(), AddPetActivity.class);
                     startActivity(intent);
                 } else {
+                    stPetUrl = itemList.get(i).getImgPetUri();
+                    stPetName = itemList.get(i).getStPetName();
+                    stPetBirth = itemList.get(i).getStPetBirth();
+                    stPetCome = itemList.get(i).getStPetCome();
+                    stPetKind = itemList.get(i).getStPetKind();
+
+                    Intent intent = new Intent(getContext(), SelectMyPetActivity.class);
+                    intent.putExtra(EXTRA_PET_URL, stPetUrl);
+                    intent.putExtra(EXTRA_PET_NAME, stPetName);
+                    intent.putExtra(EXTRA_PET_BIRTH, stPetBirth);
+                    intent.putExtra(EXTRA_PET_COME, stPetCome);
+                    intent.putExtra(EXTRA_PET_KIND, stPetKind);
+
+                    startActivity(intent);
 
                 }
             }

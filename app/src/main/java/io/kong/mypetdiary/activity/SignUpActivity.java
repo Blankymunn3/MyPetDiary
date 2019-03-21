@@ -231,7 +231,7 @@ public class SignUpActivity extends AppCompatActivity {
         Intent intent = getIntent();
         kakao = intent.getExtras().getInt("kakao");
 
-        ArrayAdapter areaArrayAdapter = ArrayAdapter.createFromResource(SignUpActivity.this, R.array.user_area, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter areaArrayAdapter = ArrayAdapter.createFromResource(SignUpActivity.this, R.array.arr_user_area, android.R.layout.simple_spinner_dropdown_item);
         areaArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spUserArea.setAdapter(areaArrayAdapter);
 
