@@ -14,7 +14,7 @@ public class MyPageListViewItem {
     private String stPetName;
     private String stPetBirth;
     private String stPetCome;
-    private String stPetKind;
+    private int stPetKind;
 
 
     public int getType() {
@@ -37,7 +37,7 @@ public class MyPageListViewItem {
         return stPetCome;
     }
 
-    public String getStPetKind() {
+    public int getStPetKind() {
         return stPetKind;
     }
 
@@ -61,7 +61,7 @@ public class MyPageListViewItem {
         this.stPetCome = stPetCome;
     }
 
-    public void setStPetKind(String stPetKind) {
+    public void setStPetKind(int stPetKind) {
         this.stPetKind = stPetKind;
     }
 

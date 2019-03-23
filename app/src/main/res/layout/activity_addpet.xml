@@ -90,7 +90,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="2019-01-01"
+                    android:text="2019년01월01일"
                     android:textSize="15sp" />
 
                 <ImageButton
@@ -110,7 +110,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="2019-01-01"
+                    android:text="2019년01월01일"
                     android:textSize="15sp" />
 
                 <ImageButton

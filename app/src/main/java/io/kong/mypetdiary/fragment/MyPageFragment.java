@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -71,8 +72,8 @@ public class MyPageFragment extends Fragment {
 
     TextView txtPetCnt, txtDiaryCnt;
 
-    String getImageUrl, stPetName, stPetBirth, stPetUrl, stPetCome, stPetKind;
-    int petCnt = 0, diaryCnt = 0;
+    String getImageUrl, stPetName, stPetBirth, stPetUrl, stPetCome;
+    int petCnt = 0, diaryCnt = 0, petKind;
 
     ArrayList<MyPageListViewItem> itemList = new ArrayList<MyPageListViewItem>();
 
@@ -92,7 +93,7 @@ public class MyPageFragment extends Fragment {
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
 
-        final ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_my_page, container, false);
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_my_page, container, false);
         final DrawerLayout drawerLayout = rootView.findViewById(R.id.drawerLayout);
         final View drawerView = rootView.findViewById(R.id.drawer);
 
@@ -148,15 +149,16 @@ public class MyPageFragment extends Fragment {
         txtPetCnt = rootView.findViewById(R.id.txt_my_pet_cnt);
         txtDiaryCnt = rootView.findViewById(R.id.txt_month_diary_cnt);
 
-        if(userProfile.equals("null")) imvMyPageUser.setImageResource(R.drawable.face);
-        else Glide.with(getActivity()).load("http://13.209.93.19:3000/download?user_id=" + userID).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imvMyPageUser);
+        if (userProfile.equals("null")) imvMyPageUser.setImageResource(R.drawable.face);
+        else
+            Glide.with(getActivity()).load("http://13.209.93.19:3000/download?user_id=" + userID).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imvMyPageUser);
 
 
         imvMyPageUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(rootView.getContext(), SetImageActivity.class);
-                startActivityForResult(intent,TAG_GETIMAGESETTING);
+                startActivityForResult(intent, TAG_GETIMAGESETTING);
             }
         });
 
@@ -167,7 +169,7 @@ public class MyPageFragment extends Fragment {
         diaryCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     try {
                         String result = response.body().string();
 
@@ -207,20 +209,20 @@ public class MyPageFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(result);
                             JSONArray jsonArray = jsonObject.getJSONArray("pet_list");
                             if (jsonArray.length() != 0) {
-                                for(int i = 0; i < jsonArray.length(); i++) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject item = jsonArray.getJSONObject(i);
                                     stPetUrl = item.getString("pet_image");
                                     stPetName = item.getString("pet_name");
                                     stPetBirth = item.getString("pet_birth");
                                     stPetCome = item.getString("pet_come");
-                                    stPetKind = item.getString("pet_kind");
+                                    petKind = item.getInt("pet_kind");
 
 
-                                    adapter.addItem(1, stPetUrl, stPetName, stPetBirth, stPetCome, stPetKind);
+                                    adapter.addItem(1, stPetUrl, stPetName, stPetBirth, stPetCome, petKind);
                                     Comparator<MyPageListViewItem> textAsc = new Comparator<MyPageListViewItem>() {
                                         @Override
                                         public int compare(MyPageListViewItem item1, MyPageListViewItem item2) {
-                                            return (item1.getType() - item2.getType()) ;
+                                            return (item1.getType() - item2.getType());
                                         }
                                     };
 
@@ -248,7 +250,7 @@ public class MyPageFragment extends Fragment {
         Comparator<MyPageListViewItem> textAsc = new Comparator<MyPageListViewItem>() {
             @Override
             public int compare(MyPageListViewItem item1, MyPageListViewItem item2) {
-                return (item1.getType() - item2.getType()) ;
+                return (item1.getType() - item2.getType());
             }
         };
 
@@ -267,14 +269,14 @@ public class MyPageFragment extends Fragment {
                     stPetName = itemList.get(i).getStPetName();
                     stPetBirth = itemList.get(i).getStPetBirth();
                     stPetCome = itemList.get(i).getStPetCome();
-                    stPetKind = itemList.get(i).getStPetKind();
+                    petKind = itemList.get(i).getStPetKind();
 
                     Intent intent = new Intent(getContext(), SelectMyPetActivity.class);
                     intent.putExtra(EXTRA_PET_URL, stPetUrl);
                     intent.putExtra(EXTRA_PET_NAME, stPetName);
                     intent.putExtra(EXTRA_PET_BIRTH, stPetBirth);
                     intent.putExtra(EXTRA_PET_COME, stPetCome);
-                    intent.putExtra(EXTRA_PET_KIND, stPetKind);
+                    intent.putExtra(EXTRA_PET_KIND, petKind);
 
                     startActivity(intent);
 
@@ -284,5 +286,4 @@ public class MyPageFragment extends Fragment {
 
         return rootView;
     }
-
 }

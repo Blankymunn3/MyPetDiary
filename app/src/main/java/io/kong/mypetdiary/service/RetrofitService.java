@@ -32,7 +32,11 @@ public interface RetrofitService {
 
     @POST("/pet_join")
     Call<ResponseBody> pet_join(@Query("user_id") String user_id, @Query("pet_name") String pet_name, @Query("pet_birth") String pet_birth,
-                                @Query("pet_come") String pet_come, @Query("pet_kind") String pet_kind);
+                                @Query("pet_come") String pet_come, @Query("pet_kind") int pet_kind);
+
+    @POST("/pet_update")
+    Call<ResponseBody> pet_update(@Query("pet_image") String pet_image, @Query("pet_name") String pet_name, @Query("pet_birth") String pet_birth,
+                                  @Query("pet_come") String pet_come, @Query("pet_kind") int pet_kind);
 
     @Multipart
     @POST("uploadProfile")

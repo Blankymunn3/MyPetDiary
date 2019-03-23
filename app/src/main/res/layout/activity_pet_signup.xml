@@ -62,7 +62,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:textSize="15sp"
-            android:text="2019-01-01"/>
+            android:text="2019년01월01일"/>
 
         <ImageButton
             android:id="@+id/imgBtn_petBirth"
@@ -92,7 +92,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:textSize="15sp"
-            android:text="2019-01-01"/>
+            android:text="2019년01월01일"/>
 
         <ImageButton
             android:id="@+id/imgBtn_petCome"

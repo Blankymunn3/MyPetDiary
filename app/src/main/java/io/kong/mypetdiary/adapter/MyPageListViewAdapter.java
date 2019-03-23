@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.service.MyPageListViewItem;
@@ -73,8 +75,14 @@ public class MyPageListViewAdapter extends BaseAdapter {
 
                     MyPageListViewItem listViewItem = listViewItemList.get(position);
 
+                    int year = Integer.parseInt(listViewItem.getStPetBirth().substring(0, 4));
+                    int month = Integer.parseInt(listViewItem.getStPetBirth().substring(5,7));
+                    int day = Integer.parseInt(listViewItem.getStPetBirth().substring(8,10));
+
+                    int d_day = caldate(year, month, day);
+
                     viewHolder.txtPetName.setText(listViewItem.getStPetName());
-                    viewHolder.txtBirth.setText(listViewItem.getStPetBirth());
+                    viewHolder.txtBirth.setText(Integer.toString(d_day) + "일 째");
 
                     break;
                 case ITEM_TYPE_ADD:
@@ -101,7 +109,7 @@ public class MyPageListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(int type, String imgPetUri, String petName, String petBirth, String petCome, String petKind) {
+    public void addItem(int type, String imgPetUri, String petName, String petBirth, String petCome, int petKind) {
         MyPageListViewItem item = new MyPageListViewItem();
 
         item.setType(ITEM_TYPE_INFO);
@@ -119,5 +127,25 @@ public class MyPageListViewAdapter extends BaseAdapter {
         item.setType(ITEM_TYPE_ADD);
 
         listViewItemList.add(item);
+    }
+
+
+    public int caldate(int myear, int mmonth, int mday) {
+        try {
+
+            GregorianCalendar cal = new GregorianCalendar();
+            long currentTime = cal.getTimeInMillis() / (1000*60*60*24);
+            cal.set(myear,mmonth - 1 , mday);
+            long birthTime = cal.getTimeInMillis() / (1000*60*60*24);
+            int interval = (int)( birthTime - currentTime );
+
+            interval = interval - interval - interval + 1;
+
+            return interval;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

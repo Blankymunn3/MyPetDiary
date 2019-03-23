@@ -68,31 +68,65 @@
             android:layout_gravity="center"
             android:layout_weight="1">
 
+            <LinearLayout style="@style/SignUpActivityLinear"
+                android:layout_marginTop="5sp"
+                android:layout_marginBottom="5sp">
 
-            <TextView
-                android:id="@+id/txt_select_pet_name"
-                style="@style/addPetCustomTextView"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="10sp"/>
+                <EditText
+                    android:id="@+id/ed_my_pet_name"
+                    style="@style/SignUpActivityEditText"
+                    android:inputType="text" />
+            </LinearLayout>
 
+            <LinearLayout style="@style/SignUpActivityLinear">
 
-            <TextView
-                android:id="@+id/txt_select_pet_birth"
-                style="@style/addPetCustomTextView"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="10sp"/>
+                <TextView
+                    android:id="@+id/txt_my_pet_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="2019-01-01"
+                    android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/txt_select_pet_come"
-                style="@style/addPetCustomTextView"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="10sp"/>
+                <ImageButton
+                    android:id="@+id/imgBtn_my_pet_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="#fff"
+                    android:src="@drawable/calendar" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/txt_select_pet_kind"
-                style="@style/addPetCustomTextView"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="10sp"/>
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <TextView
+                    android:id="@+id/txt_my_pet_come"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="2019-01-01"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/imgBtn_my_pet_come"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="#fff"
+                    android:src="@drawable/calendar" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <Spinner
+                    android:id="@+id/sp_my_pet_kind"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -107,7 +141,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="5sp"
             android:background="@drawable/background_line"
-            android:text="수정하"
+            android:text="수정하기"
             android:fontFamily="@font/bonggil"/>
         <Button
             android:id="@+id/btn_select_pet_cancel"
