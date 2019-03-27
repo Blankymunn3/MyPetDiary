@@ -150,9 +150,10 @@ public class MyPageFragment extends Fragment {
         txtDiaryCnt = rootView.findViewById(R.id.txt_month_diary_cnt);
 
         if (userProfile.equals("null")) imvMyPageUser.setImageResource(R.drawable.face);
-        else
-            Glide.with(getActivity()).load("http://13.209.93.19:3000/download?user_id=" + userID).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imvMyPageUser);
-
+        else {
+            Glide.with(getActivity()).load("http://13.209.93.19:3000/download?user_id=" + userID)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imvMyPageUser);
+        }
 
         imvMyPageUser.setOnClickListener(new View.OnClickListener() {
             @Override

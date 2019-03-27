@@ -87,7 +87,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="2019-01-01"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/bonggil"/>
 
                 <ImageButton
                     android:id="@+id/imgBtn_my_pet_birth"
@@ -107,7 +108,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="2019-01-01"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/bonggil"/>
 
                 <ImageButton
                     android:id="@+id/imgBtn_my_pet_come"
@@ -125,7 +127,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/bonggil"/>
             </LinearLayout>
 
         </LinearLayout>

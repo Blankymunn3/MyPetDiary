@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +36,7 @@ public class HomeListViewAdapter extends BaseAdapter {
     String stDay, stUserID, stDate;
 
     private class ViewHolder{
+        LinearLayout linearLayout;
         ImageView iconImageView;
         TextView txtTitle;
         TextView txtContent;
@@ -75,6 +77,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.home_listview_item, parent, false);
             viewHolder = new ViewHolder();
+            viewHolder.linearLayout = convertView.findViewById(R.id.home_linear);
             viewHolder.iconImageView = convertView.findViewById(R.id.img_list_post);
             viewHolder.txtTitle = convertView.findViewById(R.id.txt_list_title);
             viewHolder.txtContent = convertView.findViewById(R.id.txt_list_content);
@@ -99,8 +102,16 @@ public class HomeListViewAdapter extends BaseAdapter {
         if (stToday.equals(stDay)) convertView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.back_today_listview));
         else convertView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.back_listview));
 
+        String getTitle = listViewItem.getTitle();
+
+        if (getTitle == null) viewHolder.linearLayout.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        else viewHolder.linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
+
+
         viewHolder.iconImageView.getLayoutParams().width = listViewItem.getWidth();
         viewHolder.iconImageView.getLayoutParams().height = listViewItem.getHeight();
+
 
         viewHolder.txtTitle.setText(listViewItem.getTitle());
         viewHolder.txtContent.setText(listViewItem.getContent());

@@ -16,10 +16,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import io.kong.mypetdiary.activity.AddPostActivity;
 import io.kong.mypetdiary.adapter.HomeListViewAdapter;
@@ -194,6 +196,12 @@ public class HomeFragment extends Fragment {
 
         Collections.sort(itemList, textAsc);
         adapter.notifyDataSetChanged();
+
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd");
+        String stToday = sdf.format(date);
+
+        mainListView.setSelection(10);
 
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

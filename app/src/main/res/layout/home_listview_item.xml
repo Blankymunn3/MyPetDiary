@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:id="@+id/home_linear"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/back_listview">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10sp"
         android:layout_marginTop="5sp"
         android:layout_marginBottom="5sp"
@@ -15,11 +16,12 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:gravity="center"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="10sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
             android:orientation="vertical">
 
             <TextView
@@ -40,30 +42,35 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_gravity="center">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img_list_post"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_marginRight="3sp"
-                android:scaleType="fitCenter"
-                />
+                android:layout_gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="0.5sp" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="3sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="3sp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txt_list_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5sp"
+                android:layout_marginStart="5sp"
                 android:text="title"
                 android:textColor="#000"
                 android:textSize="18sp"
@@ -72,9 +79,9 @@
 
             <TextView
                 android:id="@+id/txt_list_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5sp"
+                android:layout_marginStart="5sp"
                 android:layout_marginTop="2sp"
                 android:text="content"
                 android:textSize="15sp"

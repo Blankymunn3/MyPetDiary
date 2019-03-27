@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -81,6 +84,9 @@ public class MyPageListViewAdapter extends BaseAdapter {
 
                     int d_day = caldate(year, month, day);
 
+
+                    Glide.with(context).load(listViewItem.getImgPetUri()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true).into(viewHolder.imvPet);
                     viewHolder.txtPetName.setText(listViewItem.getStPetName());
                     viewHolder.txtBirth.setText(Integer.toString(d_day) + "일 째");
 
