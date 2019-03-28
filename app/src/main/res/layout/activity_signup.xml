@@ -38,7 +38,7 @@
         <Button
             android:id="@+id/btn_doubleCheck"
             android:layout_width="match_parent"
-            android:layout_height="50sp"
+            android:layout_height="match_parent"
             android:background="@drawable/background_line"
             android:layout_marginLeft="5sp"
             android:layout_marginRight="5sp"

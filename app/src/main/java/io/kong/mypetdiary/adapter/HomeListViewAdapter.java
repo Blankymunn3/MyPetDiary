@@ -1,33 +1,36 @@
 package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.activity.AddPostActivity;
+import io.kong.mypetdiary.activity.MainActivity;
 import io.kong.mypetdiary.item.HomeListViewItem;
 import io.kong.mypetdiary.item.UserItem;
 import io.kong.mypetdiary.service.RetrofitService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeListViewAdapter extends BaseAdapter {
+public class HomeListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<HomeListViewItem> listViewItemList;
     Context context;
-    private LayoutInflater mInflater;
 
     Retrofit retrofit;
     RetrofitService retrofitService;
@@ -35,58 +38,60 @@ public class HomeListViewAdapter extends BaseAdapter {
     UserItem userItem;
     String stDay, stUserID, stDate;
 
-    private class ViewHolder{
-        LinearLayout linearLayout;
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        CardView linearLayout;
         ImageView iconImageView;
         TextView txtTitle;
         TextView txtContent;
         TextView txtWeek;
         TextView txtDay;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            linearLayout = itemView.findViewById(R.id.home_linear);
+            iconImageView = itemView.findViewById(R.id.img_list_post);
+            txtTitle = itemView.findViewById(R.id.txt_list_title);
+            txtContent = itemView.findViewById(R.id.txt_list_content);
+            txtWeek = itemView.findViewById(R.id.txt_list_week);
+            txtDay = itemView.findViewById(R.id.txt_list_day);
+        }
     }
 
+    private ArrayList<HomeListViewItem> listViewItemList;
     public HomeListViewAdapter(ArrayList<HomeListViewItem> listViewItemList, Context getContext) {
         if (listViewItemList == null) {
             this.listViewItemList = new ArrayList<HomeListViewItem>();
         } else {
             this.listViewItemList = listViewItemList;
         }
+        this.listViewItemList = listViewItemList;
         this.context = getContext;
-        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_listview_item, parent, false);
+
+        return new ViewHolder(v);
     }
 
     @Override
-    public int getCount() {
-        return listViewItemList.size();
-    }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        ViewHolder viewHolder = (ViewHolder) holder;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
         userItem = new UserItem();
-        final int pos = position;
 
+        final int pos = position;
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
         String stToday = sdf.format(date);
-
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.home_listview_item, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.linearLayout = convertView.findViewById(R.id.home_linear);
-            viewHolder.iconImageView = convertView.findViewById(R.id.img_list_post);
-            viewHolder.txtTitle = convertView.findViewById(R.id.txt_list_title);
-            viewHolder.txtContent = convertView.findViewById(R.id.txt_list_content);
-            viewHolder.txtWeek = convertView.findViewById(R.id.txt_list_week);
-            viewHolder.txtDay = convertView.findViewById(R.id.txt_list_day);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
 
         HomeListViewItem listViewItem = listViewItemList.get(pos);
 
@@ -97,17 +102,10 @@ public class HomeListViewAdapter extends BaseAdapter {
         else stDay = Integer.toString(listViewItem.getDay());
 
 
-        Glide.with(convertView.getContext()).load(listViewItem.getImgUrl()).into(viewHolder.iconImageView);
+        Glide.with(context).load(listViewItem.getImgUrl()).into(viewHolder.iconImageView);
 
-        if (stToday.equals(stDay)) convertView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.back_today_listview));
-        else convertView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.back_listview));
-
-        String getTitle = listViewItem.getTitle();
-
-        if (getTitle == null) viewHolder.linearLayout.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        else viewHolder.linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-
-
+        if (stToday.equals(stDay)) viewHolder.linearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.back_today_listview));
+        else viewHolder.linearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.back_listview));
 
         viewHolder.iconImageView.getLayoutParams().width = listViewItem.getWidth();
         viewHolder.iconImageView.getLayoutParams().height = listViewItem.getHeight();
@@ -118,8 +116,33 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.txtWeek.setText(listViewItem.getWeek() + "요일");
         viewHolder.txtDay.setText(Integer.toString(listViewItem.getDay()));
 
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity mainActivity = new MainActivity();
+                Intent intent = new Intent(context, AddPostActivity.class);
+                int getPos = pos;
+                getPos += 1;
+                String stMonth, stDay;
 
-        return convertView;
+                final Calendar cal = Calendar.getInstance();
+                final int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+
+                if(month+1 < 10) stMonth = "0" + Integer.toString(month+1);
+                else stMonth = Integer.toString(month+1);
+
+                if (getPos < 10) stDay = "0" + Integer.toString(getPos);
+                else stDay = Integer.toString(getPos);
+
+                String stDate =  Integer.toString(year) + stMonth + stDay;
+
+                intent.putExtra("diary_date", stDate);
+                intent.putExtra("diary_day", pos);
+                context.startActivity(intent);
+                mainActivity.finish();
+            }
+        });
     }
 
     @Override
@@ -128,22 +151,9 @@ public class HomeListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return listViewItemList.get(position);
+    public int getItemCount() {
+        return listViewItemList.size();
     }
 
-    public void addItem(String imgUrl, String title, String content, String week, String date, int day, int width, int height) {
-        HomeListViewItem item = new HomeListViewItem();
 
-        item.setImgUrl(imgUrl);
-        item.setTitle(title);
-        item.setContent(content);
-        item.setWeek(week);
-        item.setDate(date);
-        item.setDay(day);
-        item.setWidth(width);
-        item.setHeight(height);
-
-        listViewItemList.add(item);
-    }
 }

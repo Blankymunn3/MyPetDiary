@@ -2,6 +2,7 @@ package io.kong.mypetdiary.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -17,6 +18,8 @@ import java.util.Calendar;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.fragment.HomeFragment;
 import io.kong.mypetdiary.fragment.MyPageFragment;
+import io.kong.mypetdiary.item.PetItem;
+import io.kong.mypetdiary.item.UserItem;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -25,6 +28,9 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static Activity mainActivity;
+
+    public SharedPreferences appData;
+    boolean saveLoginData;
 
     private final static int FRAGMENT_HOME = 1;
     private final static int FRAGMENT_MY_PAGE = 2;
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView txt_home, txt_addPost, txt_my_page;
 
-    int TAG_FRAG = 0;
+    int EXTRA_FRAG, EXTRA_SIGN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +94,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void init() {
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
-        TAG_FRAG = intent.getIntExtra("TAG_FRAG", 1);
+        EXTRA_FRAG = intent.getIntExtra("TAG_FRAG", 1);
+        EXTRA_SIGN = intent.getIntExtra("EXTRA_SIGN", 0);
 
-        if(TAG_FRAG == 1) callFragment(FRAGMENT_HOME);
-        else if(TAG_FRAG == 2) callFragment(FRAGMENT_MY_PAGE);
+        if(EXTRA_FRAG == 1) callFragment(FRAGMENT_HOME);
+        else if(EXTRA_FRAG == 2) callFragment(FRAGMENT_MY_PAGE);
+
+        if(EXTRA_SIGN == 1) load();
 
         final Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH);
@@ -111,6 +120,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txt_home.setOnClickListener(this);
         txt_addPost.setOnClickListener(this);
         txt_my_page.setOnClickListener(this);
+    }
+
+    public void load() {
+        saveLoginData = appData.getBoolean("SAVE_LOGIN_DATA", false);
+
+        String stUserID = appData.getString("user_id", "");
+        String stUserPW = appData.getString("user_pw", "");
+        String stUserName = appData.getString("user_name", "");
+        String stUserProfile = appData.getString("user_profile", "");
+        String stUserArea = appData.getString("user_area","");
+        String stUserBirth = appData.getString("user_birth", "");
+
+        String stPetName = appData.getString("pet_name", "");
+        String stPetBirth = appData.getString("pet_birth", "");
+        String stPetCome = appData.getString("pet_come", "");
+        int petKind = appData.getInt("pet_kind", 0);
+
+        UserItem userItem = new UserItem();
+        PetItem petItem = new PetItem();
+
+        userItem.setStUserID(stUserID);
+        userItem.setStUserPW(stUserPW);
+        userItem.setStUserName(stUserName);
+        userItem.setStUserProfile(stUserProfile);
+        userItem.setStUserArea(stUserArea);
+        userItem.setStUserBirth(stUserBirth);
+
+        petItem.setStPetName(stPetName);
+        petItem.setStPetBirth(stPetBirth);
+        petItem.setStPetCome(stPetCome);
+        petItem.setStPetKind(petKind);
     }
 
     @Override

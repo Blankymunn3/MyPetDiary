@@ -23,6 +23,7 @@ import io.kong.mypetdiary.item.UserItem;
 public class SplashActivity extends Activity {
 
     public SharedPreferences appData;
+    boolean saveLoginData;
 
     private UserItem userItem;
     private PetItem petItem;
@@ -31,7 +32,6 @@ public class SplashActivity extends Activity {
     int petKind;
 
 
-    boolean saveLoginData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,8 +69,7 @@ public class SplashActivity extends Activity {
         }
     }
 
-    private void load() {
-
+    public void load() {
         saveLoginData = appData.getBoolean("SAVE_LOGIN_DATA", false);
 
         stUserID = appData.getString("user_id", "");
@@ -97,7 +96,6 @@ public class SplashActivity extends Activity {
         petItem.setStPetBirth(stPetBirth);
         petItem.setStPetCome(stPetCome);
         petItem.setStPetKind(petKind);
-
     }
 
     private void init() {

@@ -108,6 +108,7 @@ public class PetSignUpActivity extends AppCompatActivity {
                                                 stUserArea, stPetName, stPetBirth, stPetCome, petKind);
                                         Toast.makeText(PetSignUpActivity.this, stUserName + "님 회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(PetSignUpActivity.this, MainActivity.class);
+                                        intent.putExtra("EXTRA_SIGN", 1);
                                         startActivity(intent);
                                         signUpActivity.finish();
                                         finish();

@@ -50,11 +50,11 @@
             <EditText
                 android:id="@+id/ed_loginID"
                 android:layout_width="200sp"
-                android:paddingLeft="10sp"
                 android:layout_height="50sp"
+                android:paddingLeft="10sp"
                 android:background="@drawable/background_line"
                 android:layout_marginLeft="26sp"
-                android:textSize="13sp"
+                android:textSize="18sp"
                 android:inputType="text"/>
         </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:paddingLeft="10sp"
                 android:background="@drawable/background_line"
                 android:layout_marginLeft="10sp"
-                android:textSize="13sp"
+                android:textSize="18sp"
                 android:inputType="textPassword" />
 
         </LinearLayout>
