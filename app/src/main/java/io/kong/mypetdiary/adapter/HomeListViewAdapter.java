@@ -101,7 +101,6 @@ public class HomeListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (listViewItem.getDay() < 10) stDay = "0" + Integer.toString(listViewItem.getDay());
         else stDay = Integer.toString(listViewItem.getDay());
 
-
         Glide.with(context).load(listViewItem.getImgUrl()).into(viewHolder.iconImageView);
 
         if (stToday.equals(stDay)) viewHolder.linearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.back_today_listview));
@@ -109,7 +108,6 @@ public class HomeListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         viewHolder.iconImageView.getLayoutParams().width = listViewItem.getWidth();
         viewHolder.iconImageView.getLayoutParams().height = listViewItem.getHeight();
-
 
         viewHolder.txtTitle.setText(listViewItem.getTitle());
         viewHolder.txtContent.setText(listViewItem.getContent());

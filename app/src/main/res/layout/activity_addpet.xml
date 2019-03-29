@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:fontFamily="@font/bonggil"
             android:gravity="center"
             android:text="나의 펫 추가"
             android:textSize="30sp"
@@ -78,7 +77,7 @@
 
                 <EditText
                     android:id="@+id/ed_new_pet_name"
-                    style="@style/SignUpActivityEditText"
+                    style="@style/MyPetActivityEditText"
                     android:inputType="text" />
             </LinearLayout>
 
@@ -145,7 +144,6 @@
             android:layout_height="match_parent"
             android:layout_marginRight="5sp"
             android:background="@drawable/background_line"
-            android:fontFamily="@font/bonggil"
             android:text="추가" />
 
         <Button
@@ -154,7 +152,6 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5sp"
             android:background="@drawable/background_line"
-            android:fontFamily="@font/bonggil"
             android:text="@string/cancel" />
     </LinearLayout>
 
