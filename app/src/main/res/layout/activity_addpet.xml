@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout style="@style/SignUpActivityLinear">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="나의 펫 추가"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/SignUpActivityLinear">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <TextView
+                    style="@style/addPetCustomTextView"
+                    android:text="@string/name" />
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <TextView
+                    style="@style/addPetCustomTextView"
+                    android:text="@string/birth" />
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <TextView
+                    style="@style/addPetCustomTextView"
+                    android:text="@string/pet_come" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <TextView
+                    style="@style/addPetCustomTextView"
+                    android:text="@string/pet_kind" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <LinearLayout style="@style/SignUpActivityLinear"
+                android:layout_marginTop="5sp"
+                android:layout_marginBottom="5sp">
+
+                <EditText
+                    android:id="@+id/ed_new_pet_name"
+                    style="@style/MyPetActivityEditText"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <TextView
+                    android:id="@+id/txt_new_pet_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="2019년01월01일"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/imgBtn_new_pet_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="#fff"
+                    android:src="@drawable/calendar" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <TextView
+                    android:id="@+id/txt_new_pet_come"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="2019년01월01일"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/imgBtn_new_pet_come"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="#fff"
+                    android:src="@drawable/calendar" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/SignUpActivityLinear">
+
+                <Spinner
+                    android:id="@+id/sp_new_pet_kind"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SignUpActivityLinear"
+        android:layout_marginBottom="5sp">
+
+        <Button
+            android:id="@+id/btn_pet_singup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5sp"
+            android:background="@drawable/background_line"
+            android:text="추가" />
+
+        <Button
+            android:id="@+id/btn_pet_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5sp"
+            android:background="@drawable/background_line"
+            android:text="@string/cancel" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,11 +1,14 @@
 package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,71 +16,82 @@ import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.activity.AddPostActivity;
+import io.kong.mypetdiary.activity.MainActivity;
 import io.kong.mypetdiary.item.HomeListViewItem;
 import io.kong.mypetdiary.item.UserItem;
 import io.kong.mypetdiary.service.RetrofitService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeListViewAdapter extends BaseAdapter {
-    private ArrayList<HomeListViewItem> listViewItemList;
+public class HomeListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    Context context;
 
     Retrofit retrofit;
     RetrofitService retrofitService;
 
-    Context context;
-
     UserItem userItem;
-
     String stDay, stUserID, stDate;
 
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        CardView linearLayout;
+        ImageView iconImageView;
+        TextView txtTitle;
+        TextView txtContent;
+        TextView txtWeek;
+        TextView txtDay;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            linearLayout = itemView.findViewById(R.id.home_linear);
+            iconImageView = itemView.findViewById(R.id.img_list_post);
+            txtTitle = itemView.findViewById(R.id.txt_list_title);
+            txtContent = itemView.findViewById(R.id.txt_list_content);
+            txtWeek = itemView.findViewById(R.id.txt_list_week);
+            txtDay = itemView.findViewById(R.id.txt_list_day);
+        }
+    }
+
+    private ArrayList<HomeListViewItem> listViewItemList;
     public HomeListViewAdapter(ArrayList<HomeListViewItem> listViewItemList, Context getContext) {
         if (listViewItemList == null) {
             this.listViewItemList = new ArrayList<HomeListViewItem>();
         } else {
             this.listViewItemList = listViewItemList;
         }
-        context = getContext;
+        this.listViewItemList = listViewItemList;
+        this.context = getContext;
+    }
+
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_listview_item, parent, false);
+
+        return new ViewHolder(v);
     }
 
     @Override
-    public int getCount() {
-        return listViewItemList.size();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        ViewHolder viewHolder = (ViewHolder) holder;
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
-
         userItem = new UserItem();
 
         final int pos = position;
-
-
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
-
         String stToday = sdf.format(date);
-
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.home_listview_item, parent, false);
-        }
-
-
-        ImageView iconImageView = convertView.findViewById(R.id.img_list_post);
-        TextView txtTitle = convertView.findViewById(R.id.txt_list_title);
-        TextView txtContent = convertView.findViewById(R.id.txt_list_content);
-        TextView txtWeek = convertView.findViewById(R.id.txt_list_week);
-        TextView txtDay = convertView.findViewById(R.id.txt_list_day);
 
         HomeListViewItem listViewItem = listViewItemList.get(pos);
 
@@ -87,22 +101,46 @@ public class HomeListViewAdapter extends BaseAdapter {
         if (listViewItem.getDay() < 10) stDay = "0" + Integer.toString(listViewItem.getDay());
         else stDay = Integer.toString(listViewItem.getDay());
 
+        Glide.with(context).load(listViewItem.getImgUrl()).into(viewHolder.iconImageView);
 
-        Glide.with(convertView.getContext()).load(listViewItem.getImgUrl()).into(iconImageView);
+        if (stToday.equals(stDay)) viewHolder.linearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.back_today_listview));
+        else viewHolder.linearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.back_listview));
 
-        if (stToday.equals(stDay)) convertView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.back_today_listview));
-        else convertView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.back_listview));
+        viewHolder.iconImageView.getLayoutParams().width = listViewItem.getWidth();
+        viewHolder.iconImageView.getLayoutParams().height = listViewItem.getHeight();
 
-        iconImageView.getLayoutParams().width = listViewItem.getWidth();
-        iconImageView.getLayoutParams().height = listViewItem.getHeight();
+        viewHolder.txtTitle.setText(listViewItem.getTitle());
+        viewHolder.txtContent.setText(listViewItem.getContent());
+        viewHolder.txtWeek.setText(listViewItem.getWeek() + "요일");
+        viewHolder.txtDay.setText(Integer.toString(listViewItem.getDay()));
 
-        txtTitle.setText(listViewItem.getTitle());
-        txtContent.setText(listViewItem.getContent());
-        txtWeek.setText(listViewItem.getWeek() + "요일");
-        txtDay.setText(Integer.toString(listViewItem.getDay()));
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity mainActivity = new MainActivity();
+                Intent intent = new Intent(context, AddPostActivity.class);
+                int getPos = pos;
+                getPos += 1;
+                String stMonth, stDay;
 
+                final Calendar cal = Calendar.getInstance();
+                final int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
 
-        return convertView;
+                if(month+1 < 10) stMonth = "0" + Integer.toString(month+1);
+                else stMonth = Integer.toString(month+1);
+
+                if (getPos < 10) stDay = "0" + Integer.toString(getPos);
+                else stDay = Integer.toString(getPos);
+
+                String stDate =  Integer.toString(year) + stMonth + stDay;
+
+                intent.putExtra("diary_date", stDate);
+                intent.putExtra("diary_day", pos);
+                context.startActivity(intent);
+                mainActivity.finish();
+            }
+        });
     }
 
     @Override
@@ -111,22 +149,9 @@ public class HomeListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return listViewItemList.get(position);
+    public int getItemCount() {
+        return listViewItemList.size();
     }
 
-    public void addItem(String imgUrl, String title, String content, String week, String date, int day, int width, int height) {
-        HomeListViewItem item = new HomeListViewItem();
 
-        item.setImgUrl(imgUrl);
-        item.setTitle(title);
-        item.setContent(content);
-        item.setWeek(week);
-        item.setDate(date);
-        item.setDay(day);
-        item.setWidth(width);
-        item.setHeight(height);
-
-        listViewItemList.add(item);
-    }
 }

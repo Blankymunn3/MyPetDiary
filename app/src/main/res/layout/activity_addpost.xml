@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context="io.kong.mypetdiary.activity.AddPostActivity"
-    android:fontFamily="@font/bonggil">
+    tools:context="io.kong.mypetdiary.activity.AddPostActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -208,7 +207,6 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:layout_marginLeft="10sp"
-                        android:fontFamily="@font/bonggil"
                         android:background="@android:color/transparent"
                         android:inputType="text"
                         android:textColor="#000"
@@ -254,7 +252,6 @@
                     android:maxLength="70"
                     android:maxLines="5"
                     android:padding="10sp"
-                    android:fontFamily="@font/bonggil"
                     android:inputType="textMultiLine"
                     android:textColor="#000"/>
 

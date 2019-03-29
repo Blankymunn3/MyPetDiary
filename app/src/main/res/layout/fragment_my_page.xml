@@ -5,7 +5,6 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fontFamily="@font/bonggil"
     tools:context="io.kong.mypetdiary.fragment.MyPageFragment">
 
 
@@ -128,7 +127,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="1" />
+                        android:text="0" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -145,16 +144,17 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txt_month_diary_cnt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="test" />
+                        android:text="0" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="test" />
+                        android:text="이번달 일기" />
 
                 </LinearLayout>
 
@@ -164,6 +164,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="나의 펫 목록"
+                    android:layout_margin="10sp"
+                    android:layout_marginLeft="20sp"
+                    android:textSize="20sp"
+                    android:textColor="#000"/>
 
                 <ListView
                     android:id="@+id/myPageListView"

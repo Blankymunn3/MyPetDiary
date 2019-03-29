@@ -23,14 +23,15 @@ import io.kong.mypetdiary.item.UserItem;
 public class SplashActivity extends Activity {
 
     public SharedPreferences appData;
+    boolean saveLoginData;
 
     private UserItem userItem;
     private PetItem petItem;
 
-    String stUserID, stUserPW, stUserName, stUserBirth, stUserArea, stUserProfile, stPetName, stPetBirth, stPetCome, stPetKind;
+    String stUserID, stUserPW, stUserName, stUserBirth, stUserArea, stUserProfile, stPetName, stPetBirth, stPetCome;
+    int petKind;
 
 
-    boolean saveLoginData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,8 +69,7 @@ public class SplashActivity extends Activity {
         }
     }
 
-    private void load() {
-
+    public void load() {
         saveLoginData = appData.getBoolean("SAVE_LOGIN_DATA", false);
 
         stUserID = appData.getString("user_id", "");
@@ -82,7 +82,7 @@ public class SplashActivity extends Activity {
         stPetName = appData.getString("pet_name", "");
         stPetBirth = appData.getString("pet_birth", "");
         stPetCome = appData.getString("pet_come", "");
-        stPetKind = appData.getString("pet_kind", "");
+        petKind = appData.getInt("pet_kind", 0);
 
 
         userItem.setStUserID(stUserID);
@@ -95,8 +95,7 @@ public class SplashActivity extends Activity {
         petItem.setStPetName(stPetName);
         petItem.setStPetBirth(stPetBirth);
         petItem.setStPetCome(stPetCome);
-        petItem.setStPetKind(stPetKind);
-
+        petItem.setStPetKind(petKind);
     }
 
     private void init() {

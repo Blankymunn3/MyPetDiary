@@ -3,7 +3,9 @@
 
     <string name="kakao_app_key">de5eba9c8af3f6ce607134a114f9f316</string>
 
-    <string-array name="user_area">
+    <string name="cancel">취소</string>
+
+    <string-array name="arr_user_area">
         <item>서울</item>
         <item>경기</item>
         <item>인천</item>
@@ -23,7 +25,7 @@
         <item>제주</item>
     </string-array>
 
-    <string-array name="pet_kind">
+    <string-array name="arr_pet_kind">
         <item>강아지</item>
         <item>거북이</item>
         <item>고양이</item>
@@ -34,4 +36,9 @@
         <item>햄스터</item>
         <item>기타</item>
     </string-array>
+
+    <string name="name">이름</string>
+    <string name="birth">생일</string>
+    <string name="pet_come">가족된 날</string>
+    <string name="pet_kind">종류</string>
 </resources>

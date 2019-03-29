@@ -1,14 +1,15 @@
 package io.kong.mypetdiary.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -16,13 +17,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
-import io.kong.mypetdiary.activity.AddPostActivity;
-import io.kong.mypetdiary.activity.MainActivity;
 import io.kong.mypetdiary.adapter.HomeListViewAdapter;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.HomeListViewItem;
@@ -40,10 +41,9 @@ public class HomeFragment extends Fragment {
     Retrofit retrofit;
     RetrofitService retrofitService;
 
-    UserItem userItem;
+    UserItem userItem = new UserItem();
 
     HomeListViewAdapter adapter;
-    ListView mainListView;
     ImageView imgPost;
 
     TextView txtTitle, txtSubTitle;
@@ -51,6 +51,9 @@ public class HomeFragment extends Fragment {
     String stWeek, stDate, stUserID, dbDay, dbWeek, dbImgUrl, dbTitle, dbContent, stMonth, stDay;
 
     ArrayList<HomeListViewItem> itemList = new ArrayList<HomeListViewItem>();
+
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
 
     int diaryCnt;
     public HomeFragment() {
@@ -60,9 +63,15 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        adapter = new HomeListViewAdapter(itemList, getContext());
+
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
-        mainListView = rootView.findViewById(R.id.main_listview);
+
+        mRecyclerView = rootView.findViewById(R.id.main_listview);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
@@ -70,14 +79,9 @@ public class HomeFragment extends Fragment {
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
 
-        userItem = new UserItem();
-
         txtTitle = rootView.findViewById(R.id.txt_home_title);
         txtSubTitle = rootView.findViewById(R.id.txt_home_subTitle);
         imgPost = rootView.findViewById(R.id.img_list_post);
-
-
-        mainListView.setAdapter(adapter);
 
         final Calendar cal = Calendar.getInstance();
         final int year = cal.get(Calendar.YEAR);
@@ -121,7 +125,7 @@ public class HomeFragment extends Fragment {
 
             stDate = Integer.toString(year) + stMonth + stDay;
 
-            final String subTitle = Integer.toString(cal.getActualMaximum(Calendar.DAY_OF_MONTH)) + "일 중에 우리의 추억 ";
+            final String subTitle = Integer.toString(cal.getActualMaximum(Calendar.DAY_OF_MONTH)) + "일 중 우리의 추억 ";
 
             Call<ResponseBody> call = retrofitService.selectDiary(stUserID, stDate);
             final int finalI = i;
@@ -144,9 +148,11 @@ public class HomeFragment extends Fragment {
                                         dbImgUrl = item.getString("diary_photo");
                                         dbWeek = item.getString("diary_week");
 
-                                        adapter.addItem(dbImgUrl, dbTitle, dbContent, finalWeek, stDate, finalI,
-                                                (int) getResources().getDimension(R.dimen.home_list_width), (int) getResources().getDimension(R.dimen.home_list_height));
+                                        itemList.add(new HomeListViewItem(dbImgUrl, dbTitle, dbContent, finalWeek, stDate, finalI,
+                                                (int) getResources().getDimension(R.dimen.home_list_width), (int) getResources().getDimension(R.dimen.home_list_height)));
 
+                                        adapter = new HomeListViewAdapter(itemList, getContext());
+                                        mRecyclerView.setAdapter(adapter);
                                         Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
                                             @Override
                                             public int compare(HomeListViewItem item1, HomeListViewItem item2) {
@@ -160,7 +166,11 @@ public class HomeFragment extends Fragment {
                                     }
                                     txtSubTitle.setText(subTitle + Integer.toString(diaryCnt) + "개");
                                 } else {
-                                    adapter.addItem(null, null, null, finalWeek, stDate, finalI, 0, 0);
+
+                                    itemList.add(new HomeListViewItem(null, null, null, finalWeek, stDate, finalI, 0, 0));
+                                    adapter = new HomeListViewAdapter(itemList, getContext());
+                                    mRecyclerView.setAdapter(adapter);
+
                                     Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
                                         @Override
                                         public int compare(HomeListViewItem item1, HomeListViewItem item2) {
@@ -186,36 +196,34 @@ public class HomeFragment extends Fragment {
             });
         }
 
-        Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
-            @Override
-            public int compare(HomeListViewItem item1, HomeListViewItem item2) {
-                return (item1.getDay() - item2.getDay());
-            }
-        };
-
-        Collections.sort(itemList, textAsc);
-        adapter.notifyDataSetChanged();
-
-        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(rootView.getContext(), AddPostActivity.class);
-                i += 1;
-                String stDay;
-
-                if (i < 10) stDay = "0" + Integer.toString(i);
-                else stDay = Integer.toString(i);
-
-                String stDate =  Integer.toString(year) + stMonth + stDay;
-
-                intent.putExtra("diary_date", stDate);
-                intent.putExtra("diary_day", i);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
-
         return rootView;
     }
 
+    public void onPause() {
+        super.onPause();
+        userItem.setRecyclerViewState(mRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    public void onResume() {
+        super.onResume();
+        if (userItem.getRecyclerViewState() == null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Date date = new Date(System.currentTimeMillis());
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd");
+                    String stToday = sdf.format(date);
+                    mRecyclerView.scrollToPosition(Integer.parseInt(stToday));
+                }
+            }, 200);
+        }
+        else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mRecyclerView.getLayoutManager().onRestoreInstanceState(userItem.getRecyclerViewState());
+                }
+            }, 200);
+        }
+    }
 }

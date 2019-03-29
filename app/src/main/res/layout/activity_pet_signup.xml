@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:fontFamily="@font/bonggil"
     android:background="#fff">
 
     <LinearLayout
@@ -15,10 +14,14 @@
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/title_name"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="나의 애완동물"
+            android:textColor="#000"
+            android:textSize="40sp"
+            android:layout_gravity="center"
+            android:gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
@@ -31,7 +34,7 @@
             android:layout_weight="5.4"
             android:gravity="center"
             android:textSize="15sp"
-            android:text="애완동물\n이름"/>
+            android:text="@string/name"/>
 
         <EditText
             android:id="@+id/ed_petName"
@@ -49,7 +52,7 @@
             android:layout_weight="2.93"
             android:gravity="center"
             android:textSize="15sp"
-            android:text="애완동물\n생일"/>
+            android:text="@string/birth"/>
 
         <TextView
             android:id="@+id/txt_petBirth"
@@ -58,7 +61,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:textSize="15sp"
-            android:text="2019-01-01"/>
+            android:text="2019년01월01일"/>
 
         <ImageButton
             android:id="@+id/imgBtn_petBirth"
@@ -79,7 +82,7 @@
             android:layout_weight="2.93"
             android:gravity="center"
             android:textSize="15sp"
-            android:text="가족된날"/>
+            android:text="@string/pet_come"/>
 
         <TextView
             android:id="@+id/txt_petCome"
@@ -88,7 +91,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:textSize="15sp"
-            android:text="2019-01-01"/>
+            android:text="2019년01월01일"/>
 
         <ImageButton
             android:id="@+id/imgBtn_petCome"
@@ -109,7 +112,7 @@
             android:layout_weight="5.4"
             android:gravity="center"
             android:textSize="15sp"
-            android:text="종류"/>
+            android:text="@string/pet_kind"/>
         <Spinner
             android:id="@+id/sp_petKind"
             android:layout_weight="1"
@@ -139,7 +142,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5sp"
             android:background="@drawable/background_line"
-            android:text="취소"/>
+            android:text="@string/cancel"/>
     </LinearLayout>
 
 </LinearLayout>

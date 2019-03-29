@@ -1,5 +1,7 @@
 package io.kong.mypetdiary.item;
 
+import android.os.Parcelable;
+
 public class UserItem {
 
     static String stUserID;
@@ -9,8 +11,7 @@ public class UserItem {
     static String stUserArea;
     static String stUserBirth;
     static String stUserProfile;
-
-
+    static Parcelable recyclerViewState;
 
     public void setStUserID(String stUserID) {
         UserItem.stUserID = stUserID;
@@ -46,6 +47,10 @@ public class UserItem {
         UserItem.stUserSalt = stUserSalt;
     }
 
+    public void setRecyclerViewState(Parcelable recyclerViewState) {
+        UserItem.recyclerViewState =recyclerViewState;
+    }
+
     public String getStUserID() {
         return stUserID;
     }
@@ -66,6 +71,9 @@ public class UserItem {
     }
     public String getStUserSalt() {
         return stUserSalt;
+    }
+    public Parcelable getRecyclerViewState() {
+        return recyclerViewState;
     }
 
 }

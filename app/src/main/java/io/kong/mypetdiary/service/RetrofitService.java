@@ -32,7 +32,7 @@ public interface RetrofitService {
 
     @POST("/pet_join")
     Call<ResponseBody> pet_join(@Query("user_id") String user_id, @Query("pet_name") String pet_name, @Query("pet_birth") String pet_birth,
-                                @Query("pet_come") String pet_come, @Query("pet_kind") String pet_kind);
+                                @Query("pet_come") String pet_come, @Query("pet_kind") int pet_kind);
 
     @Multipart
     @POST("uploadProfile")
@@ -43,6 +43,19 @@ public interface RetrofitService {
     Call<ResponseBody> uploadDiary(@Part MultipartBody.Part image, @Part("upload") RequestBody name, @Query("user_id") String user_id,
                                    @Query("diary_today_comment") String diary_today_comment, @Query("diary_content") String diary_content,
                                    @Query("diary_date") String diary_date, @Query("diary_weather") String diary_weather, @Query("diary_week") String diary_week);
+
+    @Multipart
+    @POST("updateMyPet")
+    Call<ResponseBody> updateMyPet(@Part MultipartBody.Part image, @Part("upload") RequestBody name, @Query("user_id") String user_id,
+                                   @Query("pet_name") String pet_name, @Query("pet_birth") String pet_birth, @Query("pet_come") String pet_come,
+                                   @Query("pet_kind") int pet_kind);
+
     @GET("/diary")
     Call<ResponseBody> selectDiary(@Query("user_id") String user_id, @Query("diary_date") String diary_date);
+
+    @GET("/diaryCnt")
+    Call<ResponseBody> diaryCnt(@Query("user_id") String user_id);
+
+    @GET("/pet_list")
+    Call<ResponseBody> selectPet(@Query("user_id") String user_id);
 }

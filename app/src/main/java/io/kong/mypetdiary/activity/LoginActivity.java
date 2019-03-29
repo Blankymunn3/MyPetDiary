@@ -28,10 +28,10 @@ import java.io.IOException;
 import io.kong.mypetdiary.item.KakaoUserItem;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.PetItem;
-import io.kong.mypetdiary.item.SaveUserInfo;
 import io.kong.mypetdiary.item.UserItem;
 import io.kong.mypetdiary.service.RetrofitService;
 import io.kong.mypetdiary.service.SHA256Util;
+import io.kong.mypetdiary.service.SaveUserInfo;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,8 +59,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText edLoginID;
     EditText edLoginPW;
 
-    String stUserID, stUserPW, newPassword, stUserSalt, stUserName, stUserArea, stUserBirth, stUserProfile, stPetName, stPetBirth, stPetCome, stPetKind;
-    int kakao;
+    String stUserID, stUserPW, newPassword, stUserSalt, stUserName, stUserArea, stUserBirth, stUserProfile, stPetName, stPetBirth, stPetCome;
+    int kakao, petKind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -337,16 +337,16 @@ public class LoginActivity extends AppCompatActivity {
                                             stPetName = item.getString("pet_name");
                                             stPetBirth = item.getString("pet_birth");
                                             stPetCome = item.getString("pet_come");
-                                            stPetKind = item.getString("pet_kind");
+                                            petKind = item.getInt("pet_kind");
 
                                             petItem.setStPetName(stPetName);
                                             petItem.setStPetBirth(stPetBirth);
                                             petItem.setStPetCome(stPetCome);
-                                            petItem.setStPetKind(stPetKind);
+                                            petItem.setStPetKind(petKind);
 
                                         }
                                         SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserSalt, stUserName, stUserBirth, stUserProfile,
-                                                stUserArea, stPetName, stPetBirth, stPetCome, stPetKind);
+                                                stUserArea, stPetName, stPetBirth, stPetCome, petKind);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();

@@ -21,8 +21,8 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import io.kong.mypetdiary.R;
-import io.kong.mypetdiary.item.SaveUserInfo;
 import io.kong.mypetdiary.service.RetrofitService;
+import io.kong.mypetdiary.service.SaveUserInfo;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,8 +46,8 @@ public class PetSignUpActivity extends AppCompatActivity {
     Button btnJoin, btnCancel;
     ImageButton imgBtnPetBirth, imgBtnPetCome;
 
-    String stUserID, stUserPW, stUserSalt, stUserName, stUserBirth, stUserProfile, stUserArea, stPetName, stPetBirth, stPetCome, stPetKind;
-    int kakao;
+    String stUserID, stUserPW, stUserSalt, stUserName, stUserBirth, stUserProfile, stUserArea, stPetName, stPetBirth, stPetCome;
+    int kakao, petKind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,8 @@ public class PetSignUpActivity extends AppCompatActivity {
         spPetKind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                stPetKind = (String) adapterView.getItemAtPosition(i);
+                petKind = i;
+
             }
 
             @Override
@@ -97,16 +98,17 @@ public class PetSignUpActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            Call<ResponseBody> call_pet = retrofitService.pet_join(stUserID, stPetName, stPetBirth, stPetCome, stPetKind);
+                            Call<ResponseBody> call_pet = retrofitService.pet_join(stUserID, stPetName, stPetBirth, stPetCome, petKind);
                             call_pet.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     if (response.isSuccessful()) {
 
                                         SaveUserInfo.saveUserInfo(appData, true, stUserID, stUserPW, stUserSalt, stUserName, stUserBirth, stUserProfile,
-                                                stUserArea, stPetName, stPetBirth, stPetCome, stPetKind);
+                                                stUserArea, stPetName, stPetBirth, stPetCome, petKind);
                                         Toast.makeText(PetSignUpActivity.this, stUserName + "님 회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(PetSignUpActivity.this, MainActivity.class);
+                                        intent.putExtra("EXTRA_SIGN", 1);
                                         startActivity(intent);
                                         signUpActivity.finish();
                                         finish();
@@ -156,11 +158,11 @@ public class PetSignUpActivity extends AppCompatActivity {
         public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
             monthOfYear = monthOfYear + 1;
             if (monthOfYear < 10 && dayOfMonth < 10) {
-                txtPetBirth.setText(year + "-" + 0 + monthOfYear + "-" + 0 + dayOfMonth);
+                txtPetBirth.setText(year + "년" + 0 + monthOfYear + "월" + 0 + dayOfMonth + "일");
             } else if (monthOfYear < 10) {
-                txtPetBirth.setText(year + "-" + 0 + monthOfYear + "-" + dayOfMonth);
+                txtPetBirth.setText(year + "년" + 0 + monthOfYear + "월" + dayOfMonth + "일");
             } else if (dayOfMonth < 10) {
-                txtPetBirth.setText(year + "-" + monthOfYear + "-" + 0 + dayOfMonth);
+                txtPetBirth.setText(year + "년" + monthOfYear + "월" + 0 + dayOfMonth + "일");
             }
 
         }
@@ -171,11 +173,11 @@ public class PetSignUpActivity extends AppCompatActivity {
         public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
             monthOfYear = monthOfYear + 1;
             if (monthOfYear < 10 && dayOfMonth < 10) {
-                txtPetCome.setText(year + "-" + 0 + monthOfYear + "-" + 0 + dayOfMonth);
+                txtPetCome.setText(year + "년" + 0 + monthOfYear + "월" + 0 + dayOfMonth + "일");
             } else if (monthOfYear < 10) {
-                txtPetCome.setText(year + "-" + 0 + monthOfYear + "-" + dayOfMonth);
+                txtPetCome.setText(year + "년" + 0 + monthOfYear + "월" + dayOfMonth + "일");
             } else if (dayOfMonth < 10) {
-                txtPetCome.setText(year + "-" + monthOfYear + "-" + 0 + dayOfMonth);
+                txtPetCome.setText(year + "년" + monthOfYear + "월" + 0 + dayOfMonth + "일");
             }
 
         }
@@ -199,7 +201,7 @@ public class PetSignUpActivity extends AppCompatActivity {
         imgBtnPetBirth = findViewById(R.id.imgBtn_petBirth);
         imgBtnPetCome = findViewById(R.id.imgBtn_petCome);
 
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.pet_kind, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.arr_pet_kind, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spPetKind.setAdapter(adapter);
 

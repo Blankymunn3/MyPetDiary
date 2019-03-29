@@ -4,8 +4,9 @@ package io.kong.mypetdiary.service;
 import android.content.SharedPreferences;
 
 public class SaveUserInfo {
-    public void saveUserInfo(SharedPreferences appData, Boolean save, String stUserID, String stUserPW, String stUserSalt, String stUserName, String stUserBirth, String stUserProfile,
-                                    String stUserArea, String stPetName, String stPetBirth, String stPetCome, String stPetKind) {
+    public static void saveUserInfo(SharedPreferences appData, Boolean save, String stUserID, String stUserPW, String stUserSalt, String stUserName,
+                                    String stUserBirth, String stUserProfile, String stUserArea, String stPetName, String stPetBirth, String stPetCome,
+                                    int stPetKind) {
 
         SharedPreferences.Editor editor = appData.edit();
 
@@ -22,7 +23,7 @@ public class SaveUserInfo {
         editor.putString("pet_name", stPetName);
         editor.putString("pet_birth", stPetBirth);
         editor.putString("pet_come", stPetCome);
-        editor.putString("pet_kind", stPetKind);
+        editor.putInt("pet_kind", stPetKind);
 
         editor.apply();
     }

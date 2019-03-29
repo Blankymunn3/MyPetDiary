@@ -2,9 +2,10 @@ package io.kong.mypetdiary.item;
 
 public class PetItem {
 
+    static String stPetUrl;
     static String stPetName;
     static String stPetBirth;
-    static String stPetKind;
+    static int stPetKind;
     static String stPetCome;
 
     public void setStPetName(String stPetName) {
@@ -19,7 +20,7 @@ public class PetItem {
         PetItem.stPetCome = stPetCome;
     }
 
-    public void setStPetKind(String stPetKind) {
+    public void setStPetKind(int stPetKind) {
         PetItem.stPetKind = stPetKind;
     }
 
@@ -36,7 +37,7 @@ public class PetItem {
         return stPetCome;
     }
 
-    public String getStPetKind() {
+    public int getStPetKind() {
         return stPetKind;
     }
 
