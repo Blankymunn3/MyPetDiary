@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/back_listview">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10sp"
         android:layout_marginTop="5sp"
         android:layout_marginBottom="5sp"
@@ -32,7 +32,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="3sp"
             android:orientation="vertical">
 
@@ -41,22 +41,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginLeft="5sp">
+                android:layout_marginStart="5sp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="이     름"
+                    android:layout_weight="3"
+                    android:text="이      름"
                     android:textColor="#000"
-                    android:textSize="18sp"
-                    />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/txt_page_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
                     android:layout_weight="1"
                     android:text="title"
                     android:textColor="#000"
@@ -69,13 +67,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginLeft="5sp"
+                android:layout_marginStart="5sp"
                 android:layout_marginTop="5sp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
+                    android:layout_weight="3"
                     android:text="함께한 날"
                     android:textSize="15sp"/>
 
@@ -83,7 +81,6 @@
                     android:id="@+id/txt_page_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
                     android:layout_weight="1"
                     android:text="content"
                     android:textSize="15sp"/>

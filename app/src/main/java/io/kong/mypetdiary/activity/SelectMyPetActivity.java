@@ -28,7 +28,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.io.File;
 
 import io.kong.mypetdiary.R;
-import io.kong.mypetdiary.item.PetItem;
 import io.kong.mypetdiary.item.UserItem;
 import io.kong.mypetdiary.service.RetrofitService;
 import okhttp3.MediaType;
@@ -41,11 +40,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_BIRTH;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_COME;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_KIND;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_NAME;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_URL;
+import static io.kong.mypetdiary.item.MyPageListViewItem.EXTRA_PET_BIRTH;
+import static io.kong.mypetdiary.item.MyPageListViewItem.EXTRA_PET_COME;
+import static io.kong.mypetdiary.item.MyPageListViewItem.EXTRA_PET_KIND;
+import static io.kong.mypetdiary.item.MyPageListViewItem.EXTRA_PET_NAME;
+import static io.kong.mypetdiary.item.MyPageListViewItem.EXTRA_PET_URL;
 
 public class SelectMyPetActivity extends Activity {
 

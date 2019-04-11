@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
 
-    int diaryCnt;
+    int diaryCnt = 0;
     public HomeFragment() {
 
     }
@@ -164,7 +164,6 @@ public class HomeFragment extends Fragment {
                                         adapter.notifyDataSetChanged();
                                         diaryCnt += 1;
                                     }
-                                    txtSubTitle.setText(subTitle + Integer.toString(diaryCnt) + "개");
                                 } else {
 
                                     itemList.add(new HomeListViewItem(null, null, null, finalWeek, stDate, finalI, 0, 0));
@@ -194,8 +193,8 @@ public class HomeFragment extends Fragment {
 
                 }
             });
+            txtSubTitle.setText(subTitle + Integer.toString(diaryCnt) + "개");
         }
-
         return rootView;
     }
 
@@ -213,7 +212,7 @@ public class HomeFragment extends Fragment {
                     Date date = new Date(System.currentTimeMillis());
                     SimpleDateFormat sdf = new SimpleDateFormat("dd");
                     String stToday = sdf.format(date);
-                    mRecyclerView.scrollToPosition(Integer.parseInt(stToday));
+                    mRecyclerView.scrollToPosition(Integer.parseInt(stToday) - 1);
                 }
             }, 200);
         }

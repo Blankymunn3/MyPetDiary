@@ -37,7 +37,7 @@
                         android:layout_height="match_parent"
                         android:text="내정보"
                         android:textSize="30sp"
-                        android:layout_marginLeft="10sp"
+                        android:layout_marginLeft="5dp"
                         android:gravity="center"
                         android:layout_gravity="center"/>
 
@@ -103,6 +103,7 @@
                         android:id="@+id/txt_my_page_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="15sp"
                         android:text="NAME" />
                 </LinearLayout>
             </LinearLayout>
@@ -127,12 +128,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:textColor="#000"
+                        android:textSize="15sp"
                         android:text="0" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:textColor="#000"
+                        android:textSize="15sp"
                         android:text="나의 펫" />
 
                 </LinearLayout>
@@ -148,13 +153,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:textColor="#000"
+                        android:textSize="15sp"
                         android:text="0" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="이번달 일기" />
+                        android:textColor="#000"
+                        android:textSize="15sp"
+                        android:text="모든 일기" />
 
                 </LinearLayout>
 
@@ -162,7 +171,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -173,12 +182,12 @@
                     android:textSize="20sp"
                     android:textColor="#000"/>
 
-                <ListView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/myPageListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                </ListView>
+                </android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

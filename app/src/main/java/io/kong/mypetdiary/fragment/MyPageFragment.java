@@ -5,13 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,19 +25,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.kong.mypetdiary.activity.AddPetActivity;
 import io.kong.mypetdiary.activity.LoginActivity;
-import io.kong.mypetdiary.activity.SelectMyPetActivity;
 import io.kong.mypetdiary.activity.SetImageActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.UserItem;
-import io.kong.mypetdiary.service.MyPageListViewItem;
+import io.kong.mypetdiary.item.MyPageListViewItem;
 import io.kong.mypetdiary.service.RetrofitService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -47,11 +44,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_BIRTH;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_COME;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_KIND;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_NAME;
-import static io.kong.mypetdiary.service.MyPageListViewItem.EXTRA_PET_URL;
 
 
 public class MyPageFragment extends Fragment {
@@ -67,8 +59,8 @@ public class MyPageFragment extends Fragment {
     public SharedPreferences appData;
 
     MyPageListViewAdapter adapter;
-
-    ListView myPageListView;
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
 
     TextView txtPetCnt, txtDiaryCnt;
 
@@ -84,8 +76,9 @@ public class MyPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        userItem = new UserItem();
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_my_page, container, false);
+        final DrawerLayout drawerLayout = rootView.findViewById(R.id.drawerLayout);
+        final View drawerView = rootView.findViewById(R.id.drawer);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
@@ -93,9 +86,12 @@ public class MyPageFragment extends Fragment {
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
 
-        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_my_page, container, false);
-        final DrawerLayout drawerLayout = rootView.findViewById(R.id.drawerLayout);
-        final View drawerView = rootView.findViewById(R.id.drawer);
+        mRecyclerView = rootView.findViewById(R.id.myPageListView);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        userItem = new UserItem();
 
         ImageButton btnOpenDrawer = rootView.findViewById(R.id.btn_my_page_menu);
         ImageButton btnCloseDrawer = rootView.findViewById(R.id.btn_my_page_menu_close);
@@ -134,10 +130,6 @@ public class MyPageFragment extends Fragment {
                 });
             }
         });
-
-        myPageListView = rootView.findViewById(R.id.myPageListView);
-        adapter = new MyPageListViewAdapter(itemList, getContext());
-        myPageListView.setAdapter(adapter);
 
         getImageUrl = userItem.getStUserProfile();
 
@@ -218,8 +210,9 @@ public class MyPageFragment extends Fragment {
                                     stPetCome = item.getString("pet_come");
                                     petKind = item.getInt("pet_kind");
 
-
-                                    adapter.addItem(1, stPetUrl, stPetName, stPetBirth, stPetCome, petKind);
+                                    itemList.add(new MyPageListViewItem(0, stPetUrl, stPetName, stPetBirth, stPetCome , petKind));
+                                    adapter = new MyPageListViewAdapter(itemList, getContext());
+                                    mRecyclerView.setAdapter(adapter);
                                     Comparator<MyPageListViewItem> textAsc = new Comparator<MyPageListViewItem>() {
                                         @Override
                                         public int compare(MyPageListViewItem item1, MyPageListViewItem item2) {
@@ -247,7 +240,9 @@ public class MyPageFragment extends Fragment {
 
             }
         });
-        adapter.addItem(2);
+        itemList.add(new MyPageListViewItem(1, stPetUrl, stPetName, stPetBirth, stPetCome , petKind));
+        adapter = new MyPageListViewAdapter(itemList, getContext());
+        mRecyclerView.setAdapter(adapter);
         Comparator<MyPageListViewItem> textAsc = new Comparator<MyPageListViewItem>() {
             @Override
             public int compare(MyPageListViewItem item1, MyPageListViewItem item2) {
@@ -258,32 +253,6 @@ public class MyPageFragment extends Fragment {
         Collections.sort(itemList, textAsc);
         adapter.notifyDataSetChanged();
 
-
-        myPageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (petCnt == i) {
-                    Intent intent = new Intent(getContext(), AddPetActivity.class);
-                    startActivity(intent);
-                } else {
-                    stPetUrl = itemList.get(i).getImgPetUri();
-                    stPetName = itemList.get(i).getStPetName();
-                    stPetBirth = itemList.get(i).getStPetBirth();
-                    stPetCome = itemList.get(i).getStPetCome();
-                    petKind = itemList.get(i).getStPetKind();
-
-                    Intent intent = new Intent(getContext(), SelectMyPetActivity.class);
-                    intent.putExtra(EXTRA_PET_URL, stPetUrl);
-                    intent.putExtra(EXTRA_PET_NAME, stPetName);
-                    intent.putExtra(EXTRA_PET_BIRTH, stPetBirth);
-                    intent.putExtra(EXTRA_PET_COME, stPetCome);
-                    intent.putExtra(EXTRA_PET_KIND, petKind);
-
-                    startActivity(intent);
-
-                }
-            }
-        });
 
         return rootView;
     }

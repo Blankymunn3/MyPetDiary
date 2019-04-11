@@ -1,4 +1,4 @@
-package io.kong.mypetdiary.service;
+package io.kong.mypetdiary.item;
 
 public class MyPageListViewItem {
 
@@ -16,53 +16,36 @@ public class MyPageListViewItem {
     private String stPetCome;
     private int stPetKind;
 
-
-    public int getType() {
-        return type;
+    public MyPageListViewItem(int type, String imgPetUri, String stPetName, String stPetBirth, String stPetCome, int stPetKind) {
+        this.type = type;
+        this.imgPetUri = imgPetUri;
+        this.stPetName = stPetName;
+        this.stPetBirth = stPetBirth;
+        this.stPetCome = stPetCome;
+        this.stPetKind = stPetKind;
     }
 
-    public String getImgPetUri() {
-        return imgPetUri;
-    }
-
-    public String getStPetName() {
-        return stPetName;
-    }
-
-    public String getStPetBirth() {
-        return stPetBirth;
-    }
-
-    public String getStPetCome() {
-        return stPetCome;
-    }
-
-    public int getStPetKind() {
-        return stPetKind;
-    }
-
-    public void setType(int type) {
+    public MyPageListViewItem(int type) {
         this.type = type;
     }
 
-    public void setImgPetUri(String imgPetUri) {
-        this.imgPetUri = imgPetUri;
+    public int getType() {
+        return this.type;
     }
-
-    public void setStPetName(String stPetName) {
-        this.stPetName = stPetName;
+    public String getImgPetUri() {
+        return this.imgPetUri;
     }
-
-    public void setStPetBirth(String stPetBirth) {
-        this.stPetBirth = stPetBirth;
+    public String getStPetName() {
+        return this.stPetName;
     }
-
-    public void setStPetCome(String stPetCome) {
-        this.stPetCome = stPetCome;
+    public String getStPetBirth() {
+        return this.stPetBirth;
     }
-
-    public void setStPetKind(int stPetKind) {
-        this.stPetKind = stPetKind;
+    public String getStPetCome() {
+        return this.stPetCome;
+    }
+    public int getStPetKind() {
+        return this.stPetKind;
     }
 
 

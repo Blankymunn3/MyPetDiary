@@ -255,7 +255,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
             edContent.setClickable(false);
 
             btnUpImage.setClickable(false);
-            btnSave.setClickable(false);
+            btnSave.setText("");
             btnSun.setClickable(false);
             btnBlur.setClickable(false);
             btnRain.setClickable(false);

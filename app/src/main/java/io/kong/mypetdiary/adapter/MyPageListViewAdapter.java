@@ -1,10 +1,11 @@
 package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,97 +13,90 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import io.kong.mypetdiary.R;
-import io.kong.mypetdiary.service.MyPageListViewItem;
+import io.kong.mypetdiary.item.MyPageListViewItem;
 
-public class MyPageListViewAdapter extends BaseAdapter {
-    private ArrayList<MyPageListViewItem> listViewItemList = new ArrayList<MyPageListViewItem>();
+public class MyPageListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int ITEM_TYPE_INFO = 0;
     private static final int ITEM_TYPE_ADD = 1;
-    private static final int ITEM_TYPE_MAX = 2;
+
+    private ArrayList<MyPageListViewItem> listViewItems = new ArrayList<>();
 
     Context context;
-    private LayoutInflater mInflater;
 
-    private class ViewHolder {
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == ITEM_TYPE_INFO) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.mypage_listview_item, parent, false);
+            return new ViewHolder(v);
+        } else{
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.mypage_listview_last, parent, false);
+            return new ViewHolderLast(v);
+        }
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imvPet;
         TextView txtPetName;
         TextView txtBirth;
+        ViewHolder(View itemView) {
+            super(itemView);
+            imvPet = itemView.findViewById(R.id.imv_page_pet);
+            txtPetName = itemView.findViewById(R.id.txt_page_name);
+            txtBirth = itemView.findViewById(R.id.txt_page_birth);
+        }
+    }
+
+    public static class ViewHolderLast extends RecyclerView.ViewHolder {
+        ImageView imvAdd;
+        public ViewHolderLast(View itemView) {
+            super(itemView);
+            imvAdd = itemView.findViewById(R.id.imv_add);
+        }
     }
 
     public MyPageListViewAdapter(ArrayList<MyPageListViewItem> listViewItemList, Context getContext) {
         if (listViewItemList == null) {
-            this.listViewItemList = new ArrayList<MyPageListViewItem>();
+            this.listViewItems = new ArrayList<MyPageListViewItem>();
         } else {
-            this.listViewItemList = listViewItemList;
+            this.listViewItems = listViewItemList;
         }
+        this.listViewItems = listViewItemList;
         this.context = getContext;
-        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public int getViewTypeCount() {
-        return ITEM_TYPE_MAX;
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        MyPageListViewItem item = listViewItems.get(position);
+
+        if (holder instanceof ViewHolder) {
+            int year = Integer.parseInt(item.getStPetBirth().substring(0, 4));
+            int month = Integer.parseInt(item.getStPetBirth().substring(5,7));
+            int day = Integer.parseInt(item.getStPetBirth().substring(8,10));
+
+            int d_day = caldate(year, month, day);
+
+            Glide.with(context).load(item.getImgPetUri()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(((ViewHolder) holder).imvPet);
+            ((ViewHolder) holder).txtPetName.setText(item.getStPetName());
+            ((ViewHolder) holder).txtBirth.setText(Integer.toString(d_day) + "일 째");
+        } else {
+
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return listViewItemList.get(position).getType();
-    }
-
-    @Override
-    public int getCount() {
-        return listViewItemList.size();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        int viewType = getItemViewType(position);
-
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-
-            switch (viewType) {
-                case ITEM_TYPE_INFO:
-                    convertView = mInflater.inflate(R.layout.mypage_listview_item, parent, false);
-
-                    viewHolder.imvPet = convertView.findViewById(R.id.imv_page_pet);
-                    viewHolder.txtPetName = convertView.findViewById(R.id.txt_page_name);
-                    viewHolder.txtBirth = convertView.findViewById(R.id.txt_page_birth);
-                    convertView.setTag(viewHolder);
-
-                    MyPageListViewItem listViewItem = listViewItemList.get(position);
-
-                    int year = Integer.parseInt(listViewItem.getStPetBirth().substring(0, 4));
-                    int month = Integer.parseInt(listViewItem.getStPetBirth().substring(5,7));
-                    int day = Integer.parseInt(listViewItem.getStPetBirth().substring(8,10));
-
-                    int d_day = caldate(year, month, day);
-
-
-                    Glide.with(context).load(listViewItem.getImgPetUri()).diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true).into(viewHolder.imvPet);
-                    viewHolder.txtPetName.setText(listViewItem.getStPetName());
-                    viewHolder.txtBirth.setText(Integer.toString(d_day) + "일 째");
-
-                    break;
-                case ITEM_TYPE_ADD:
-                    convertView = mInflater.inflate(R.layout.mypage_listview_last, parent, false);
-                    convertView.setTag(viewHolder);
-
-                    break;
-            }
-
+        if (listViewItems.get(position).getType() == 0) {
+            return ITEM_TYPE_INFO;
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            return ITEM_TYPE_ADD;
         }
-
-        return convertView;
     }
 
     @Override
@@ -111,30 +105,9 @@ public class MyPageListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return listViewItemList.get(position);
+    public int getItemCount() {
+        return listViewItems.size();
     }
-
-    public void addItem(int type, String imgPetUri, String petName, String petBirth, String petCome, int petKind) {
-        MyPageListViewItem item = new MyPageListViewItem();
-
-        item.setType(ITEM_TYPE_INFO);
-        item.setImgPetUri(imgPetUri);
-        item.setStPetName(petName);
-        item.setStPetBirth(petBirth);
-        item.setStPetCome(petCome);
-        item.setStPetKind(petKind);
-
-        listViewItemList.add(item);
-    }
-
-    public void addItem(int type) {
-        MyPageListViewItem item = new MyPageListViewItem();
-        item.setType(ITEM_TYPE_ADD);
-
-        listViewItemList.add(item);
-    }
-
 
     public int caldate(int myear, int mmonth, int mday) {
         try {
