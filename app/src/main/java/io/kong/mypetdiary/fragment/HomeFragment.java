@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     RetrofitService retrofitService;
 
     UserItem userItem = new UserItem();
+    HomeListViewItem homeListViewItem;
 
     HomeListViewAdapter adapter;
     ImageView imgPost;
@@ -52,13 +53,11 @@ public class HomeFragment extends Fragment {
 
     ArrayList<HomeListViewItem> itemList = new ArrayList<HomeListViewItem>();
 
+
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
 
     int diaryCnt = 0;
-    public HomeFragment() {
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +71,8 @@ public class HomeFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        adapter = new HomeListViewAdapter(itemList, getContext());
+        mRecyclerView.setAdapter(adapter);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
@@ -118,9 +119,9 @@ public class HomeFragment extends Fragment {
                     break;
             }
 
-            if(month+1 < 10) stMonth = "0" + Integer.toString(month+1);
-            else stMonth = Integer.toString(month+1);
-            if(i < 10) stDay = "0" + Integer.toString(i);
+            if (month + 1 < 10) stMonth = "0" + Integer.toString(month + 1);
+            else stMonth = Integer.toString(month + 1);
+            if (i < 10) stDay = "0" + Integer.toString(i);
             else stDay = Integer.toString(i);
 
             stDate = Integer.toString(year) + stMonth + stDay;
@@ -147,37 +148,13 @@ public class HomeFragment extends Fragment {
                                         dbDay = item.getString("diary_date");
                                         dbImgUrl = item.getString("diary_photo");
                                         dbWeek = item.getString("diary_week");
+                                        homeListViewItem = new HomeListViewItem(dbImgUrl, dbTitle, dbContent, finalWeek, stDate, finalI,
+                                                (int) getResources().getDimension(R.dimen.home_list_width), (int) getResources().getDimension(R.dimen.home_list_height));
 
-                                        itemList.add(new HomeListViewItem(dbImgUrl, dbTitle, dbContent, finalWeek, stDate, finalI,
-                                                (int) getResources().getDimension(R.dimen.home_list_width), (int) getResources().getDimension(R.dimen.home_list_height)));
-
-                                        adapter = new HomeListViewAdapter(itemList, getContext());
-                                        mRecyclerView.setAdapter(adapter);
-                                        Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
-                                            @Override
-                                            public int compare(HomeListViewItem item1, HomeListViewItem item2) {
-                                                return (item1.getDay() - item2.getDay()) ;
-                                            }
-                                        };
-
-                                        Collections.sort(itemList, textAsc);
-                                        adapter.notifyDataSetChanged();
                                         diaryCnt += 1;
                                     }
                                 } else {
-
-                                    itemList.add(new HomeListViewItem(null, null, null, finalWeek, stDate, finalI, 0, 0));
-                                    adapter = new HomeListViewAdapter(itemList, getContext());
-                                    mRecyclerView.setAdapter(adapter);
-
-                                    Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
-                                        @Override
-                                        public int compare(HomeListViewItem item1, HomeListViewItem item2) {
-                                            return (item1.getDay() - item2.getDay()) ;
-                                        }
-                                    };
-                                    Collections.sort(itemList, textAsc);
-                                    adapter.notifyDataSetChanged();
+                                    homeListViewItem = new HomeListViewItem(null, null, null, finalWeek, stDate, finalI, 0, 0);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -185,6 +162,16 @@ public class HomeFragment extends Fragment {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        adapter.addItem(homeListViewItem);
+                        Comparator<HomeListViewItem> textAsc = new Comparator<HomeListViewItem>() {
+                            @Override
+                            public int compare(HomeListViewItem item1, HomeListViewItem item2) {
+                                return (item1.getDay() - item2.getDay());
+                            }
+                        };
+                        Collections.sort(itemList, textAsc);
+                        adapter.notifyDataSetChanged();
+                        txtSubTitle.setText(subTitle + Integer.toString(diaryCnt) + "개");
                     }
                 }
 
@@ -193,7 +180,6 @@ public class HomeFragment extends Fragment {
 
                 }
             });
-            txtSubTitle.setText(subTitle + Integer.toString(diaryCnt) + "개");
         }
         return rootView;
     }
@@ -215,8 +201,7 @@ public class HomeFragment extends Fragment {
                     mRecyclerView.scrollToPosition(Integer.parseInt(stToday) - 1);
                 }
             }, 200);
-        }
-        else {
+        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

@@ -3,9 +3,11 @@ package io.kong.mypetdiary.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -57,7 +60,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
     Uri resultUri;
 
-    ImageButton btnSun, btnBlur, btnRain, btnSnow,btnBack;
+    ImageButton btnSun, btnBlur, btnRain, btnSnow, btnBack;
     ImageView btnUpImage;
     Button btnSave;
     EditText edTodayComment, edContent;
@@ -65,7 +68,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
     String stUserID, stYear, stMonth, stDay, stDate, stWeek, stWeather = "sun", stTodayComment, stContent, stPhoto;
 
-    int month ,day;
+    int month, day;
 
 
     @Override
@@ -88,7 +91,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         stDate = stYear + stMonth + stDay;
 
 
-
+        resize(getApplicationContext(), resultUri, 500);
         File file = new File(getRealPathFromURI(resultUri));
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
@@ -99,7 +102,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.code() == 200) {
+                if (response.code() == 200) {
                     dialog.dismiss();
                     finishActivity();
                 } else {
@@ -107,12 +110,42 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(AddPostActivity.this, "일기쓰기에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 dialog.dismiss();
                 Toast.makeText(AddPostActivity.this, "일기쓰기에 실패하였습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private Bitmap resize(Context context, Uri uri, int resize) {
+        Bitmap resizeBitmap = null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        try {
+            BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); // 1번
+
+            int width = options.outWidth;
+            int height = options.outHeight;
+            int samplesize = 1;
+
+            while (true) {//2번
+                if (width / 2 < resize || height / 2 < resize)
+                    break;
+                width /= 2;
+                height /= 2;
+                samplesize *= 2;
+            }
+
+            options.inSampleSize = samplesize;
+            Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); //3번
+            resizeBitmap = bitmap;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resizeBitmap;
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -339,7 +372,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         finishActivity();
     }
 
@@ -411,7 +444,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (intent == null) return;
         super.onActivityResult(requestCode, resultCode, intent);
-        if(requestCode == 0) {
+        if (requestCode == 0) {
             Uri selPhotoUri = intent.getData();
             CropImage.activity(selPhotoUri)
                     .start(this);

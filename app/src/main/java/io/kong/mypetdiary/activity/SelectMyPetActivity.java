@@ -244,11 +244,11 @@ public class SelectMyPetActivity extends Activity {
         stPetCome = txtPetCome.getText().toString();
 
         Call<ResponseBody> call = retrofitService.updateMyPet(body, name, stUserID, stPetName, stPetBirth, stPetCome, petKind);
+        dialog.dismiss();
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
-                    dialog.dismiss();
                     MainActivity mainActivity = (MainActivity) MainActivity.mainActivity;
                     mainActivity.finish();
                     finish();
@@ -260,11 +260,22 @@ public class SelectMyPetActivity extends Activity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                dialog.dismiss();
                 Toast.makeText(getApplicationContext(), "애완동물 정보 수정에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void  onDestroy(){
+        super.onDestroy();
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
 }

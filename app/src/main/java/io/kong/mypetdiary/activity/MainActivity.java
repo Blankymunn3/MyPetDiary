@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -31,6 +32,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public SharedPreferences appData;
     boolean saveLoginData;
+
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    HomeFragment homeFragment;
+    MyPageFragment myPageFragment;
+
 
     private final static int FRAGMENT_HOME = 1;
     private final static int FRAGMENT_MY_PAGE = 2;
@@ -97,10 +103,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EXTRA_FRAG = intent.getIntExtra("TAG_FRAG", 1);
         EXTRA_SIGN = intent.getIntExtra("EXTRA_SIGN", 0);
 
-        if(EXTRA_FRAG == 1) callFragment(FRAGMENT_HOME);
-        else if(EXTRA_FRAG == 2) callFragment(FRAGMENT_MY_PAGE);
+        if (EXTRA_FRAG == 1) {
+            homeFragment = new HomeFragment();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+        }
+        else if (EXTRA_FRAG == 2) callFragment(FRAGMENT_MY_PAGE);
 
-        if(EXTRA_SIGN == 1) load();
+        if (EXTRA_SIGN == 1) load();
 
         final Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH);
@@ -129,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String stUserPW = appData.getString("user_pw", "");
         String stUserName = appData.getString("user_name", "");
         String stUserProfile = appData.getString("user_profile", "");
-        String stUserArea = appData.getString("user_area","");
+        String stUserArea = appData.getString("user_area", "");
         String stUserBirth = appData.getString("user_birth", "");
 
         String stPetName = appData.getString("pet_name", "");
@@ -177,18 +186,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void callFragment(int fragment_no) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         switch (fragment_no) {
             case 1:
-                HomeFragment homeFragment = new HomeFragment();
-                transaction.replace(R.id.fragment_container, homeFragment);
-                transaction.commit();
+                if (homeFragment == null) {
+                    homeFragment = new HomeFragment();
+                    fragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment).commit();
+                }
+                if (homeFragment != null) fragmentManager.beginTransaction().show(homeFragment).commit();
+                if (myPageFragment != null) fragmentManager.beginTransaction().hide(myPageFragment).commit();
                 break;
             case 2:
-                MyPageFragment myPageFragment = new MyPageFragment();
-                transaction.replace(R.id.fragment_container, myPageFragment);
-                transaction.commit();
+                if (myPageFragment == null) {
+                    myPageFragment = new MyPageFragment();
+                    fragmentManager.beginTransaction().add(R.id.fragment_container, myPageFragment).commit();
+                }
+                if (homeFragment != null) fragmentManager.beginTransaction().hide(homeFragment).commit();
+                if (myPageFragment != null) fragmentManager.beginTransaction().show(myPageFragment).commit();
                 break;
         }
     }

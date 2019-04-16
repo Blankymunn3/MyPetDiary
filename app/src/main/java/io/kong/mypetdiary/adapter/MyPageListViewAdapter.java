@@ -32,7 +32,7 @@ public class MyPageListViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int ITEM_TYPE_INFO = 0;
     private static final int ITEM_TYPE_ADD = 1;
 
-    private ArrayList<MyPageListViewItem> listViewItems = new ArrayList<>();
+    private ArrayList<MyPageListViewItem> listViewItems;
 
     Context context;
 
@@ -135,6 +135,10 @@ public class MyPageListViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else {
             return ITEM_TYPE_ADD;
         }
+    }
+
+    public void addItem(MyPageListViewItem data) {
+        listViewItems.add(data);
     }
 
     @Override

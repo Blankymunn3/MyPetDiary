@@ -2,6 +2,7 @@ package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -141,6 +142,10 @@ public class HomeListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mainActivity.finish();
             }
         });
+    }
+
+    public void addItem(HomeListViewItem data) {
+        listViewItemList.add(data);
     }
 
     @Override

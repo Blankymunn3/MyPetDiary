@@ -9,7 +9,6 @@ public class MyPageListViewItem {
     public static final String EXTRA_PET_KIND = "EXTRA_PET_KIND";
 
     private int type;
-
     private String imgPetUri;
     private String stPetName;
     private String stPetBirth;
@@ -23,10 +22,6 @@ public class MyPageListViewItem {
         this.stPetBirth = stPetBirth;
         this.stPetCome = stPetCome;
         this.stPetKind = stPetKind;
-    }
-
-    public MyPageListViewItem(int type) {
-        this.type = type;
     }
 
     public int getType() {

@@ -68,6 +68,7 @@ public class MyPageFragment extends Fragment {
     int petCnt = 0, diaryCnt = 0, petKind;
 
     ArrayList<MyPageListViewItem> itemList = new ArrayList<MyPageListViewItem>();
+    MyPageListViewItem myPageListViewItem;
 
     public MyPageFragment() {
 
@@ -92,6 +93,9 @@ public class MyPageFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         userItem = new UserItem();
+
+        adapter = new MyPageListViewAdapter(itemList, getContext());
+        mRecyclerView.setAdapter(adapter);
 
         ImageButton btnOpenDrawer = rootView.findViewById(R.id.btn_my_page_menu);
         ImageButton btnCloseDrawer = rootView.findViewById(R.id.btn_my_page_menu_close);
@@ -202,36 +206,46 @@ public class MyPageFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(result);
                             JSONArray jsonArray = jsonObject.getJSONArray("pet_list");
                             if (jsonArray.length() != 0) {
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject item = jsonArray.getJSONObject(i);
-                                    stPetUrl = item.getString("pet_image");
-                                    stPetName = item.getString("pet_name");
-                                    stPetBirth = item.getString("pet_birth");
-                                    stPetCome = item.getString("pet_come");
-                                    petKind = item.getInt("pet_kind");
+                                for (int i = 0; i <= jsonArray.length(); i++) {
+                                    if (jsonArray.length() == i) {
+                                        myPageListViewItem = new MyPageListViewItem(1, stPetUrl, stPetName, stPetBirth, stPetCome, petKind);
+                                    } else {
+                                        JSONObject item = jsonArray.getJSONObject(i);
+                                        stPetUrl = item.getString("pet_image");
+                                        stPetName = item.getString("pet_name");
+                                        stPetBirth = item.getString("pet_birth");
+                                        stPetCome = item.getString("pet_come");
+                                        petKind = item.getInt("pet_kind");
 
-                                    itemList.add(new MyPageListViewItem(0, stPetUrl, stPetName, stPetBirth, stPetCome , petKind));
-                                    adapter = new MyPageListViewAdapter(itemList, getContext());
-                                    mRecyclerView.setAdapter(adapter);
-                                    Comparator<MyPageListViewItem> textAsc = new Comparator<MyPageListViewItem>() {
-                                        @Override
-                                        public int compare(MyPageListViewItem item1, MyPageListViewItem item2) {
-                                            return (item1.getType() - item2.getType());
-                                        }
-                                    };
+                                        myPageListViewItem = new MyPageListViewItem(0, stPetUrl, stPetName, stPetBirth, stPetCome, petKind);
 
-                                    Collections.sort(itemList, textAsc);
-                                    adapter.notifyDataSetChanged();
-                                    petCnt += 1;
+                                        petCnt += 1;
+                                    }
+
+                                    adapter.addItem(myPageListViewItem);
+
                                 }
+                            } else {
+                                myPageListViewItem = new MyPageListViewItem(1, stPetUrl, stPetName, stPetBirth, stPetCome, petKind);
+                                adapter.addItem(myPageListViewItem);
                             }
-                            txtPetCnt.setText(Integer.toString(petCnt));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    Comparator<MyPageListViewItem> textAsc = new Comparator<MyPageListViewItem>() {
+                        @Override
+                        public int compare(MyPageListViewItem item1, MyPageListViewItem item2) {
+                            return (item1.getType() - item2.getType());
+                        }
+                    };
+
+                    Collections.sort(itemList, textAsc);
+                    adapter.notifyDataSetChanged();
+
+                    txtPetCnt.setText(Integer.toString(petCnt));
                 }
             }
 
@@ -240,19 +254,6 @@ public class MyPageFragment extends Fragment {
 
             }
         });
-        itemList.add(new MyPageListViewItem(1, stPetUrl, stPetName, stPetBirth, stPetCome , petKind));
-        adapter = new MyPageListViewAdapter(itemList, getContext());
-        mRecyclerView.setAdapter(adapter);
-        Comparator<MyPageListViewItem> textAsc = new Comparator<MyPageListViewItem>() {
-            @Override
-            public int compare(MyPageListViewItem item1, MyPageListViewItem item2) {
-                return (item1.getType() - item2.getType());
-            }
-        };
-
-        Collections.sort(itemList, textAsc);
-        adapter.notifyDataSetChanged();
-
 
         return rootView;
     }
