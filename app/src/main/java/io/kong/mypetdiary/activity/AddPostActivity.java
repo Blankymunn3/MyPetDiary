@@ -92,6 +92,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
 
         resize(getApplicationContext(), resultUri, 500);
+
         File file = new File(getRealPathFromURI(resultUri));
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
@@ -104,7 +105,11 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
                     dialog.dismiss();
-                    finishActivity();
+                    MainActivity mainActivity = new MainActivity();
+                    mainActivity.finish();
+                    Intent intent = new Intent(AddPostActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     dialog.dismiss();
                     Toast.makeText(AddPostActivity.this, "일기쓰기에 실패하였습니다.", Toast.LENGTH_SHORT).show();
@@ -373,12 +378,6 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        finishActivity();
-    }
-
-    protected void finishActivity() {
-        Intent intent = new Intent(AddPostActivity.this, MainActivity.class);
-        startActivity(intent);
         finish();
     }
 
@@ -387,7 +386,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.btn_back:
-                finishActivity();
+                finish();
                 break;
             case R.id.imgBtn_home_sun:
                 stWeather = "sun";

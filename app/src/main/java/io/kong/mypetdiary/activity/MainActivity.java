@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.txt_today_diary:
                 Intent intent = new Intent(MainActivity.this, AddPostActivity.class);
                 startActivity(intent);
-                finish();
                 break;
             case R.id.txt_my_page:
                 callFragment(FRAGMENT_MY_PAGE);

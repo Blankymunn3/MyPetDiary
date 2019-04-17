@@ -40,34 +40,21 @@ public class SplashActivity extends Activity {
 
         appData = getSharedPreferences("APPDATA", MODE_PRIVATE);
 
-        final ImageView gif = findViewById(R.id.img_splash);
-        Glide.with(this).load(R.drawable.giphy).into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                gif.setImageDrawable(resource);
-            }
-        });
         init();
         load();
 
-        Handler handler = new Handler();
-        handler.postDelayed(new splashHandler(), 3000);
-
-    }
-
-    private class splashHandler implements Runnable {
-        public void run() {
-            if (saveLoginData){
-                final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        if (saveLoginData){
+            final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
+
     }
+
 
     public void load() {
         saveLoginData = appData.getBoolean("SAVE_LOGIN_DATA", false);
