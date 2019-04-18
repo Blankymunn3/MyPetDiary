@@ -47,8 +47,6 @@ public class HomeFragment extends Fragment {
     HomeListViewAdapter adapter;
     ImageView imgPost;
 
-    TextView txtTitle, txtSubTitle;
-
     String stWeek, stDate, stUserID, dbDay, dbWeek, dbImgUrl, dbTitle, dbContent, stMonth, stDay;
 
     ArrayList<HomeListViewItem> itemList = new ArrayList<HomeListViewItem>();
@@ -56,8 +54,6 @@ public class HomeFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
-
-    int diaryCnt = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,15 +76,11 @@ public class HomeFragment extends Fragment {
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
 
-        txtTitle = rootView.findViewById(R.id.txt_home_title);
-        txtSubTitle = rootView.findViewById(R.id.txt_home_subTitle);
         imgPost = rootView.findViewById(R.id.img_list_post);
 
         final Calendar cal = Calendar.getInstance();
         final int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
-
-        txtTitle.setText(Integer.toString(year) + "년 " + Integer.toString(month + 1) + "월");
 
         stUserID = userItem.getStUserID();
 
@@ -126,8 +118,6 @@ public class HomeFragment extends Fragment {
 
             stDate = Integer.toString(year) + stMonth + stDay;
 
-            final String subTitle = Integer.toString(cal.getActualMaximum(Calendar.DAY_OF_MONTH)) + "일 중 우리의 추억 ";
-
             Call<ResponseBody> call = retrofitService.selectDiary(stUserID, stDate);
             final int finalI = i;
             final String finalWeek = stWeek;
@@ -150,8 +140,6 @@ public class HomeFragment extends Fragment {
                                         dbWeek = item.getString("diary_week");
                                         homeListViewItem = new HomeListViewItem(dbImgUrl, dbTitle, dbContent, finalWeek, stDate, finalI,
                                                 (int) getResources().getDimension(R.dimen.home_list_width), (int) getResources().getDimension(R.dimen.home_list_height));
-
-                                        diaryCnt += 1;
                                     }
                                 } else {
                                     homeListViewItem = new HomeListViewItem(null, null, null, finalWeek, stDate, finalI, 0, 0);
@@ -171,7 +159,6 @@ public class HomeFragment extends Fragment {
                         };
                         Collections.sort(itemList, textAsc);
                         adapter.notifyDataSetChanged();
-                        txtSubTitle.setText(subTitle + Integer.toString(diaryCnt) + "개");
                     }
                 }
 

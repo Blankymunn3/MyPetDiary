@@ -4,24 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import io.kong.mypetdiary.R;
 import io.kong.mypetdiary.item.PetItem;
 import io.kong.mypetdiary.item.UserItem;
 
 public class SplashActivity extends Activity {
-
     public SharedPreferences appData;
     boolean saveLoginData;
 
@@ -52,7 +43,6 @@ public class SplashActivity extends Activity {
             startActivity(intent);
             finish();
         }
-
     }
 
 

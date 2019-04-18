@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -78,8 +76,6 @@ public class MyPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_my_page, container, false);
-        final DrawerLayout drawerLayout = rootView.findViewById(R.id.drawerLayout);
-        final View drawerView = rootView.findViewById(R.id.drawer);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
@@ -97,43 +93,6 @@ public class MyPageFragment extends Fragment {
         adapter = new MyPageListViewAdapter(itemList, getContext());
         mRecyclerView.setAdapter(adapter);
 
-        ImageButton btnOpenDrawer = rootView.findViewById(R.id.btn_my_page_menu);
-        ImageButton btnCloseDrawer = rootView.findViewById(R.id.btn_my_page_menu_close);
-
-        Button btnLogOut = rootView.findViewById(R.id.btn_logout);
-
-        btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(drawerView);
-            }
-        });
-
-        btnCloseDrawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.closeDrawer(drawerView);
-            }
-        });
-
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                    @Override
-                    public void onCompleteLogout() {
-                        appData = getContext().getSharedPreferences("APPDATA", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = appData.edit();
-                        editor.clear();
-                        editor.apply();
-
-                        Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                });
-            }
-        });
 
         getImageUrl = userItem.getStUserProfile();
 

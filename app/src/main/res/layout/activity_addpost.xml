@@ -84,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="10">
+            android:weightSum="13">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                 android:background="@drawable/back_top"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_weight="3">
+                android:layout_weight="4">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -180,7 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/back_top_mid"
-                android:layout_weight="3"
+                android:layout_weight="4"
                 android:weightSum="3"
                 android:orientation="vertical">
 
@@ -206,7 +206,7 @@
                         android:id="@+id/ed_today_comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:layout_marginLeft="10sp"
                         android:background="@android:color/transparent"
                         android:inputType="text"
@@ -222,17 +222,20 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/back_mid"
                 android:gravity="center"
-                android:layout_weight="2">
+                android:layout_weight="2.5">
 
                 <ImageView
                     android:id="@+id/img_upload"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10sp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="1.5dp"
+                    android:layout_marginBottom="3dp"
+                    android:scaleType="fitXY"
                     android:background="#e9e9e9"
                     style="?android:attr/borderlessButtonStyle"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"/>
+                    android:adjustViewBounds="true" />
 
             </LinearLayout>
 
@@ -240,7 +243,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/back_bottom"
-                android:layout_weight="2">
+                android:layout_weight="2.5">
 
                 <EditText
                     android:id="@+id/ed_content"

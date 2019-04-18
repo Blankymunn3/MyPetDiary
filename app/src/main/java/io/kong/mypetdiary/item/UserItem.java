@@ -14,41 +14,41 @@ public class UserItem {
     static Parcelable recyclerViewState;
 
     public void setStUserID(String stUserID) {
-        UserItem.stUserID = stUserID;
+        this.stUserID = stUserID;
     }
 
 
     public void setStUserPW(String stUserPW) {
-        UserItem.stUserPW = stUserPW;
+        this.stUserPW = stUserPW;
     }
 
 
     public void setStUserName(String stUserName) {
-        UserItem.stUserName = stUserName;
+        this.stUserName = stUserName;
     }
 
 
 
     public void setStUserArea(String stUserArea) {
-        UserItem.stUserArea = stUserArea;
+        this.stUserArea = stUserArea;
     }
 
 
     public void setStUserBirth(String stUserBirth) {
-        UserItem.stUserBirth = stUserBirth;
+        this.stUserBirth = stUserBirth;
     }
 
 
     public void setStUserProfile(String stUserProfile) {
-        UserItem.stUserProfile = stUserProfile;
+        this.stUserProfile = stUserProfile;
     }
 
     public void setStUserSalt(String stUserSalt) {
-        UserItem.stUserSalt = stUserSalt;
+        this.stUserSalt = stUserSalt;
     }
 
     public void setRecyclerViewState(Parcelable recyclerViewState) {
-        UserItem.recyclerViewState =recyclerViewState;
+        this.recyclerViewState =recyclerViewState;
     }
 
     public String getStUserID() {

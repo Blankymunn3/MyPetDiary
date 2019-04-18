@@ -2,6 +2,7 @@ package io.kong.mypetdiary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -106,6 +107,16 @@ public class HomeListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (stToday.equals(stDay)) viewHolder.linearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.back_today_listview));
         else viewHolder.linearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.back_listview));
+        if (listViewItem.getWeek().equals("일")) {
+            viewHolder.txtDay.setTextColor(Color.parseColor("#FFF44336"));
+            viewHolder.txtWeek.setTextColor(Color.parseColor("#FFF44336"));
+        } else if(listViewItem.getWeek().equals("토")) {
+            viewHolder.txtDay.setTextColor(Color.parseColor("#FF2196F3"));
+            viewHolder.txtWeek.setTextColor(Color.parseColor("#FF2196F3"));
+        } else {
+            viewHolder.txtDay.setTextColor(Color.BLACK);
+            viewHolder.txtWeek.setTextColor(Color.BLACK);
+        }
 
         viewHolder.iconImageView.getLayoutParams().width = listViewItem.getWidth();
         viewHolder.iconImageView.getLayoutParams().height = listViewItem.getHeight();

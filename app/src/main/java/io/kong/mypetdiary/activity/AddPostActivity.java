@@ -90,9 +90,6 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
         stDate = stYear + stMonth + stDay;
 
-
-        resize(getApplicationContext(), resultUri, 500);
-
         File file = new File(getRealPathFromURI(resultUri));
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
@@ -321,6 +318,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
                                     edTodayComment.setText(stTodayComment);
                                     edContent.setText(stContent);
                                     Glide.with(AddPostActivity.this).load(stPhoto).into(btnUpImage);
+
 
                                     edTodayComment.setFocusable(false);
                                     edTodayComment.setClickable(false);
