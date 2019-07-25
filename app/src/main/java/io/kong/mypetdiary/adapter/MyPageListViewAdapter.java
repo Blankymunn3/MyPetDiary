@@ -93,8 +93,13 @@ public class MyPageListViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             int d_day = caldate(year, month, day);
 
-            Glide.with(context).load(item.getImgPetUri()).diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true).into(((ViewHolder) holder).imvPet);
+
+            if (!item.getImgPetUri().equals("null")) {
+                Glide.with(context).load(item.getImgPetUri()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true).into(((ViewHolder) holder).imvPet);
+                ((ViewHolder) holder).imvPet.setBackground(null);
+            }
+
             ((ViewHolder) holder).txtPetName.setText(item.getStPetName());
             ((ViewHolder) holder).txtBirth.setText(Integer.toString(d_day) + "일 째");
 

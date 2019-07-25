@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="io.kong.mypetdiary.activity.MainActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,8 +16,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="6">
+            android:layout_weight="6"
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/main_titlebar"
@@ -37,17 +37,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/linearLayout"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
+            android:layout_weight="6"
             android:background="@drawable/fragment_bottom_back"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_weight="6">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txt_main_month"
@@ -127,8 +127,9 @@
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/background_line"
+                android:padding="5dp"
                 android:text="로그아웃" />
 
         </LinearLayout>

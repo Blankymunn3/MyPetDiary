@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.kong.mypetdiary.activity.LoginActivity;
 import io.kong.mypetdiary.activity.SetImageActivity;
 import io.kong.mypetdiary.adapter.MyPageListViewAdapter;
 import io.kong.mypetdiary.R;
@@ -41,8 +40,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.content.Context.MODE_PRIVATE;
-
 
 public class MyPageFragment extends Fragment {
 
@@ -52,11 +49,9 @@ public class MyPageFragment extends Fragment {
     Retrofit retrofit;
     RetrofitService retrofitService;
 
-
     UserItem userItem;
-    public SharedPreferences appData;
 
-    MyPageListViewAdapter adapter;
+    public static MyPageListViewAdapter adapter;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
 

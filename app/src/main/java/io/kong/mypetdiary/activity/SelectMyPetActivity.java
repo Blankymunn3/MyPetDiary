@@ -4,12 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,10 +27,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import io.kong.mypetdiary.R;
+import io.kong.mypetdiary.fragment.MyPageFragment;
 import io.kong.mypetdiary.item.UserItem;
 import io.kong.mypetdiary.service.RetrofitService;
 import okhttp3.MediaType;
@@ -65,7 +73,10 @@ public class SelectMyPetActivity extends Activity {
     Spinner spMyPetKind;
 
     int petKind;
-    String stUserID, stPetUrl, stPetName, stPetBirth, stPetCome, absolutePath;
+    String stUserID, stPetUrl, stPetName, stPetBirth, stPetCome;
+
+    Uri resultUri;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +137,7 @@ public class SelectMyPetActivity extends Activity {
                                 Toast.makeText(SelectMyPetActivity.this, "UploadImage....", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        uploadFile(absolutePath);
+                        uploadFile();
                     }
                 }).start();
             }
@@ -202,9 +213,13 @@ public class SelectMyPetActivity extends Activity {
         imgBtnPetBirth = findViewById(R.id.imgBtn_my_pet_birth);
         imgBtnPetCome = findViewById(R.id.imgBtn_my_pet_come);
 
-        if (stPetUrl.equals("null")) imgMyPet.setImageResource(R.drawable.face);
-        else Glide.with(this).load(stPetUrl)
-                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imgMyPet);
+        if (stPetUrl.equals("null")) {
+            imgMyPet.setImageResource(R.drawable.face);
+        } else {
+            Glide.with(this).load(stPetUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imgMyPet);
+            imgMyPet.setBackground(null);
+        }
 
         edMyPetName.setText(stPetName);
         txtPetBirth.setText(stPetBirth);
@@ -223,17 +238,36 @@ public class SelectMyPetActivity extends Activity {
         if (intent == null) return;
         super.onActivityResult(requestCode, resultCode, intent);
 
-        Uri selPhotoUri = intent.getData();
-        Glide.with(getApplicationContext()).load(selPhotoUri).into(imgMyPet);
+        if (requestCode == 0) {
+            Uri selPhotoUri = intent.getData();
+            CropImage.activity(selPhotoUri)
+                    .start(this);
+            Glide.with(getApplicationContext()).load(selPhotoUri).into(imgMyPet);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(intent);
+            if (resultCode == RESULT_OK) {
+                resultUri = result.getUri();
 
-        Cursor c = getContentResolver().query(Uri.parse(selPhotoUri.toString()), null, null, null, null);
-        c.moveToNext();
-        absolutePath = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+                    Glide.with(getApplicationContext()).load(resultUri).into(imgMyPet);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.e("ExceptionError::", error.getLocalizedMessage());
+            }
+        }
     }
 
     @SuppressLint("LongLogTag")
-    private void uploadFile(String sourceFileUri) {
-        final File file = new File(sourceFileUri);
+    private void uploadFile() {
+
+        Bitmap resizeBitmap = resize(this, resultUri, 1024);
+        final File file = new File(saveBitmapToJpeg(this, resizeBitmap, stUserID));
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
@@ -244,17 +278,13 @@ public class SelectMyPetActivity extends Activity {
         stPetCome = txtPetCome.getText().toString();
 
         Call<ResponseBody> call = retrofitService.updateMyPet(body, name, stUserID, stPetName, stPetBirth, stPetCome, petKind);
-        dialog.dismiss();
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
-                    MainActivity mainActivity = (MainActivity) MainActivity.mainActivity;
-                    mainActivity.finish();
+                    dialog.dismiss();
+                    MyPageFragment.adapter.notifyDataSetChanged();
                     finish();
-                    Intent intent = new Intent(SelectMyPetActivity.this, MainActivity.class);
-                    intent.putExtra("TAG_FRAG", 2);
-                    startActivity(intent);
                 }
             }
 
@@ -264,6 +294,54 @@ public class SelectMyPetActivity extends Activity {
                 t.printStackTrace();
             }
         });
+    }
+
+
+    public static String saveBitmapToJpeg(Context context, Bitmap bitmap, String name){
+        File storage = context.getCacheDir();
+        String fileName = name + ".jpg";
+        File tempFile = new File(storage,fileName);
+        try{
+            tempFile.createNewFile();
+            FileOutputStream out = new FileOutputStream(tempFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90 , out);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return tempFile.getAbsolutePath();
+    }
+
+    private Bitmap resize(Context context,Uri uri,int resize){
+        Bitmap resizeBitmap=null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        try {
+            BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options);
+
+            int width = options.outWidth;
+            int height = options.outHeight;
+            int samplesize = 1;
+
+            while (true) {
+                if (width / 2 < resize || height / 2 < resize)
+                    break;
+                width /= 2;
+                height /= 2;
+                samplesize *= 2;
+            }
+
+            options.inSampleSize = samplesize;
+            Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options);
+            resizeBitmap=bitmap;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resizeBitmap;
     }
 
     @Override

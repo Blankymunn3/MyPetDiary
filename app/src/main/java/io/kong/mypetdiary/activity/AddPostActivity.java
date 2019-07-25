@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -47,6 +48,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static io.kong.mypetdiary.activity.MainActivity.mainActivity;
+
 public class AddPostActivity extends Activity implements View.OnClickListener {
 
 
@@ -59,6 +62,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
     PetItem petItem;
 
     Uri resultUri;
+    Bitmap bitmap = null;
 
     ImageButton btnSun, btnBlur, btnRain, btnSnow, btnBack;
     ImageView btnUpImage;
@@ -89,8 +93,8 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         else stDay = Integer.toString(day);
 
         stDate = stYear + stMonth + stDay;
-
-        File file = new File(getRealPathFromURI(resultUri));
+        Bitmap resizeBitmap = resize(this, resultUri, 1024);
+        File file = new File(saveBitmapToJpeg(this, resizeBitmap, stUserID));
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
@@ -102,7 +106,6 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
                     dialog.dismiss();
-                    MainActivity mainActivity = new MainActivity();
                     mainActivity.finish();
                     Intent intent = new Intent(AddPostActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -121,8 +124,26 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
         });
     }
 
-    private Bitmap resize(Context context, Uri uri, int resize) {
-        Bitmap resizeBitmap = null;
+    public static String saveBitmapToJpeg(Context context,Bitmap bitmap, String name){
+        File storage = context.getCacheDir();
+        String fileName = name + ".jpg";
+        File tempFile = new File(storage,fileName);
+        try{
+            tempFile.createNewFile();
+            FileOutputStream out = new FileOutputStream(tempFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90 , out);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return tempFile.getAbsolutePath();   // 임시파일 저장경로를 리턴해주면 끝!
+    }
+
+    private Bitmap resize(Context context,Uri uri,int resize){
+        Bitmap resizeBitmap=null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         try {
@@ -142,26 +163,12 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
 
             options.inSampleSize = samplesize;
             Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); //3번
-            resizeBitmap = bitmap;
+            resizeBitmap=bitmap;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return resizeBitmap;
-    }
-
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
     }
 
     @SuppressLint("ResourceAsColor")
@@ -450,7 +457,7 @@ public class AddPostActivity extends Activity implements View.OnClickListener {
             CropImage.ActivityResult result = CropImage.getActivityResult(intent);
             if (resultCode == RESULT_OK) {
                 resultUri = result.getUri();
-                Bitmap bitmap = null;
+
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
                     btnUpImage.setImageBitmap(bitmap);

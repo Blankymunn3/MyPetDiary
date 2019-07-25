@@ -151,7 +151,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mainTitleBar();
         } else if (EXTRA_FRAG == 2) {
             callFragment(FRAGMENT_MY_PAGE);
-            subTitleBar();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            subTitleBar();
+                        }
+                    });
+
+                }
+            }).start();
+
         }
 
         getFrag = 0;
